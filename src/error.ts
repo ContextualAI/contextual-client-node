@@ -2,9 +2,9 @@
 
 import { castToError, Headers } from './core';
 
-export class SunriseError extends Error {}
+export class ContextualAIError extends Error {}
 
-export class APIError extends SunriseError {
+export class APIError extends ContextualAIError {
   readonly status: number | undefined;
   readonly headers: Headers | undefined;
   readonly error: Object | undefined;

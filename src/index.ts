@@ -27,14 +27,14 @@ import {
 
 export interface ClientOptions {
   /**
-   * Bearer token for accessing the API
+   * API key to access Contextual AI platform
    */
-  bearerToken?: string | undefined;
+  apiKey?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['SUNRISE_BASE_URL'].
+   * Defaults to process.env['CONTEXTUAL_AI_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -89,18 +89,18 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Sunrise API.
+ * API Client for interfacing with the Contextual AI API.
  */
-export class Sunrise extends Core.APIClient {
-  bearerToken: string;
+export class ContextualAI extends Core.APIClient {
+  apiKey: string;
 
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Sunrise API.
+   * API Client for interfacing with the Contextual AI API.
    *
-   * @param {string | undefined} [opts.bearerToken=process.env['BEARER_TOKEN'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['SUNRISE_BASE_URL'] ?? https://api.contextual.ai/v1] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.apiKey=process.env['CONTEXTUAL_API_KEY'] ?? undefined]
+   * @param {string} [opts.baseURL=process.env['CONTEXTUAL_AI_BASE_URL'] ?? https://api.contextual.ai/v1] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {number} [opts.httpAgent] - An HTTP agent used to manage HTTP(s) connections.
    * @param {Core.Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -109,18 +109,18 @@ export class Sunrise extends Core.APIClient {
    * @param {Core.DefaultQuery} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = Core.readEnv('SUNRISE_BASE_URL'),
-    bearerToken = Core.readEnv('BEARER_TOKEN'),
+    baseURL = Core.readEnv('CONTEXTUAL_AI_BASE_URL'),
+    apiKey = Core.readEnv('CONTEXTUAL_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
-    if (bearerToken === undefined) {
-      throw new Errors.SunriseError(
-        "The BEARER_TOKEN environment variable is missing or empty; either provide it, or instantiate the Sunrise client with an bearerToken option, like new Sunrise({ bearerToken: 'My Bearer Token' }).",
+    if (apiKey === undefined) {
+      throw new Errors.ContextualAIError(
+        "The CONTEXTUAL_API_KEY environment variable is missing or empty; either provide it, or instantiate the ContextualAI client with an apiKey option, like new ContextualAI({ apiKey: 'My API Key' }).",
       );
     }
 
     const options: ClientOptions = {
-      bearerToken,
+      apiKey,
       ...opts,
       baseURL: baseURL || `https://api.contextual.ai/v1`,
     };
@@ -135,7 +135,7 @@ export class Sunrise extends Core.APIClient {
 
     this._options = options;
 
-    this.bearerToken = bearerToken;
+    this.apiKey = apiKey;
   }
 
   datastores: API.Datastores = new API.Datastores(this);
@@ -153,17 +153,17 @@ export class Sunrise extends Core.APIClient {
   }
 
   protected override authHeaders(opts: Core.FinalRequestOptions): Core.Headers {
-    return { Authorization: `Bearer ${this.bearerToken}` };
+    return { Authorization: `Bearer ${this.apiKey}` };
   }
 
   protected override stringifyQuery(query: Record<string, unknown>): string {
     return qs.stringify(query, { arrayFormat: 'comma' });
   }
 
-  static Sunrise = this;
+  static ContextualAI = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static SunriseError = Errors.SunriseError;
+  static ContextualAIError = Errors.ContextualAIError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -181,9 +181,9 @@ export class Sunrise extends Core.APIClient {
   static fileFromPath = Uploads.fileFromPath;
 }
 
-Sunrise.Datastores = Datastores;
-Sunrise.Applications = Applications;
-export declare namespace Sunrise {
+ContextualAI.Datastores = Datastores;
+ContextualAI.Applications = Applications;
+export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
   export {
@@ -209,7 +209,7 @@ export declare namespace Sunrise {
 
 export { toFile, fileFromPath } from './uploads';
 export {
-  SunriseError,
+  ContextualAIError,
   APIError,
   APIConnectionError,
   APIConnectionTimeoutError,
@@ -224,4 +224,4 @@ export {
   UnprocessableEntityError,
 } from './error';
 
-export default Sunrise;
+export default ContextualAI;

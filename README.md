@@ -1,10 +1,10 @@
-# Sunrise Node API Library
+# Contextual AI Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/sunrise.svg)](https://npmjs.org/package/sunrise) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/sunrise)
+[![NPM version](https://img.shields.io/npm/v/contextual.svg)](https://npmjs.org/package/contextual) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/contextual)
 
-This library provides convenient access to the Sunrise REST API from server-side TypeScript or JavaScript.
+This library provides convenient access to the Contextual AI REST API from server-side TypeScript or JavaScript.
 
-The REST API documentation can be found on [docs.sunrise.com](https://docs.sunrise.com). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.contextual.ai](https://docs.contextual.ai). The full API of this library can be found in [api.md](api.md).
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
@@ -15,7 +15,7 @@ npm install git+ssh://git@github.com:stainless-sdks/sunrise-node.git
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install sunrise`
+> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install contextual`
 
 ## Usage
 
@@ -23,10 +23,10 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import Sunrise from 'sunrise';
+import ContextualAI from 'contextual';
 
-const client = new Sunrise({
-  bearerToken: process.env['BEARER_TOKEN'], // This is the default and can be omitted
+const client = new ContextualAI({
+  apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
 async function main() {
@@ -44,15 +44,15 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import Sunrise from 'sunrise';
+import ContextualAI from 'contextual';
 
-const client = new Sunrise({
-  bearerToken: process.env['BEARER_TOKEN'], // This is the default and can be omitted
+const client = new ContextualAI({
+  apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
 async function main() {
-  const params: Sunrise.DatastoreCreateParams = { name: 'name' };
-  const createDatastoreOutput: Sunrise.CreateDatastoreOutput = await client.datastores.create(params);
+  const params: ContextualAI.DatastoreCreateParams = { name: 'name' };
+  const createDatastoreOutput: ContextualAI.CreateDatastoreOutput = await client.datastores.create(params);
 }
 
 main();
@@ -70,7 +70,7 @@ a subclass of `APIError` will be thrown:
 ```ts
 async function main() {
   const createDatastoreOutput = await client.datastores.create({ name: 'name' }).catch(async (err) => {
-    if (err instanceof Sunrise.APIError) {
+    if (err instanceof ContextualAI.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
       console.log(err.headers); // {server: 'nginx', ...}
@@ -107,7 +107,7 @@ You can use the `maxRetries` option to configure or disable this:
 <!-- prettier-ignore -->
 ```js
 // Configure the default for all requests:
-const client = new Sunrise({
+const client = new ContextualAI({
   maxRetries: 0, // default is 2
 });
 
@@ -124,7 +124,7 @@ Requests time out after 1 minute by default. You can configure this with a `time
 <!-- prettier-ignore -->
 ```ts
 // Configure the default for all requests:
-const client = new Sunrise({
+const client = new ContextualAI({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
@@ -148,7 +148,7 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 
 <!-- prettier-ignore -->
 ```ts
-const client = new Sunrise();
+const client = new ContextualAI();
 
 const response = await client.datastores.create({ name: 'name' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
@@ -211,16 +211,16 @@ By default, this library uses `node-fetch` in Node, and expects a global `fetch`
 
 If you would prefer to use a global, web-standards-compliant `fetch` function even in a Node environment,
 (for example, if you are running Node with `--experimental-fetch` or using NextJS which polyfills with `undici`),
-add the following import before your first import `from "Sunrise"`:
+add the following import before your first import `from "ContextualAI"`:
 
 ```ts
 // Tell TypeScript and the package to use the global web fetch instead of node-fetch.
 // Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import 'sunrise/shims/web';
-import Sunrise from 'sunrise';
+import 'contextual/shims/web';
+import ContextualAI from 'contextual';
 ```
 
-To do the inverse, add `import "sunrise/shims/node"` (which does import polyfills).
+To do the inverse, add `import "contextual/shims/node"` (which does import polyfills).
 This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/stainless-sdks/sunrise-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
@@ -230,9 +230,9 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import Sunrise from 'sunrise';
+import ContextualAI from 'contextual';
 
-const client = new Sunrise({
+const client = new ContextualAI({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
     console.log('About to make a request', url, init);
     const response = await fetch(url, init);
@@ -257,7 +257,7 @@ import http from 'http';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 
 // Configure the default for all requests:
-const client = new Sunrise({
+const client = new ContextualAI({
   httpAgent: new HttpsProxyAgent(process.env.PROXY_URL),
 });
 
