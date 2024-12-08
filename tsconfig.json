@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "sunrise/_shims/auto/*": ["src/_shims/auto/*-node"],
-      "sunrise/*": ["src/*"],
-      "sunrise": ["src/index.ts"]
+      "contextual/_shims/auto/*": ["src/_shims/auto/*-node"],
+      "contextual/*": ["src/*"],
+      "contextual": ["src/index.ts"]
     },
     "noEmit": true,
 

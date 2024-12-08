@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { Sunrise } from 'sunrise';
+import { ContextualAI } from 'contextual';
 
-const { stringifyQuery } = Sunrise.prototype as any;
+const { stringifyQuery } = ContextualAI.prototype as any;
 
 describe(stringifyQuery, () => {
   for (const [input, expected] of [

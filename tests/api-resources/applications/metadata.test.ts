@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Sunrise from 'sunrise';
+import ContextualAI from 'contextual';
 import { Response } from 'node-fetch';
 
-const client = new Sunrise({
-  bearerToken: 'My Bearer Token',
+const client = new ContextualAI({
+  apiKey: 'My API Key',
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
@@ -26,6 +26,6 @@ describe('resource metadata', () => {
       client.applications.metadata.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
-    ).rejects.toThrow(Sunrise.NotFoundError);
+    ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 });

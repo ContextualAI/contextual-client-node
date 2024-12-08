@@ -4,8 +4,8 @@
 /**
  * Types will get added to this namespace when you import one of the following:
  *
- *   import 'sunrise/shims/node'
- *   import 'sunrise/shims/web'
+ *   import 'contextual/shims/node'
+ *   import 'contextual/shims/web'
  *
  * Importing more than one will cause type and runtime errors.
  */

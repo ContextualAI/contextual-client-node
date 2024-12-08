@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { Sunrise } from './index';
+import type { ContextualAI } from './index';
 
 export class APIResource {
-  protected _client: Sunrise;
+  protected _client: ContextualAI;
 
-  constructor(client: Sunrise) {
+  constructor(client: ContextualAI) {
     this._client = client;
   }
 }

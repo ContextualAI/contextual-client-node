@@ -1,5 +1,5 @@
-import { createResponseHeaders } from 'sunrise/core';
-import { Headers } from 'sunrise/_shims/index';
+import { createResponseHeaders } from 'contextual/core';
+import { Headers } from 'contextual/_shims/index';
 
 describe('response parsing', () => {
   // TODO: test unicode characters

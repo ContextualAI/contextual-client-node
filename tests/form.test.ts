@@ -1,6 +1,6 @@
-import { multipartFormRequestOptions, createForm } from 'sunrise/core';
-import { Blob } from 'sunrise/_shims/index';
-import { toFile } from 'sunrise';
+import { multipartFormRequestOptions, createForm } from 'contextual/core';
+import { Blob } from 'contextual/_shims/index';
+import { toFile } from 'contextual';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

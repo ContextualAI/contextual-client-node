@@ -1,7 +1,7 @@
 import iconv from 'iconv-lite';
-import { stringify } from 'sunrise/internal/qs';
-import { encode } from 'sunrise/internal/qs/utils';
-import { StringifyOptions } from 'sunrise/internal/qs/types';
+import { stringify } from 'contextual/internal/qs';
+import { encode } from 'contextual/internal/qs/utils';
+import { StringifyOptions } from 'contextual/internal/qs/types';
 import { empty_test_cases } from './empty-keys-cases';
 import assert from 'assert';
 
