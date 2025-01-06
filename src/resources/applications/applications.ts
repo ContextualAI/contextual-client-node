@@ -6,13 +6,7 @@ import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetApplicationResponse, Metadata } from './metadata';
 import * as QueryAPI from './query';
-import {
-  Query,
-  QueryFeedbackParams,
-  QueryFeedbackResponse,
-  QueryStartParams,
-  QueryStartResponse,
-} from './query';
+import { Query, QueryFeedbackParams, QueryFeedbackResponse, QueryResponse, QueryStartParams } from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -251,8 +245,8 @@ export declare namespace Applications {
 
   export {
     Query as Query,
+    type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
-    type QueryStartResponse as QueryStartResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryStartParams as QueryStartParams,
   };

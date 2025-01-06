@@ -31,7 +31,7 @@ export class Query extends APIResource {
     applicationId: string,
     params: QueryStartParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<QueryStartResponse> {
+  ): Core.APIPromise<QueryResponse> {
     const { retrievals_only, ...body } = params;
     return this._client.post(`/applications/${applicationId}/query`, {
       query: { retrievals_only },
@@ -41,12 +41,10 @@ export class Query extends APIResource {
   }
 }
 
-export type QueryFeedbackResponse = unknown;
-
 /**
  * Response body for POST /query
  */
-export interface QueryStartResponse {
+export interface QueryResponse {
   /**
    * A unique identifier for the conversation. Can be passed to future `/query` calls
    * to continue a conversation with the same message history.
@@ -56,17 +54,17 @@ export interface QueryStartResponse {
   /**
    * Relevant content retrieved to answer the query
    */
-  retrieval_contents: Array<QueryStartResponse.RetrievalContent>;
+  retrieval_contents: Array<QueryResponse.RetrievalContent>;
 
   /**
    * Attributions for the response
    */
-  attributions?: Array<QueryStartResponse.Attribution>;
+  attributions?: Array<QueryResponse.Attribution>;
 
   /**
    * Response to the query request
    */
-  message?: QueryStartResponse.Message;
+  message?: QueryResponse.Message;
 
   /**
    * A unique identifier for this specific message
@@ -74,7 +72,7 @@ export interface QueryStartResponse {
   message_id?: string;
 }
 
-export namespace QueryStartResponse {
+export namespace QueryResponse {
   /**
    * Retrieval content object typing for v0.1 API.
    */
@@ -167,6 +165,8 @@ export namespace QueryStartResponse {
   }
 }
 
+export type QueryFeedbackResponse = unknown;
+
 export interface QueryFeedbackParams {
   /**
    * Feedback to provide on the message. Set to "removed" to undo previously provided
@@ -240,8 +240,8 @@ export namespace QueryStartParams {
 
 export declare namespace Query {
   export {
+    type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
-    type QueryStartResponse as QueryStartResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryStartParams as QueryStartParams,
   };
