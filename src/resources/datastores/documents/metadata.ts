@@ -5,7 +5,8 @@ import * as Core from '../../../core';
 
 export class Metadata extends APIResource {
   /**
-   * Get details of a given document.
+   * Get details of a given document, including its `name` and ingestion job
+   * `status`.
    */
   retrieve(
     datastoreId: string,

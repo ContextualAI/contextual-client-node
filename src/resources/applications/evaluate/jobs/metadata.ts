@@ -6,7 +6,7 @@ import * as JobsAPI from './jobs';
 
 export class Metadata extends APIResource {
   /**
-   * Get evaluation round status and results.
+   * Get an `Evaluation` round's status and results.
    */
   retrieve(
     applicationId: string,

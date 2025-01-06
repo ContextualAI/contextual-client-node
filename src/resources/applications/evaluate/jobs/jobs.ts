@@ -9,14 +9,15 @@ export class Jobs extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
 
   /**
-   * Retrieve a list of evaluation round results for a given application.
+   * Retrieve a list of `Evaluation` rounds run on a given `Application`, including
+   * the `Evaluation`'s status and other metadata.
    */
   list(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<ListEvaluationResponse> {
     return this._client.get(`/applications/${applicationId}/evaluate/jobs`, options);
   }
 
   /**
-   * Cancels an evaluation round.
+   * Cancels an `Evaluation` round.
    */
   cancel(applicationId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post(`/applications/${applicationId}/evaluate/jobs/${jobId}/cancel`, options);

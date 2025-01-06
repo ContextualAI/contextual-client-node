@@ -26,8 +26,8 @@ export { Evaluate, type LaunchEvaluationResponse, type EvaluateLaunchParams } fr
 export { Metadata, type GetApplicationResponse } from './metadata';
 export {
   Query,
-  type QueryResponse,
   type QueryFeedbackResponse,
+  type QueryStartResponse,
   type QueryFeedbackParams,
   type QueryStartParams,
 } from './query';

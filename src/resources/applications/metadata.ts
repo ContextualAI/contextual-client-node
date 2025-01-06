@@ -5,7 +5,7 @@ import * as Core from '../../core';
 
 export class Metadata extends APIResource {
   /**
-   * Get details of a given application.
+   * Get metadata and configuration of a given `Application`.
    */
   retrieve(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<GetApplicationResponse> {
     return this._client.get(`/applications/${applicationId}/metadata`, options);
@@ -38,6 +38,13 @@ export interface GetApplicationResponse {
    * model and use the default model.
    */
   llm_model_id?: string;
+
+  /**
+   * These queries will show up as suggestions when users load the app. We recommend
+   * including common queries that users will ask, as well as complex queries so
+   * users understand the types of complex queries the system can handle.
+   */
+  suggested_queries?: Array<string>;
 
   /**
    * Instructions that your RAG system references when generating responses. Note

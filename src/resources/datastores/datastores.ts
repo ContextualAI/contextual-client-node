@@ -20,14 +20,26 @@ export class Datastores extends APIResource {
   documents: DocumentsAPI.Documents = new DocumentsAPI.Documents(this._client);
 
   /**
-   * Create a new datastore.
+   * Create a new `Datastore`.
+   *
+   * A `Datastore` is a collection of documents. Documents can be ingested into and
+   * deleted from a `Datastore`.
+   *
+   * A `Datastore` can be linked to one or more `Applications` to provide data on
+   * which the `Application` can ground its answers. This linkage of `Datastore` to
+   * `Application` is done through the `Create Application` or `Edit Application`
+   * APIs.
    */
   create(body: DatastoreCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateDatastoreOutput> {
     return this._client.post('/datastores', { body, ...options });
   }
 
   /**
-   * List all the datastores.
+   * List all the `Datastores`.
+   *
+   * Performs `cursor`-based pagination if the number of `Datastores` exceeds the
+   * requested `limit`. The returned `cursor` can be passed to the next
+   * `GET /datastores` call to retrieve the next set of `Datastores`.
    */
   list(query?: DatastoreListParams, options?: Core.RequestOptions): Core.APIPromise<Datastore>;
   list(options?: Core.RequestOptions): Core.APIPromise<Datastore>;
@@ -42,7 +54,8 @@ export class Datastores extends APIResource {
   }
 
   /**
-   * Delete a given datastore. This operation is irreversible.
+   * Delete a given `Datastore`, including all the documents ingested into it. This
+   * operation is irreversible.
    */
   delete(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/datastores/${datastoreId}`, options);
@@ -75,6 +88,9 @@ export interface Datastore {
 }
 
 export namespace Datastore {
+  /**
+   * Datastore output entry with additional fields for public API.
+   */
   export interface Datastore {
     /**
      * ID of the datastore
@@ -103,6 +119,12 @@ export interface DatastoreCreateParams {
 }
 
 export interface DatastoreListParams {
+  /**
+   * ID of the application used to filter datastores. If provided, only datastores
+   * linked to this application will be returned.
+   */
+  application_id?: string;
+
   /**
    * Cursor from the previous call to list datastores, used to retrieve the next set
    * of results

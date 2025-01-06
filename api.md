@@ -76,13 +76,13 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/applications/query.ts">QueryResponse</a></code>
 - <code><a href="./src/resources/applications/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/applications/query.ts">QueryStartResponse</a></code>
 
 Methods:
 
 - <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
+- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query.ts">start</a>(applicationId, { ...params }) -> QueryStartResponse</code>
 
 ## Evaluate
 
