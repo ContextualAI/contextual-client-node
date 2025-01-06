@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "contextual/_shims/auto/*": ["src/_shims/auto/*-node"],
-      "contextual/*": ["src/*"],
-      "contextual": ["src/index.ts"]
+      "contextual-sdk/_shims/auto/*": ["src/_shims/auto/*-node"],
+      "contextual-sdk/*": ["src/*"],
+      "contextual-sdk": ["src/index.ts"]
     },
     "noEmit": true,
 

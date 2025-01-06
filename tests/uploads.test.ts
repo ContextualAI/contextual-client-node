@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { toFile, type ResponseLike } from 'contextual/uploads';
-import { File } from 'contextual/_shims/index';
+import { toFile, type ResponseLike } from 'contextual-sdk/uploads';
+import { File } from 'contextual-sdk/_shims/index';
 
 class MyClass {
   name: string = 'foo';

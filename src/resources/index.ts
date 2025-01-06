@@ -11,10 +11,13 @@ export {
   type ApplicationListParams,
 } from './applications/applications';
 export {
+  DatastoreListResponsesDatastoresListPagination,
   Datastores,
   type CreateDatastoreOutput,
   type Datastore,
+  type DatastoreListResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
+export { Lmunit, type LmunitScoreResponse, type LmunitScoreParams } from './lmunit';

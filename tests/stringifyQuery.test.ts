@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { ContextualAI } from 'contextual';
+import { ContextualAI } from 'contextual-sdk';
 
 const { stringifyQuery } = ContextualAI.prototype as any;
 

@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import ContextualAI from 'contextual';
+import ContextualAI from 'contextual-sdk';
 import { Response } from 'node-fetch';
 
 const client = new ContextualAI({
@@ -29,6 +29,27 @@ describe('resource query', () => {
       message_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       content_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       explanation: 'explanation',
+    });
+  });
+
+  test('formFilling: only required params', async () => {
+    const responsePromise = client.applications.query.formFilling('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      queries: [{ field: 'field', instructions: 'instructions' }],
+      scope_metadata: 'scope_metadata',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('formFilling: required and optional params', async () => {
+    const response = await client.applications.query.formFilling('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      queries: [{ field: 'field', instructions: 'instructions' }],
+      scope_metadata: 'scope_metadata',
     });
   });
 

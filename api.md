@@ -4,12 +4,13 @@ Types:
 
 - <code><a href="./src/resources/datastores/datastores.ts">CreateDatastoreOutput</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">Datastore</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">DatastoreListResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreOutput</code>
-- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> Datastore</code>
+- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoreListResponsesDatastoresListPagination</code>
 - <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
 
 ## Metadata
@@ -76,13 +77,25 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/applications/query.ts">QueryResponse</a></code>
-- <code><a href="./src/resources/applications/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/applications/query/query.ts">QueryResponse</a></code>
+- <code><a href="./src/resources/applications/query/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/applications/query/query.ts">QueryFormFillingResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
+- <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
+- <code title="post /applications/{application_id}/form_filling">client.applications.query.<a href="./src/resources/applications/query/query.ts">formFilling</a>(applicationId, { ...params }) -> QueryFormFillingResponse</code>
+- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
+
+### Metrics
+
+Types:
+
+- <code><a href="./src/resources/applications/query/metrics.ts">MetricRetrieveResponse</a></code>
+
+Methods:
+
+- <code title="get /applications/{application_id}/metrics">client.applications.query.metrics.<a href="./src/resources/applications/query/metrics.ts">retrieve</a>(applicationId, { ...params }) -> MetricRetrieveResponse</code>
 
 ## Evaluate
 
@@ -175,3 +188,13 @@ Types:
 Methods:
 
 - <code title="get /applications/{application_id}/tune/models">client.applications.tune.models.<a href="./src/resources/applications/tune/models.ts">list</a>(applicationId) -> ModelListResponse</code>
+
+# Lmunit
+
+Types:
+
+- <code><a href="./src/resources/lmunit.ts">LmunitScoreResponse</a></code>
+
+Methods:
+
+- <code title="post /lmunit">client.lmunit.<a href="./src/resources/lmunit.ts">score</a>({ ...params }) -> LmunitScoreResponse</code>

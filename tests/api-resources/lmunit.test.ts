@@ -8,9 +8,13 @@ const client = new ContextualAI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource models', () => {
-  test('list', async () => {
-    const responsePromise = client.applications.tune.models.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+describe('resource lmunit', () => {
+  test('score: only required params', async () => {
+    const responsePromise = client.lmunit.score({
+      query: 'query',
+      response: 'response',
+      unit_test: 'unit_test',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,12 +24,11 @@ describe('resource models', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('list: request options instead of params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.applications.tune.models.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
-    ).rejects.toThrow(ContextualAI.NotFoundError);
+  test('score: required and optional params', async () => {
+    const response = await client.lmunit.score({
+      query: 'query',
+      response: 'response',
+      unit_test: 'unit_test',
+    });
   });
 });
