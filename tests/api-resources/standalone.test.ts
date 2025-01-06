@@ -8,9 +8,9 @@ const client = new ContextualAI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource lmunit', () => {
-  test('score: only required params', async () => {
-    const responsePromise = client.lmunit.score({
+describe('resource standalone', () => {
+  test('lmunit: only required params', async () => {
+    const responsePromise = client.standalone.lmunit({
       query: 'query',
       response: 'response',
       unit_test: 'unit_test',
@@ -24,8 +24,8 @@ describe('resource lmunit', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('score: required and optional params', async () => {
-    const response = await client.lmunit.score({
+  test('lmunit: required and optional params', async () => {
+    const response = await client.standalone.lmunit({
       query: 'query',
       response: 'response',
       unit_test: 'unit_test',

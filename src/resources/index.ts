@@ -20,4 +20,4 @@ export {
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
-export { Lmunit, type LmunitScoreResponse, type LmunitScoreParams } from './lmunit';
+export { Standalone, type StandaloneLmunitResponse, type StandaloneLmunitParams } from './standalone';

@@ -8,7 +8,7 @@ import * as Pagination from './pagination';
 import { type DatastoresListPaginationParams, DatastoresListPaginationResponse } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { Lmunit, LmunitScoreParams, LmunitScoreResponse } from './resources/lmunit';
+import { Standalone, StandaloneLmunitParams, StandaloneLmunitResponse } from './resources/standalone';
 import {
   ApplicationCreateParams,
   ApplicationDeleteResponse,
@@ -145,7 +145,7 @@ export class ContextualAI extends Core.APIClient {
 
   datastores: API.Datastores = new API.Datastores(this);
   applications: API.Applications = new API.Applications(this);
-  lmunit: API.Lmunit = new API.Lmunit(this);
+  standalone: API.Standalone = new API.Standalone(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -190,7 +190,7 @@ export class ContextualAI extends Core.APIClient {
 ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
 ContextualAI.Applications = Applications;
-ContextualAI.Lmunit = Lmunit;
+ContextualAI.Standalone = Standalone;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -223,9 +223,9 @@ export declare namespace ContextualAI {
   };
 
   export {
-    Lmunit as Lmunit,
-    type LmunitScoreResponse as LmunitScoreResponse,
-    type LmunitScoreParams as LmunitScoreParams,
+    Standalone as Standalone,
+    type StandaloneLmunitResponse as StandaloneLmunitResponse,
+    type StandaloneLmunitParams as StandaloneLmunitParams,
   };
 }
 
