@@ -12,8 +12,21 @@ export class Tune extends APIResource {
   models: ModelsAPI.Models = new ModelsAPI.Models(this._client);
 
   /**
-   * Create a tuning job for the specified application. Initiates a tuning
-   * specialization task using the provided training file and an optional test file.
+   * Create a tuning job for the specified `Application`. Tuning jobs are
+   * asynchronous tasks to specialize your `Application` to your specific domain or
+   * use case.
+   *
+   * This API initiates a tuning specialization task using the provided
+   * `training_file` and an optional `test_file`. If no `test_file` is provided, the
+   * tuning job will hold out a portion of the `training_file` as the test set.
+   *
+   * Returns a tune job `id` which can be used to check on the status of your tuning
+   * task through the `GET /tune/jobs/{job_id}/metadata` endpoint.
+   *
+   * A tuned model can be activated through the `PUT /applications/{application_id}`
+   * API. After the tuning job is complete, the metadata associated with the tune job
+   * will include evaluation results and a model ID. You can deploy the tuned model
+   * to the application by editing its config with the "Edit Application" API.
    */
   create(
     applicationId: string,

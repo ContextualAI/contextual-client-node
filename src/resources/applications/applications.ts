@@ -6,7 +6,13 @@ import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetApplicationResponse, Metadata } from './metadata';
 import * as QueryAPI from './query';
-import { Query, QueryFeedbackParams, QueryFeedbackResponse, QueryResponse, QueryStartParams } from './query';
+import {
+  Query,
+  QueryFeedbackParams,
+  QueryFeedbackResponse,
+  QueryStartParams,
+  QueryStartResponse,
+} from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -33,10 +39,17 @@ export class Applications extends APIResource {
   tune: TuneAPI.Tune = new TuneAPI.Tune(this._client);
 
   /**
-   * Create a new application with a given configuration.
+   * Create a new `Application` with a specific configuration.
    *
-   * If no `datastore_id` is provided, automatically creates a datastore and
-   * configures the application to use the newly created datastore.
+   * An `Application` queries over a `Datastore` to retrieve relevant data on which
+   * generations are grounded.
+   *
+   * Retrieval and generation parameters are defined in the provided `Application`
+   * configuration.
+   *
+   * If no `datastore_id` is provided in the configuration, this API automatically
+   * creates a datastore and configures the application to use the newly created
+   * datastore.
    */
   create(
     body: ApplicationCreateParams,
@@ -46,7 +59,9 @@ export class Applications extends APIResource {
   }
 
   /**
-   * Modify a given application.
+   * Modify a given `Application` to utilize the provided configuration.
+   *
+   * Fields not included in the request body will not be modified.
    */
   update(
     applicationId: string,
@@ -57,7 +72,7 @@ export class Applications extends APIResource {
   }
 
   /**
-   * Retrieve a list of all applications.
+   * Retrieve a list of all `Applications`.
    */
   list(query?: ApplicationListParams, options?: Core.RequestOptions): Core.APIPromise<ApplicationList>;
   list(options?: Core.RequestOptions): Core.APIPromise<ApplicationList>;
@@ -72,7 +87,11 @@ export class Applications extends APIResource {
   }
 
   /**
-   * Delete a given application.
+   * Delete a given `Application`. This is an irreversible operation.
+   *
+   * Note: `Datastores` which are associated with the `Application` will not be
+   * deleted, even if no other `Application` is using them. To delete a `Datastore`,
+   * use the `DELETE /datastores/{datastore_id}` API.
    */
   delete(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/applications/${applicationId}`, options);
@@ -152,6 +171,13 @@ export interface ApplicationCreateParams {
   description?: string;
 
   /**
+   * These queries will show up as suggestions when users load the app. We recommend
+   * including common queries that users will ask, as well as complex queries so
+   * users understand the types of complex queries the system can handle.
+   */
+  suggested_queries?: Array<string>;
+
+  /**
    * Instructions that your RAG system references when generating responses. Note
    * that we do not guarantee that the system will follow these instructions exactly.
    */
@@ -173,6 +199,13 @@ export interface ApplicationUpdateParams {
   llm_model_id?: string;
 
   /**
+   * These queries will show up as suggestions when users load the app. We recommend
+   * including common queries that users will ask, as well as complex queries so
+   * users understand the types of complex queries the system can handle.
+   */
+  suggested_queries?: Array<string>;
+
+  /**
    * Instructions that your RAG system references when generating responses. Note
    * that we do not guarantee that the system will follow these instructions exactly.
    */
@@ -190,6 +223,11 @@ export interface ApplicationListParams {
    * Maximum number of applications to return
    */
   limit?: number;
+
+  /**
+   * Search text to filter applications by name
+   */
+  search?: string;
 }
 
 Applications.Metadata = Metadata;
@@ -213,8 +251,8 @@ export declare namespace Applications {
 
   export {
     Query as Query,
-    type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
+    type QueryStartResponse as QueryStartResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryStartParams as QueryStartParams,
   };

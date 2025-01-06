@@ -5,7 +5,8 @@ import * as Core from '../../core';
 
 export class Metadata extends APIResource {
   /**
-   * Get the details of a given datastore.
+   * Get the details of a given `Datastore`, including its name, create time, and the
+   * list of `Applications` which are currently configured to use the `Datastore`.
    */
   retrieve(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<GetDatastoreResponse> {
     return this._client.get(`/datastores/${datastoreId}/metadata`, options);

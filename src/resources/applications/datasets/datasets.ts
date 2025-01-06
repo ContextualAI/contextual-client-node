@@ -10,20 +10,25 @@ export class Datasets extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
 
   /**
-   * Create a new dataset in the specified application using the provided JSONL file.
-   * The file must conform to the schema defined for the dataset type. Each dataset
-   * is versioned and validated against its schema during creation.
+   * Create a new `Dataset` in the specified `Application` using the provided JSONL
+   * file. A `Dataset` is a versioned collection of samples conforming to a
+   * particular schema, and can be used to store `Evaluation` test-sets and retrieve
+   * `Evaluation` results.
    *
-   * File schema for dataset type `evaluation_set` is a JSONL file where each line is
-   * one JSON object with the following keys:
+   * Each `Dataset` is versioned and validated against its schema during creation and
+   * subsequent updates. The provided `Dataset` file must conform to the schema
+   * defined for the `dataset_type`.
    *
-   * - `response` (optional, string): Optional response to evaluate
+   * File schema for `dataset_type` `evaluation_set` is a JSONL or CSV file where
+   * each line is one JSON object with the following keys:
    *
-   * - `reference` (required, string): Required reference or ground truth response
+   * - `response` (optional, `string`): Optional response to evaluate
    *
-   * - `guideline` (optional, string): Optional evaluation guidelines
+   * - `reference` (required, `string`): Required reference or ground truth response
    *
-   * - `knowledge` (optional, string): Optional context for evaluation
+   * - `guideline` (optional, `string`): Optional evaluation guidelines
+   *
+   * - `knowledge` (optional, `string`): Optional context for evaluation
    */
   create(
     applicationId: string,
@@ -37,9 +42,15 @@ export class Datasets extends APIResource {
   }
 
   /**
-   * Stream the raw content of a dataset version. If no version is specified, the
-   * latest version is used. The dataset content is downloaded in batches. Batch size
-   * can be configured to meet specific processing requirements.
+   * Stream the raw content of a `Dataset` version. If no version is specified, the
+   * latest version is used.
+   *
+   * The `Dataset` content is downloaded in batches. Batch size can be configured to
+   * meet specific processing requirements.
+   *
+   * Returns a `StreamingResponse`, an asynchronous stream of `Dataset` content
+   * with: - Content-Type: application/octet-stream - Content-Disposition:
+   * attachment - Chunked transfer encoding
    */
   retrieve(
     applicationId: string,
@@ -65,21 +76,21 @@ export class Datasets extends APIResource {
   }
 
   /**
-   * Update an existing dataset.
+   * Append to an existing `Dataset`.
    *
-   * Create a new version by appending dataset content and validating against the
-   * schema.
+   * Create a new version by appending content to the `Dataset` and validating
+   * against its schema.
    *
-   * File schema for dataset type `evaluation_set` is a JSONL file where each line is
-   * one JSON object with the following keys:
+   * File schema for `dataset_type` `evaluation_set` is a JSONL file where each line
+   * is one JSON object with the following keys:
    *
-   * - `response` (optional, string): Optional response to evaluate
+   * - `response` (optional, `string`): Optional response to evaluate
    *
-   * - `reference` (required, string): Required reference or ground truth response
+   * - `reference` (required, `string`): Required reference or ground truth response
    *
-   * - `guideline` (optional, string): Optional evaluation guidelines
+   * - `guideline` (optional, `string`): Optional evaluation guidelines
    *
-   * - `knowledge` (optional, string): Optional context for evaluation
+   * - `knowledge` (optional, `string`): Optional context for evaluation
    */
   update(
     applicationId: string,
@@ -94,9 +105,12 @@ export class Datasets extends APIResource {
   }
 
   /**
-   * List all datasets and their versions for an application. Retrieve a
-   * comprehensive list of datasets and their versions. Supports filtering by dataset
-   * name and includes detailed schema information for each dataset type.
+   * List all `Datasets` and their versions belonging to a particular `Application`.
+   *
+   * If a `dataset_name` filter is provided, all versions of that `Dataset` will be
+   * listed.
+   *
+   * Includes metadata and schema for each `Dataset` version.
    */
   list(
     applicationId: string,
@@ -116,9 +130,11 @@ export class Datasets extends APIResource {
   }
 
   /**
-   * Delete a dataset and all its versions. Permanently removes the dataset,
-   * including all associated data and evaluation runs. This operation is
-   * irreversible.
+   * Delete a `Dataset` and all its versions.
+   *
+   * Permanently removes the `Dataset`, including all associated metadata.
+   *
+   * This operation is irreversible.
    */
   delete(
     applicationId: string,

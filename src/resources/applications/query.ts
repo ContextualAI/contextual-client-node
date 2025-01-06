@@ -5,10 +5,12 @@ import * as Core from '../../core';
 
 export class Query extends APIResource {
   /**
-   * Provide feedback for a generation or a retrieval.
+   * Provide feedback for a generation or a retrieval. Feedback can be used to track
+   * overall `Application` performance through the `Feedback` page in the Contextual
+   * UI, and as a basis for model fine-tuning.
    *
-   * If providing feedback on a retrieval, include the `message_id` of the /query
-   * call, and a `content_id` returned in the query's retrieval_contents list.
+   * If providing feedback on a retrieval, include the `message_id` from the `/query`
+   * response, and a `content_id` returned in the query's `retrieval_contents` list.
    *
    * For feedback on generations, include `message_id` and do not include a
    * `content_id`.
@@ -22,27 +24,29 @@ export class Query extends APIResource {
   }
 
   /**
-   * Start a conversation with an application and receive its generated response and
-   * attributions.
+   * Start a conversation with an `Application` and receive its generated response,
+   * along with relevant retrieved data and attributions.
    */
   start(
     applicationId: string,
-    body: QueryStartParams,
+    params: QueryStartParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<QueryResponse> {
-    return this._client.post(`/applications/${applicationId}/query`, { body, ...options });
+  ): Core.APIPromise<QueryStartResponse> {
+    const { retrievals_only, ...body } = params;
+    return this._client.post(`/applications/${applicationId}/query`, {
+      query: { retrievals_only },
+      body,
+      ...options,
+    });
   }
 }
+
+export type QueryFeedbackResponse = unknown;
 
 /**
  * Response body for POST /query
  */
-export interface QueryResponse {
-  /**
-   * Attributions for the response
-   */
-  attributions: Array<QueryResponse.Attribution>;
-
+export interface QueryStartResponse {
   /**
    * A unique identifier for the conversation. Can be passed to future `/query` calls
    * to continue a conversation with the same message history.
@@ -50,22 +54,83 @@ export interface QueryResponse {
   conversation_id: string;
 
   /**
+   * Relevant content retrieved to answer the query
+   */
+  retrieval_contents: Array<QueryStartResponse.RetrievalContent>;
+
+  /**
+   * Attributions for the response
+   */
+  attributions?: Array<QueryStartResponse.Attribution>;
+
+  /**
    * Response to the query request
    */
-  message: QueryResponse.Message;
+  message?: QueryStartResponse.Message;
 
   /**
    * A unique identifier for this specific message
    */
-  message_id: string;
-
-  /**
-   * Relevant content retrieved to answer the query
-   */
-  retrieval_contents: Array<QueryResponse.RetrievalContent>;
+  message_id?: string;
 }
 
-export namespace QueryResponse {
+export namespace QueryStartResponse {
+  /**
+   * Retrieval content object typing for v0.1 API.
+   */
+  export interface RetrievalContent {
+    /**
+     * Unique identifier of the retrieved content
+     */
+    content_id: string;
+
+    /**
+     * Unique identifier of the document
+     */
+    doc_id: string;
+
+    /**
+     * Name of the document
+     */
+    doc_name: string;
+
+    /**
+     * Format of the content, such as `pdf` or `html`
+     */
+    format: 'pdf' | 'html';
+
+    /**
+     * Source type of the content. Will be `file` for any docs ingested through
+     * ingestion API.
+     */
+    type: string;
+
+    /**
+     * Retrieved content
+     */
+    content?: string;
+
+    /**
+     * Reserved for extra metadata
+     */
+    extras?: Record<string, string>;
+
+    /**
+     * Index of the retrieved item in the retrieval_contents list (starting from 1)
+     */
+    number?: number;
+
+    /**
+     * Page number of the content in the document
+     */
+    page?: number;
+
+    /**
+     * URL of the source content, if applicable
+     */
+    url?: string;
+  }
+
   /**
    * Attribution for some claim made in a generated message`.
    */
@@ -100,60 +165,7 @@ export namespace QueryResponse {
      */
     role: 'user' | 'system' | 'assistant';
   }
-
-  /**
-   * Retrieval content object typing for v0.1 API.
-   */
-  export interface RetrievalContent {
-    /**
-     * Unique identifier of the retrieved content
-     */
-    content_id: string;
-
-    /**
-     * Unique identifier of the document
-     */
-    doc_id: string;
-
-    /**
-     * Name of the document
-     */
-    doc_name: string;
-
-    /**
-     * Format of the content, such as `pdf` or `html`
-     */
-    format: 'pdf' | 'html';
-
-    /**
-     * Index of the retrieved item in the retrieval_contents list (starting from 1)
-     */
-    number: number;
-
-    /**
-     * Source type of the content. Will be `file` for any docs ingested through
-     * ingestion API.
-     */
-    type: string;
-
-    /**
-     * Reserved for extra metadata
-     */
-    extras?: Record<string, string>;
-
-    /**
-     * Page number of the content in the document
-     */
-    page?: number;
-
-    /**
-     * URL of the source content, if applicable
-     */
-    url?: string;
-  }
 }
-
-export type QueryFeedbackResponse = unknown;
 
 export interface QueryFeedbackParams {
   /**
@@ -181,24 +193,30 @@ export interface QueryFeedbackParams {
 
 export interface QueryStartParams {
   /**
-   * Message objects in the conversation
+   * Body param: Message objects in the conversation
    */
   messages: Array<QueryStartParams.Message>;
 
   /**
-   * Conversation ID. An optional alternative to providing message history in the
-   * `messages` field. If provided, history in the `messages` field will be ignored.
+   * Query param: Set to `true` to skip generation of the response.
+   */
+  retrievals_only?: boolean;
+
+  /**
+   * Body param: Conversation ID. An optional alternative to providing message
+   * history in the `messages` field. If provided, history in the `messages` field
+   * will be ignored.
    */
   conversation_id?: string;
 
   /**
-   * Model ID of the specific fine-tuned or aligned model to use. Defaults to base
-   * model if not specified.
+   * Body param: Model ID of the specific fine-tuned or aligned model to use.
+   * Defaults to base model if not specified.
    */
   model_id?: string;
 
   /**
-   * Set to `true` to receive a streamed response
+   * Body param: Set to `true` to receive a streamed response
    */
   stream?: boolean;
 }
@@ -222,8 +240,8 @@ export namespace QueryStartParams {
 
 export declare namespace Query {
   export {
-    type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
+    type QueryStartResponse as QueryStartResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryStartParams as QueryStartParams,
   };

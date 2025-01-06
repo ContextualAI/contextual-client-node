@@ -9,15 +9,17 @@ export class Jobs extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
 
   /**
-   * Retrieve a list of all fine-tuning jobs for a specified application.
+   * Retrieve a list of all tune jobs run on a specified `Application`, including
+   * their `status`, `evaluation_results`, and resultant `model_id`.
    */
   list(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<ListGetTuneJobResponse> {
     return this._client.get(`/applications/${applicationId}/tune/jobs`, options);
   }
 
   /**
-   * Cancel a specific fine-tuning job. Terminates the fine-tuning job if it is still
-   * in progress.
+   * Cancel a specific tuning job. Terminates the tuning job if it is still in
+   * progress. If the tuning job has already completed, the tuned model will not be
+   * deleted.
    */
   delete(applicationId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/applications/${applicationId}/tune/jobs/${jobId}`, options);

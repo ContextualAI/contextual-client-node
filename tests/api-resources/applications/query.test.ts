@@ -48,6 +48,7 @@ describe('resource query', () => {
   test('start: required and optional params', async () => {
     const response = await client.applications.query.start('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       messages: [{ content: 'content', role: 'user' }],
+      retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       model_id: 'model_id',
       stream: true,

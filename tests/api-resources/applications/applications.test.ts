@@ -25,6 +25,7 @@ describe('resource applications', () => {
       name: 'xxx',
       datastore_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       description: 'xxx',
+      suggested_queries: ['string'],
       system_prompt: 'system_prompt',
     });
   });
@@ -61,7 +62,10 @@ describe('resource applications', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.applications.list({ cursor: 'cursor', limit: 1 }, { path: '/_stainless_unknown_path' }),
+      client.applications.list(
+        { cursor: 'cursor', limit: 1, search: 'search' },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 

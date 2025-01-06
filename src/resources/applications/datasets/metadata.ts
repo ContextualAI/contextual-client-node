@@ -7,8 +7,11 @@ import * as DatasetsAPI from './datasets';
 
 export class Metadata extends APIResource {
   /**
-   * Retrieve details of a specific dataset version or the latest version. Provides
-   * comprehensive information about the dataset, including its metadata and schema.
+   * Retrieve details of a specific `Dataset` version, or the latest version if no
+   * `version` is specified.
+   *
+   * Provides comprehensive information about the `Dataset`, including its metadata
+   * and schema.
    */
   retrieve(
     applicationId: string,
