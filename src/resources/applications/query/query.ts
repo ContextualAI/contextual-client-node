@@ -1,9 +1,13 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import * as Core from '../../core';
+import { APIResource } from '../../../resource';
+import * as Core from '../../../core';
+import * as MetricsAPI from './metrics';
+import { MetricRetrieveParams, MetricRetrieveResponse, Metrics } from './metrics';
 
 export class Query extends APIResource {
+  metrics: MetricsAPI.Metrics = new MetricsAPI.Metrics(this._client);
+
   /**
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
    * overall `Application` performance through the `Feedback` page in the Contextual
@@ -21,6 +25,18 @@ export class Query extends APIResource {
     options?: Core.RequestOptions,
   ): Core.APIPromise<unknown> {
     return this._client.post(`/applications/${applicationId}/feedback`, { body, ...options });
+  }
+
+  /**
+   * Start a conversation with an application and receive its generated response and
+   * attributions.
+   */
+  formFilling(
+    applicationId: string,
+    body: QueryFormFillingParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<QueryFormFillingResponse> {
+    return this._client.post(`/applications/${applicationId}/form_filling`, { body, ...options });
   }
 
   /**
@@ -167,6 +183,16 @@ export namespace QueryResponse {
 
 export type QueryFeedbackResponse = unknown;
 
+/**
+ * Response body for POST /form_filling
+ */
+export interface QueryFormFillingResponse {
+  /**
+   * Attributions for the response
+   */
+  responses: Array<QueryResponse>;
+}
+
 export interface QueryFeedbackParams {
   /**
    * Feedback to provide on the message. Set to "removed" to undo previously provided
@@ -189,6 +215,27 @@ export interface QueryFeedbackParams {
    * Optional explanation for the feedback.
    */
   explanation?: string;
+}
+
+export interface QueryFormFillingParams {
+  /**
+   * Queries used to fill the form
+   */
+  queries: Array<QueryFormFillingParams.Query>;
+
+  /**
+   * Scope of the form filling. This is the metadata that is used to determine the
+   * form filling strategy
+   */
+  scope_metadata: string;
+}
+
+export namespace QueryFormFillingParams {
+  export interface Query {
+    field: string;
+
+    instructions: string;
+  }
 }
 
 export interface QueryStartParams {
@@ -238,11 +285,21 @@ export namespace QueryStartParams {
   }
 }
 
+Query.Metrics = Metrics;
+
 export declare namespace Query {
   export {
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
+    type QueryFormFillingResponse as QueryFormFillingResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
+    type QueryFormFillingParams as QueryFormFillingParams,
     type QueryStartParams as QueryStartParams,
+  };
+
+  export {
+    Metrics as Metrics,
+    type MetricRetrieveResponse as MetricRetrieveResponse,
+    type MetricRetrieveParams as MetricRetrieveParams,
   };
 }

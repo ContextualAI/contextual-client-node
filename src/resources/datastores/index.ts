@@ -1,9 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
+  DatastoreListResponsesDatastoresListPagination,
   Datastores,
   type CreateDatastoreOutput,
   type Datastore,
+  type DatastoreListResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,

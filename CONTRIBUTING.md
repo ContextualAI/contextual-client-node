@@ -55,12 +55,12 @@ $ cd sunrise-node
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link contextual
+$ yarn link contextual-sdk
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global contextual
+$ pnpm link -—global contextual-sdk
 ```
 
 ## Running tests

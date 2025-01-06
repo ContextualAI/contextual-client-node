@@ -5,8 +5,6 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetApplicationResponse, Metadata } from './metadata';
-import * as QueryAPI from './query';
-import { Query, QueryFeedbackParams, QueryFeedbackResponse, QueryResponse, QueryStartParams } from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -22,6 +20,16 @@ import {
 } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
+import * as QueryAPI from './query/query';
+import {
+  Query,
+  QueryFeedbackParams,
+  QueryFeedbackResponse,
+  QueryFormFillingParams,
+  QueryFormFillingResponse,
+  QueryResponse,
+  QueryStartParams,
+} from './query/query';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
 
@@ -247,7 +255,9 @@ export declare namespace Applications {
     Query as Query,
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
+    type QueryFormFillingResponse as QueryFormFillingResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
+    type QueryFormFillingParams as QueryFormFillingParams,
     type QueryStartParams as QueryStartParams,
   };
 

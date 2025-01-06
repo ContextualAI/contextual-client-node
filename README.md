@@ -1,6 +1,6 @@
 # Contextual AI Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/contextual.svg)](https://npmjs.org/package/contextual) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/contextual)
+[![NPM version](https://img.shields.io/npm/v/contextual-sdk.svg)](https://npmjs.org/package/contextual-sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/contextual-sdk)
 
 This library provides convenient access to the Contextual AI REST API from server-side TypeScript or JavaScript.
 
@@ -15,7 +15,7 @@ npm install git+ssh://git@github.com:stainless-sdks/sunrise-node.git
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install contextual`
+> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install contextual-sdk`
 
 ## Usage
 
@@ -23,7 +23,7 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import ContextualAI from 'contextual';
+import ContextualAI from 'contextual-sdk';
 
 const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
@@ -44,7 +44,7 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import ContextualAI from 'contextual';
+import ContextualAI from 'contextual-sdk';
 
 const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
@@ -138,6 +138,37 @@ On timeout, an `APIConnectionTimeoutError` is thrown.
 
 Note that requests which time out will be [retried twice by default](#retries).
 
+## Auto-pagination
+
+List methods in the ContextualAI API are paginated.
+You can use the `for await … of` syntax to iterate through items across all pages:
+
+```ts
+async function fetchAllDatastores(params) {
+  const allDatastores = [];
+  // Automatically fetches more pages as needed.
+  for await (const datastoreListResponse of client.datastores.list()) {
+    allDatastores.push(datastoreListResponse);
+  }
+  return allDatastores;
+}
+```
+
+Alternatively, you can request a single page at a time:
+
+```ts
+let page = await client.datastores.list();
+for (const datastoreListResponse of page.datastores) {
+  console.log(datastoreListResponse);
+}
+
+// Convenience methods are provided for manually paginating:
+while (page.hasNextPage()) {
+  page = await page.getNextPage();
+  // ...
+}
+```
+
 ## Advanced Usage
 
 ### Accessing raw Response data (e.g., headers)
@@ -216,11 +247,11 @@ add the following import before your first import `from "ContextualAI"`:
 ```ts
 // Tell TypeScript and the package to use the global web fetch instead of node-fetch.
 // Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import 'contextual/shims/web';
-import ContextualAI from 'contextual';
+import 'contextual-sdk/shims/web';
+import ContextualAI from 'contextual-sdk';
 ```
 
-To do the inverse, add `import "contextual/shims/node"` (which does import polyfills).
+To do the inverse, add `import "contextual-sdk/shims/node"` (which does import polyfills).
 This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/stainless-sdks/sunrise-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
@@ -230,7 +261,7 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import ContextualAI from 'contextual';
+import ContextualAI from 'contextual-sdk';
 
 const client = new ContextualAI({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {

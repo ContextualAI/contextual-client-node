@@ -28,7 +28,9 @@ export {
   Query,
   type QueryResponse,
   type QueryFeedbackResponse,
+  type QueryFormFillingResponse,
   type QueryFeedbackParams,
+  type QueryFormFillingParams,
   type QueryStartParams,
-} from './query';
+} from './query/index';
 export { Tune, type TuneResponse, type TuneCreateParams } from './tune/index';

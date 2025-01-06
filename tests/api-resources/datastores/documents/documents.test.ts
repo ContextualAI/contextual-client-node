@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import ContextualAI, { toFile } from 'contextual';
+import ContextualAI, { toFile } from 'contextual-sdk';
 import { Response } from 'node-fetch';
 
 const client = new ContextualAI({

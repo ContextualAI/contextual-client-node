@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "contextual/*": ["dist/src/*"],
-      "contextual": ["dist/src/index.ts"],
+      "contextual-sdk/*": ["dist/src/*"],
+      "contextual-sdk": ["dist/src/index.ts"],
     },
     "noEmit": false,
     "declaration": true,

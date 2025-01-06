@@ -14,6 +14,7 @@ import {
   GetDocumentsResponse,
   IngestionResponse,
 } from './documents/documents';
+import { DatastoresListPagination, type DatastoresListPaginationParams } from '../../pagination';
 
 export class Datastores extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -41,16 +42,24 @@ export class Datastores extends APIResource {
    * requested `limit`. The returned `cursor` can be passed to the next
    * `GET /datastores` call to retrieve the next set of `Datastores`.
    */
-  list(query?: DatastoreListParams, options?: Core.RequestOptions): Core.APIPromise<Datastore>;
-  list(options?: Core.RequestOptions): Core.APIPromise<Datastore>;
+  list(
+    query?: DatastoreListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse>;
   list(
     query: DatastoreListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<Datastore> {
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.get('/datastores', { query, ...options });
+    return this._client.getAPIList('/datastores', DatastoreListResponsesDatastoresListPagination, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -61,6 +70,8 @@ export class Datastores extends APIResource {
     return this._client.delete(`/datastores/${datastoreId}`, options);
   }
 }
+
+export class DatastoreListResponsesDatastoresListPagination extends DatastoresListPagination<DatastoreListResponse> {}
 
 export interface CreateDatastoreOutput {
   /**
@@ -109,6 +120,26 @@ export namespace Datastore {
   }
 }
 
+/**
+ * Datastore output entry with additional fields for public API.
+ */
+export interface DatastoreListResponse {
+  /**
+   * ID of the datastore
+   */
+  id: string;
+
+  /**
+   * Timestamp of when the datastore was created
+   */
+  created_at: string;
+
+  /**
+   * Name of the datastore
+   */
+  name: string;
+}
+
 export type DatastoreDeleteResponse = unknown;
 
 export interface DatastoreCreateParams {
@@ -118,25 +149,15 @@ export interface DatastoreCreateParams {
   name: string;
 }
 
-export interface DatastoreListParams {
+export interface DatastoreListParams extends DatastoresListPaginationParams {
   /**
    * ID of the application used to filter datastores. If provided, only datastores
    * linked to this application will be returned.
    */
   application_id?: string;
-
-  /**
-   * Cursor from the previous call to list datastores, used to retrieve the next set
-   * of results
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of datastores to return
-   */
-  limit?: number;
 }
 
+Datastores.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
 Datastores.Metadata = Metadata;
 Datastores.Documents = Documents;
 
@@ -144,7 +165,9 @@ export declare namespace Datastores {
   export {
     type CreateDatastoreOutput as CreateDatastoreOutput,
     type Datastore as Datastore,
+    type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
+    DatastoreListResponsesDatastoresListPagination as DatastoreListResponsesDatastoresListPagination,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };

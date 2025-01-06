@@ -4,8 +4,11 @@ import { type Agent } from './_shims/index';
 import * as qs from './internal/qs';
 import * as Core from './core';
 import * as Errors from './error';
+import * as Pagination from './pagination';
+import { type DatastoresListPaginationParams, DatastoresListPaginationResponse } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
+import { Lmunit, LmunitScoreParams, LmunitScoreResponse } from './resources/lmunit';
 import {
   ApplicationCreateParams,
   ApplicationDeleteResponse,
@@ -22,6 +25,8 @@ import {
   DatastoreCreateParams,
   DatastoreDeleteResponse,
   DatastoreListParams,
+  DatastoreListResponse,
+  DatastoreListResponsesDatastoresListPagination,
   Datastores,
 } from './resources/datastores/datastores';
 
@@ -140,6 +145,7 @@ export class ContextualAI extends Core.APIClient {
 
   datastores: API.Datastores = new API.Datastores(this);
   applications: API.Applications = new API.Applications(this);
+  lmunit: API.Lmunit = new API.Lmunit(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -182,15 +188,25 @@ export class ContextualAI extends Core.APIClient {
 }
 
 ContextualAI.Datastores = Datastores;
+ContextualAI.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
 ContextualAI.Applications = Applications;
+ContextualAI.Lmunit = Lmunit;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
+
+  export import DatastoresListPagination = Pagination.DatastoresListPagination;
+  export {
+    type DatastoresListPaginationParams as DatastoresListPaginationParams,
+    type DatastoresListPaginationResponse as DatastoresListPaginationResponse,
+  };
 
   export {
     Datastores as Datastores,
     type CreateDatastoreOutput as CreateDatastoreOutput,
     type Datastore as Datastore,
+    type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
+    DatastoreListResponsesDatastoresListPagination as DatastoreListResponsesDatastoresListPagination,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
@@ -204,6 +220,12 @@ export declare namespace ContextualAI {
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,
+  };
+
+  export {
+    Lmunit as Lmunit,
+    type LmunitScoreResponse as LmunitScoreResponse,
+    type LmunitScoreParams as LmunitScoreParams,
   };
 }
 
