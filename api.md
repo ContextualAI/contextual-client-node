@@ -189,12 +189,12 @@ Methods:
 
 - <code title="get /applications/{application_id}/tune/models">client.applications.tune.models.<a href="./src/resources/applications/tune/models.ts">list</a>(applicationId) -> ModelListResponse</code>
 
-# Lmunit
+# Standalone
 
 Types:
 
-- <code><a href="./src/resources/lmunit.ts">LmunitScoreResponse</a></code>
+- <code><a href="./src/resources/standalone.ts">StandaloneLmunitResponse</a></code>
 
 Methods:
 
-- <code title="post /lmunit">client.lmunit.<a href="./src/resources/lmunit.ts">score</a>({ ...params }) -> LmunitScoreResponse</code>
+- <code title="post /lmunit">client.standalone.<a href="./src/resources/standalone.ts">lmunit</a>({ ...params }) -> StandaloneLmunitResponse</code>

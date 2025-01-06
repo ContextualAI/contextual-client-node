@@ -3,7 +3,7 @@
 import { APIResource } from '../resource';
 import * as Core from '../core';
 
-export class Lmunit extends APIResource {
+export class Standalone extends APIResource {
   /**
    * Given a `query`, `response`, and a `unit_test`, return the response's `score` on
    * the unit test on a 5-point continuous scale. The total input cannot exceed 7000
@@ -16,7 +16,10 @@ export class Lmunit extends APIResource {
    * > 🚀 Obtain an LMUnit API key by completing
    * > [this form](https://contextual.ai/request-lmunit-api/)
    */
-  score(body: LmunitScoreParams, options?: Core.RequestOptions): Core.APIPromise<LmunitScoreResponse> {
+  lmunit(
+    body: StandaloneLmunitParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<StandaloneLmunitResponse> {
     return this._client.post('/lmunit', { body, ...options });
   }
 }
@@ -24,7 +27,7 @@ export class Lmunit extends APIResource {
 /**
  * LMUnit result object.
  */
-export interface LmunitScoreResponse {
+export interface StandaloneLmunitResponse {
   /**
    * The response is scored on a continuous scale from 1 to 5 on the unit test. The
    * discrete scores 1, 2, 3, 4, and 5 roughly correspond to "Strongly fails,"
@@ -33,7 +36,7 @@ export interface LmunitScoreResponse {
   score: number;
 }
 
-export interface LmunitScoreParams {
+export interface StandaloneLmunitParams {
   /**
    * The prompt to which the model responds
    */
@@ -50,6 +53,9 @@ export interface LmunitScoreParams {
   unit_test: string;
 }
 
-export declare namespace Lmunit {
-  export { type LmunitScoreResponse as LmunitScoreResponse, type LmunitScoreParams as LmunitScoreParams };
+export declare namespace Standalone {
+  export {
+    type StandaloneLmunitResponse as StandaloneLmunitResponse,
+    type StandaloneLmunitParams as StandaloneLmunitParams,
+  };
 }
