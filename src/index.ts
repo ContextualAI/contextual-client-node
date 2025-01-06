@@ -5,7 +5,14 @@ import * as qs from './internal/qs';
 import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
-import { type DatastoresListPaginationParams, DatastoresListPaginationResponse } from './pagination';
+import {
+  type ApplicationsListPaginationParams,
+  ApplicationsListPaginationResponse,
+  type DatastoresDocumentsListPaginationParams,
+  DatastoresDocumentsListPaginationResponse,
+  type DatastoresListPaginationParams,
+  DatastoresListPaginationResponse,
+} from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import { Standalone, StandaloneLmunitParams, StandaloneLmunitResponse } from './resources/standalone';
@@ -14,6 +21,8 @@ import {
   ApplicationDeleteResponse,
   ApplicationList,
   ApplicationListParams,
+  ApplicationListResponse,
+  ApplicationListResponsesApplicationsListPagination,
   ApplicationUpdateParams,
   ApplicationUpdateResponse,
   Applications,
@@ -190,6 +199,8 @@ export class ContextualAI extends Core.APIClient {
 ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
 ContextualAI.Applications = Applications;
+ContextualAI.ApplicationListResponsesApplicationsListPagination =
+  ApplicationListResponsesApplicationsListPagination;
 ContextualAI.Standalone = Standalone;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
@@ -198,6 +209,18 @@ export declare namespace ContextualAI {
   export {
     type DatastoresListPaginationParams as DatastoresListPaginationParams,
     type DatastoresListPaginationResponse as DatastoresListPaginationResponse,
+  };
+
+  export import DatastoresDocumentsListPagination = Pagination.DatastoresDocumentsListPagination;
+  export {
+    type DatastoresDocumentsListPaginationParams as DatastoresDocumentsListPaginationParams,
+    type DatastoresDocumentsListPaginationResponse as DatastoresDocumentsListPaginationResponse,
+  };
+
+  export import ApplicationsListPagination = Pagination.ApplicationsListPagination;
+  export {
+    type ApplicationsListPaginationParams as ApplicationsListPaginationParams,
+    type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
   };
 
   export {
@@ -216,7 +239,9 @@ export declare namespace ContextualAI {
     type ApplicationList as ApplicationList,
     type CreateApplicationOutput as CreateApplicationOutput,
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
+    type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
+    ApplicationListResponsesApplicationsListPagination as ApplicationListResponsesApplicationsListPagination,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,

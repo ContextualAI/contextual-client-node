@@ -1,6 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
+  DocumentDescriptionsDatastoresDocumentsListPagination,
+  Metadata,
+  type DocumentDescription,
+} from './metadata';
+export {
   Documents,
   type GetDocumentsResponse,
   type IngestionResponse,
@@ -8,4 +13,3 @@ export {
   type DocumentCreateParams,
   type DocumentListParams,
 } from './documents';
-export { Metadata, type DocumentDescription } from './metadata';

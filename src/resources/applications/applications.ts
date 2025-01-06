@@ -32,6 +32,7 @@ import {
 } from './query/query';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
+import { ApplicationsListPagination, type ApplicationsListPaginationParams } from '../../pagination';
 
 export class Applications extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -76,16 +77,24 @@ export class Applications extends APIResource {
   /**
    * Retrieve a list of all `Applications`.
    */
-  list(query?: ApplicationListParams, options?: Core.RequestOptions): Core.APIPromise<ApplicationList>;
-  list(options?: Core.RequestOptions): Core.APIPromise<ApplicationList>;
+  list(
+    query?: ApplicationListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse>;
   list(
     query: ApplicationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ApplicationList> {
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.get('/applications', { query, ...options });
+    return this._client.getAPIList('/applications', ApplicationListResponsesApplicationsListPagination, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -99,6 +108,8 @@ export class Applications extends APIResource {
     return this._client.delete(`/applications/${applicationId}`, options);
   }
 }
+
+export class ApplicationListResponsesApplicationsListPagination extends ApplicationsListPagination<ApplicationListResponse> {}
 
 export interface ApplicationList {
   /**
@@ -152,6 +163,23 @@ export interface CreateApplicationOutput {
 }
 
 export type ApplicationUpdateResponse = unknown;
+
+export interface ApplicationListResponse {
+  /**
+   * ID of the application
+   */
+  id: string;
+
+  /**
+   * Description of the application
+   */
+  description: string;
+
+  /**
+   * Name of the application
+   */
+  name: string;
+}
 
 export type ApplicationDeleteResponse = unknown;
 
@@ -214,24 +242,15 @@ export interface ApplicationUpdateParams {
   system_prompt?: string;
 }
 
-export interface ApplicationListParams {
-  /**
-   * Cursor from the previous call to list applications, used to retrieve the next
-   * set of results
-   */
-  cursor?: string;
-
-  /**
-   * Maximum number of applications to return
-   */
-  limit?: number;
-
+export interface ApplicationListParams extends ApplicationsListPaginationParams {
   /**
    * Search text to filter applications by name
    */
   search?: string;
 }
 
+Applications.ApplicationListResponsesApplicationsListPagination =
+  ApplicationListResponsesApplicationsListPagination;
 Applications.Metadata = Metadata;
 Applications.Query = Query;
 Applications.Evaluate = Evaluate;
@@ -243,7 +262,9 @@ export declare namespace Applications {
     type ApplicationList as ApplicationList,
     type CreateApplicationOutput as CreateApplicationOutput,
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
+    type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
+    ApplicationListResponsesApplicationsListPagination as ApplicationListResponsesApplicationsListPagination,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,
