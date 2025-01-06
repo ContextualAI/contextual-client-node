@@ -4,7 +4,12 @@ import { APIResource } from '../../../resource';
 import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as MetadataAPI from './metadata';
-import { DocumentDescription, Metadata } from './metadata';
+import {
+  DocumentDescription,
+  DocumentDescriptionsDatastoresDocumentsListPagination,
+  Metadata,
+} from './metadata';
+import { type DatastoresDocumentsListPaginationParams } from '../../../pagination';
 
 export class Documents extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -45,17 +50,27 @@ export class Documents extends APIResource {
     datastoreId: string,
     query?: DocumentListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<GetDocumentsResponse>;
-  list(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<GetDocumentsResponse>;
+  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListPagination, MetadataAPI.DocumentDescription>;
+  list(
+    datastoreId: string,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListPagination, MetadataAPI.DocumentDescription>;
   list(
     datastoreId: string,
     query: DocumentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<GetDocumentsResponse> {
+  ): Core.PagePromise<
+    DocumentDescriptionsDatastoresDocumentsListPagination,
+    MetadataAPI.DocumentDescription
+  > {
     if (isRequestOptions(query)) {
       return this.list(datastoreId, {}, query);
     }
-    return this._client.get(`/datastores/${datastoreId}/documents`, { query, ...options });
+    return this._client.getAPIList(
+      `/datastores/${datastoreId}/documents`,
+      DocumentDescriptionsDatastoresDocumentsListPagination,
+      { query, ...options },
+    );
   }
 
   /**
@@ -107,23 +122,12 @@ export interface DocumentCreateParams {
   file: Core.Uploadable;
 }
 
-export interface DocumentListParams {
-  /**
-   * Cursor from the previous call to list documents, used to retrieve the next set
-   * of results
-   */
-  cursor?: string;
-
+export interface DocumentListParams extends DatastoresDocumentsListPaginationParams {
   /**
    * Filters documents whose ingestion job status matches (one of) the provided
    * status(es).
    */
   ingestion_job_status?: Array<'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled'>;
-
-  /**
-   * Maximum number of documents to return
-   */
-  limit?: number;
 
   /**
    * Filters documents uploaded at or after specified timestamp.
@@ -149,3 +153,5 @@ export declare namespace Documents {
 
   export { Metadata as Metadata, type DocumentDescription as DocumentDescription };
 }
+
+export { DocumentDescriptionsDatastoresDocumentsListPagination };

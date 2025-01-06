@@ -34,7 +34,7 @@ Types:
 Methods:
 
 - <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">create</a>(datastoreId, { ...params }) -> IngestionResponse</code>
-- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">list</a>(datastoreId, { ...params }) -> GetDocumentsResponse</code>
+- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDatastoresDocumentsListPagination</code>
 - <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
 
 ### Metadata
@@ -54,13 +54,14 @@ Types:
 - <code><a href="./src/resources/applications/applications.ts">ApplicationList</a></code>
 - <code><a href="./src/resources/applications/applications.ts">CreateApplicationOutput</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationUpdateResponse</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationListResponse</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /applications">client.applications.<a href="./src/resources/applications/applications.ts">create</a>({ ...params }) -> CreateApplicationOutput</code>
 - <code title="put /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">update</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationList</code>
+- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationListResponsesApplicationsListPagination</code>
 - <code title="delete /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">delete</a>(applicationId) -> unknown</code>
 
 ## Metadata

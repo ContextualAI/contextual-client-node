@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../../resource';
 import * as Core from '../../../core';
+import { DatastoresDocumentsListPagination } from '../../../pagination';
 
 export class Metadata extends APIResource {
   /**
@@ -16,6 +17,8 @@ export class Metadata extends APIResource {
     return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/metadata`, options);
   }
 }
+
+export class DocumentDescriptionsDatastoresDocumentsListPagination extends DatastoresDocumentsListPagination<DocumentDescription> {}
 
 /**
  * Document description
