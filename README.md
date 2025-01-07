@@ -30,9 +30,9 @@ const client = new ContextualAI({
 });
 
 async function main() {
-  const createDatastoreOutput = await client.datastores.create({ name: 'name' });
+  const createDatastoreResponse = await client.datastores.create({ name: 'name' });
 
-  console.log(createDatastoreOutput.id);
+  console.log(createDatastoreResponse.id);
 }
 
 main();
@@ -52,7 +52,9 @@ const client = new ContextualAI({
 
 async function main() {
   const params: ContextualAI.DatastoreCreateParams = { name: 'name' };
-  const createDatastoreOutput: ContextualAI.CreateDatastoreOutput = await client.datastores.create(params);
+  const createDatastoreResponse: ContextualAI.CreateDatastoreResponse = await client.datastores.create(
+    params,
+  );
 }
 
 main();
@@ -69,7 +71,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const createDatastoreOutput = await client.datastores.create({ name: 'name' }).catch(async (err) => {
+  const createDatastoreResponse = await client.datastores.create({ name: 'name' }).catch(async (err) => {
     if (err instanceof ContextualAI.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -185,11 +187,11 @@ const response = await client.datastores.create({ name: 'name' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: createDatastoreOutput, response: raw } = await client.datastores
+const { data: createDatastoreResponse, response: raw } = await client.datastores
   .create({ name: 'name' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(createDatastoreOutput.id);
+console.log(createDatastoreResponse.id);
 ```
 
 ### Making custom/undocumented requests

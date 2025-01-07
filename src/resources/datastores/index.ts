@@ -3,8 +3,8 @@
 export {
   DatastoreListResponsesDatastoresListPagination,
   Datastores,
-  type CreateDatastoreOutput,
-  type Datastore,
+  type CreateDatastoreResponse,
+  type DatastoresResponse,
   type DatastoreListResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,

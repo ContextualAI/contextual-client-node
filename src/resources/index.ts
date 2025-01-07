@@ -3,7 +3,7 @@
 export {
   ApplicationListResponsesApplicationsListPagination,
   Applications,
-  type ApplicationList,
+  type ApplicationsResponse,
   type CreateApplicationOutput,
   type ApplicationUpdateResponse,
   type ApplicationListResponse,
@@ -15,8 +15,8 @@ export {
 export {
   DatastoreListResponsesDatastoresListPagination,
   Datastores,
-  type CreateDatastoreOutput,
-  type Datastore,
+  type CreateDatastoreResponse,
+  type DatastoresResponse,
   type DatastoreListResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,

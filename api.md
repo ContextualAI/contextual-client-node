@@ -2,14 +2,14 @@
 
 Types:
 
-- <code><a href="./src/resources/datastores/datastores.ts">CreateDatastoreOutput</a></code>
-- <code><a href="./src/resources/datastores/datastores.ts">Datastore</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">CreateDatastoreResponse</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">DatastoresResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreListResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreOutput</code>
+- <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreResponse</code>
 - <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoreListResponsesDatastoresListPagination</code>
 - <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
 
@@ -51,7 +51,7 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/applications/applications.ts">ApplicationList</a></code>
+- <code><a href="./src/resources/applications/applications.ts">ApplicationsResponse</a></code>
 - <code><a href="./src/resources/applications/applications.ts">CreateApplicationOutput</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationUpdateResponse</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationListResponse</a></code>
@@ -132,8 +132,8 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/applications/datasets/datasets.ts">CreateDatasetResponse</a></code>
+- <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetsResponse</a></code>
 - <code><a href="./src/resources/applications/datasets/datasets.ts">GetDatasetResponse</a></code>
-- <code><a href="./src/resources/applications/datasets/datasets.ts">ListDatasetResponse</a></code>
 - <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetRetrieveResponse</a></code>
 - <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetDeleteResponse</a></code>
 
@@ -142,7 +142,7 @@ Methods:
 - <code title="post /applications/{application_id}/datasets">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">create</a>(applicationId, { ...params }) -> CreateDatasetResponse</code>
 - <code title="get /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">retrieve</a>(applicationId, datasetName, { ...params }) -> unknown</code>
 - <code title="put /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">update</a>(applicationId, datasetName, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /applications/{application_id}/datasets">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">list</a>(applicationId, { ...params }) -> ListDatasetResponse</code>
+- <code title="get /applications/{application_id}/datasets">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">list</a>(applicationId, { ...params }) -> DatasetsResponse</code>
 - <code title="delete /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">delete</a>(applicationId, datasetName) -> unknown</code>
 
 ### Metadata
