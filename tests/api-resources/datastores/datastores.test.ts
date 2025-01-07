@@ -46,7 +46,12 @@ describe('resource datastores', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.datastores.list(
-        { application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', cursor: 'cursor', limit: 1 },
+        {
+          application_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          cursor: 'cursor',
+          limit: 1,
+          search: 'search',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(ContextualAI.NotFoundError);

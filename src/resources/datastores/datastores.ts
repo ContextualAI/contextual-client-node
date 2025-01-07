@@ -160,6 +160,11 @@ export interface DatastoreListParams extends DatastoresListResponseParams {
    * linked to this application will be returned.
    */
   application_id?: string;
+
+  /**
+   * Search text to filter datastores by name
+   */
+  search?: string;
 }
 
 Datastores.DatastoreListResponsesDatastoresListResponse = DatastoreListResponsesDatastoresListResponse;
