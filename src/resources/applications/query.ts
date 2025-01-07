@@ -1,13 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import * as Core from '../../../core';
-import * as MetricsAPI from './metrics';
-import { MetricRetrieveParams, MetricRetrieveResponse, Metrics } from './metrics';
+import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
+import * as Core from '../../core';
 
 export class Query extends APIResource {
-  metrics: MetricsAPI.Metrics = new MetricsAPI.Metrics(this._client);
-
   /**
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
    * overall `Application` performance through the `Feedback` page in the Contextual
@@ -28,15 +25,23 @@ export class Query extends APIResource {
   }
 
   /**
-   * Start a conversation with an application and receive its generated response and
-   * attributions.
+   * Get feedbacks a given application.
    */
-  formFilling(
+  metrics(
     applicationId: string,
-    body: QueryFormFillingParams,
+    query?: QueryMetricsParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<QueryFormFillingResponse> {
-    return this._client.post(`/applications/${applicationId}/form_filling`, { body, ...options });
+  ): Core.APIPromise<QueryMetricsResponse>;
+  metrics(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<QueryMetricsResponse>;
+  metrics(
+    applicationId: string,
+    query: QueryMetricsParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<QueryMetricsResponse> {
+    if (isRequestOptions(query)) {
+      return this.metrics(applicationId, {}, query);
+    }
+    return this._client.get(`/applications/${applicationId}/metrics`, { query, ...options });
   }
 
   /**
@@ -183,14 +188,22 @@ export namespace QueryResponse {
 
 export type QueryFeedbackResponse = unknown;
 
-/**
- * Response body for POST /form_filling
- */
-export interface QueryFormFillingResponse {
+export interface QueryMetricsResponse {
   /**
-   * Attributions for the response
+   * Total number of messages.
    */
-  responses: Array<QueryResponse>;
+  total_count: number;
+
+  /**
+   * List of messages.
+   */
+  messages?: Array<unknown>;
+
+  /**
+   * Offset for the next page. If there are no more messages to get, then this is not
+   * set.
+   */
+  next_offset?: number;
 }
 
 export interface QueryFeedbackParams {
@@ -217,25 +230,31 @@ export interface QueryFeedbackParams {
   explanation?: string;
 }
 
-export interface QueryFormFillingParams {
+export interface QueryMetricsParams {
   /**
-   * Queries used to fill the form
+   * Filters messages that are created before specified timestamp.
    */
-  queries: Array<QueryFormFillingParams.Query>;
+  created_after?: string;
 
   /**
-   * Scope of the form filling. This is the metadata that is used to determine the
-   * form filling strategy
+   * Filters messages that are created after specified timestamp.
    */
-  scope_metadata: string;
-}
+  created_before?: string;
 
-export namespace QueryFormFillingParams {
-  export interface Query {
-    field: string;
+  /**
+   * Filters messages from contextual.
+   */
+  include_contextual?: boolean;
 
-    instructions: string;
-  }
+  /**
+   * Limits the number of messages to return.
+   */
+  limit?: number;
+
+  /**
+   * Offset for pagination.
+   */
+  offset?: number;
 }
 
 export interface QueryStartParams {
@@ -285,21 +304,13 @@ export namespace QueryStartParams {
   }
 }
 
-Query.Metrics = Metrics;
-
 export declare namespace Query {
   export {
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
-    type QueryFormFillingResponse as QueryFormFillingResponse,
+    type QueryMetricsResponse as QueryMetricsResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
-    type QueryFormFillingParams as QueryFormFillingParams,
+    type QueryMetricsParams as QueryMetricsParams,
     type QueryStartParams as QueryStartParams,
-  };
-
-  export {
-    Metrics as Metrics,
-    type MetricRetrieveResponse as MetricRetrieveResponse,
-    type MetricRetrieveParams as MetricRetrieveParams,
   };
 }

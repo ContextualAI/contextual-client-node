@@ -6,22 +6,23 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
 import {
-  type ApplicationsListPaginationParams,
-  ApplicationsListPaginationResponse,
-  type DatastoresDocumentsListPaginationParams,
-  DatastoresDocumentsListPaginationResponse,
-  type DatastoresListParams,
-  DatastoresListResponse,
+  type ApplicationsListResponseParams,
+  ApplicationsListResponseResponse,
+  type DatastoresDocumentsListResponseParams,
+  DatastoresDocumentsListResponseResponse,
+  type DatastoresListResponseParams,
+  DatastoresListResponseResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import { Standalone, StandaloneLmunitParams, StandaloneLmunitResponse } from './resources/standalone';
+import * as TopLevelAPI from './resources/top-level';
+import { LMUnitParams, LMUnitResponse } from './resources/top-level';
 import {
   ApplicationCreateParams,
   ApplicationDeleteResponse,
   ApplicationListParams,
   ApplicationListResponse,
-  ApplicationListResponsesApplicationsListPagination,
+  ApplicationListResponsesApplicationsListResponse,
   ApplicationUpdateParams,
   ApplicationUpdateResponse,
   Applications,
@@ -34,7 +35,7 @@ import {
   DatastoreDeleteResponse,
   DatastoreListParams,
   DatastoreListResponse,
-  DatastoreListResponsesDatastoresList,
+  DatastoreListResponsesDatastoresListResponse,
   Datastores,
   DatastoresResponse,
 } from './resources/datastores/datastores';
@@ -154,7 +155,25 @@ export class ContextualAI extends Core.APIClient {
 
   datastores: API.Datastores = new API.Datastores(this);
   applications: API.Applications = new API.Applications(this);
-  standalone: API.Standalone = new API.Standalone(this);
+
+  /**
+   * Given a `query`, `response`, and a `unit_test`, return the response's `score` on
+   * the unit test on a 5-point continuous scale. The total input cannot exceed 7000
+   * tokens.
+   *
+   * See a code example in [our blog post](https://contextual.ai/news/lmunit/). Email
+   * [lmunit-feedback@contextual.ai](mailto:lmunit-feedback@contextual.ai) with any
+   * feedback or questions.
+   *
+   * > 🚀 Obtain an LMUnit API key by completing
+   * > [this form](https://contextual.ai/request-lmunit-api/)
+   */
+  lmUnit(
+    body: TopLevelAPI.LMUnitParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TopLevelAPI.LMUnitResponse> {
+    return this.post('/lmunit', { body, ...options });
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -197,31 +216,32 @@ export class ContextualAI extends Core.APIClient {
 }
 
 ContextualAI.Datastores = Datastores;
-ContextualAI.DatastoreListResponsesDatastoresList = DatastoreListResponsesDatastoresList;
+ContextualAI.DatastoreListResponsesDatastoresListResponse = DatastoreListResponsesDatastoresListResponse;
 ContextualAI.Applications = Applications;
-ContextualAI.ApplicationListResponsesApplicationsListPagination =
-  ApplicationListResponsesApplicationsListPagination;
-ContextualAI.Standalone = Standalone;
+ContextualAI.ApplicationListResponsesApplicationsListResponse =
+  ApplicationListResponsesApplicationsListResponse;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
-  export import DatastoresList = Pagination.DatastoresList;
+  export import DatastoresListResponse = Pagination.DatastoresListResponse;
   export {
-    type DatastoresListParams as DatastoresListParams,
-    type DatastoresListResponse as DatastoresListResponse,
+    type DatastoresListResponseParams as DatastoresListResponseParams,
+    type DatastoresListResponseResponse as DatastoresListResponseResponse,
   };
 
-  export import DatastoresDocumentsListPagination = Pagination.DatastoresDocumentsListPagination;
+  export import DatastoresDocumentsListResponse = Pagination.DatastoresDocumentsListResponse;
   export {
-    type DatastoresDocumentsListPaginationParams as DatastoresDocumentsListPaginationParams,
-    type DatastoresDocumentsListPaginationResponse as DatastoresDocumentsListPaginationResponse,
+    type DatastoresDocumentsListResponseParams as DatastoresDocumentsListResponseParams,
+    type DatastoresDocumentsListResponseResponse as DatastoresDocumentsListResponseResponse,
   };
 
-  export import ApplicationsListPagination = Pagination.ApplicationsListPagination;
+  export import ApplicationsListResponse = Pagination.ApplicationsListResponse;
   export {
-    type ApplicationsListPaginationParams as ApplicationsListPaginationParams,
-    type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
+    type ApplicationsListResponseParams as ApplicationsListResponseParams,
+    type ApplicationsListResponseResponse as ApplicationsListResponseResponse,
   };
+
+  export { type LMUnitResponse as LMUnitResponse, type LMUnitParams as LMUnitParams };
 
   export {
     Datastores as Datastores,
@@ -229,7 +249,7 @@ export declare namespace ContextualAI {
     type DatastoresResponse as DatastoresResponse,
     type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
-    DatastoreListResponsesDatastoresList as DatastoreListResponsesDatastoresList,
+    DatastoreListResponsesDatastoresListResponse as DatastoreListResponsesDatastoresListResponse,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
@@ -241,16 +261,10 @@ export declare namespace ContextualAI {
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
     type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
-    ApplicationListResponsesApplicationsListPagination as ApplicationListResponsesApplicationsListPagination,
+    ApplicationListResponsesApplicationsListResponse as ApplicationListResponsesApplicationsListResponse,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,
-  };
-
-  export {
-    Standalone as Standalone,
-    type StandaloneLmunitResponse as StandaloneLmunitResponse,
-    type StandaloneLmunitParams as StandaloneLmunitParams,
   };
 }
 

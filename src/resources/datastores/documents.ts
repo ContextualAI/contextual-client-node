@@ -1,19 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
-import * as Core from '../../../core';
-import * as MetadataAPI from './metadata';
+import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
+import * as Core from '../../core';
 import {
-  DocumentDescription,
-  DocumentDescriptionsDatastoresDocumentsListPagination,
-  Metadata,
-} from './metadata';
-import { type DatastoresDocumentsListPaginationParams } from '../../../pagination';
+  DatastoresDocumentsListResponse,
+  type DatastoresDocumentsListResponseParams,
+} from '../../pagination';
 
 export class Documents extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
-
   /**
    * Ingest a document into a given `Datastore`.
    *
@@ -38,6 +33,18 @@ export class Documents extends APIResource {
   }
 
   /**
+   * Get details of a given document, including its `name` and ingestion job
+   * `status`.
+   */
+  retrieve(
+    datastoreId: string,
+    documentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentDescription> {
+    return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/metadata`, options);
+  }
+
+  /**
    * Get list of documents in a given `Datastore`, including document `id`, `name`,
    * and ingestion job `status`.
    *
@@ -50,25 +57,22 @@ export class Documents extends APIResource {
     datastoreId: string,
     query?: DocumentListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListPagination, MetadataAPI.DocumentDescription>;
+  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription>;
   list(
     datastoreId: string,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListPagination, MetadataAPI.DocumentDescription>;
+  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription>;
   list(
     datastoreId: string,
     query: DocumentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<
-    DocumentDescriptionsDatastoresDocumentsListPagination,
-    MetadataAPI.DocumentDescription
-  > {
+  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription> {
     if (isRequestOptions(query)) {
       return this.list(datastoreId, {}, query);
     }
     return this._client.getAPIList(
       `/datastores/${datastoreId}/documents`,
-      DocumentDescriptionsDatastoresDocumentsListPagination,
+      DocumentDescriptionsDatastoresDocumentsListResponse,
       { query, ...options },
     );
   }
@@ -81,6 +85,28 @@ export class Documents extends APIResource {
   }
 }
 
+export class DocumentDescriptionsDatastoresDocumentsListResponse extends DatastoresDocumentsListResponse<DocumentDescription> {}
+
+/**
+ * Document description
+ */
+export interface DocumentDescription {
+  /**
+   * ID of the document that was ingested
+   */
+  id: string;
+
+  /**
+   * User specified name of the document
+   */
+  name: string;
+
+  /**
+   * Status of this document's ingestion job
+   */
+  status: string;
+}
+
 /**
  * Response body from GET /data/documents
  */
@@ -88,7 +114,7 @@ export interface GetDocumentsResponse {
   /**
    * List of documents retrieved based on the user's GET request
    */
-  documents: Array<MetadataAPI.DocumentDescription>;
+  documents: Array<DocumentDescription>;
 
   /**
    * Next cursor to continue pagination. Ommitted if there are no more documents
@@ -122,7 +148,7 @@ export interface DocumentCreateParams {
   file: Core.Uploadable;
 }
 
-export interface DocumentListParams extends DatastoresDocumentsListPaginationParams {
+export interface DocumentListParams extends DatastoresDocumentsListResponseParams {
   /**
    * Filters documents whose ingestion job status matches (one of) the provided
    * status(es).
@@ -140,18 +166,17 @@ export interface DocumentListParams extends DatastoresDocumentsListPaginationPar
   uploaded_before?: string;
 }
 
-Documents.Metadata = Metadata;
+Documents.DocumentDescriptionsDatastoresDocumentsListResponse =
+  DocumentDescriptionsDatastoresDocumentsListResponse;
 
 export declare namespace Documents {
   export {
+    type DocumentDescription as DocumentDescription,
     type GetDocumentsResponse as GetDocumentsResponse,
     type IngestionResponse as IngestionResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
+    DocumentDescriptionsDatastoresDocumentsListResponse as DocumentDescriptionsDatastoresDocumentsListResponse,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentListParams as DocumentListParams,
   };
-
-  export { Metadata as Metadata, type DocumentDescription as DocumentDescription };
 }
-
-export { DocumentDescriptionsDatastoresDocumentsListPagination };

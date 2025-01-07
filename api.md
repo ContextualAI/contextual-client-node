@@ -1,3 +1,13 @@
+# ContextualAI
+
+Types:
+
+- <code><a href="./src/resources/top-level.ts">LMUnitResponse</a></code>
+
+Methods:
+
+- <code title="post /lmunit">client.<a href="./src/index.ts">lmUnit</a>({ ...params }) -> LMUnitResponse</code>
+
 # Datastores
 
 Types:
@@ -10,7 +20,7 @@ Types:
 Methods:
 
 - <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreResponse</code>
-- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoreListResponsesDatastoresList</code>
+- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoreListResponsesDatastoresListResponse</code>
 - <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
 
 ## Metadata
@@ -27,25 +37,17 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/datastores/documents/documents.ts">GetDocumentsResponse</a></code>
-- <code><a href="./src/resources/datastores/documents/documents.ts">IngestionResponse</a></code>
-- <code><a href="./src/resources/datastores/documents/documents.ts">DocumentDeleteResponse</a></code>
+- <code><a href="./src/resources/datastores/documents.ts">DocumentDescription</a></code>
+- <code><a href="./src/resources/datastores/documents.ts">GetDocumentsResponse</a></code>
+- <code><a href="./src/resources/datastores/documents.ts">IngestionResponse</a></code>
+- <code><a href="./src/resources/datastores/documents.ts">DocumentDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">create</a>(datastoreId, { ...params }) -> IngestionResponse</code>
-- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDatastoresDocumentsListPagination</code>
-- <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
-
-### Metadata
-
-Types:
-
-- <code><a href="./src/resources/datastores/documents/metadata.ts">DocumentDescription</a></code>
-
-Methods:
-
-- <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.metadata.<a href="./src/resources/datastores/documents/metadata.ts">retrieve</a>(datastoreId, documentId) -> DocumentDescription</code>
+- <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">create</a>(datastoreId, { ...params }) -> IngestionResponse</code>
+- <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">retrieve</a>(datastoreId, documentId) -> DocumentDescription</code>
+- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDatastoresDocumentsListResponse</code>
+- <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
 
 # Applications
 
@@ -61,7 +63,7 @@ Methods:
 
 - <code title="post /applications">client.applications.<a href="./src/resources/applications/applications.ts">create</a>({ ...params }) -> CreateApplicationOutput</code>
 - <code title="put /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">update</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationListResponsesApplicationsListPagination</code>
+- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationListResponsesApplicationsListResponse</code>
 - <code title="delete /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">delete</a>(applicationId) -> unknown</code>
 
 ## Metadata
@@ -78,25 +80,15 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/applications/query/query.ts">QueryResponse</a></code>
-- <code><a href="./src/resources/applications/query/query.ts">QueryFeedbackResponse</a></code>
-- <code><a href="./src/resources/applications/query/query.ts">QueryFormFillingResponse</a></code>
+- <code><a href="./src/resources/applications/query.ts">QueryResponse</a></code>
+- <code><a href="./src/resources/applications/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/applications/query.ts">QueryMetricsResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="post /applications/{application_id}/form_filling">client.applications.query.<a href="./src/resources/applications/query/query.ts">formFilling</a>(applicationId, { ...params }) -> QueryFormFillingResponse</code>
-- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
-
-### Metrics
-
-Types:
-
-- <code><a href="./src/resources/applications/query/metrics.ts">MetricRetrieveResponse</a></code>
-
-Methods:
-
-- <code title="get /applications/{application_id}/metrics">client.applications.query.metrics.<a href="./src/resources/applications/query/metrics.ts">retrieve</a>(applicationId, { ...params }) -> MetricRetrieveResponse</code>
+- <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
+- <code title="get /applications/{application_id}/metrics">client.applications.query.<a href="./src/resources/applications/query.ts">metrics</a>(applicationId, { ...params }) -> QueryMetricsResponse</code>
+- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
 
 ## Evaluate
 
@@ -189,13 +181,3 @@ Types:
 Methods:
 
 - <code title="get /applications/{application_id}/tune/models">client.applications.tune.models.<a href="./src/resources/applications/tune/models.ts">list</a>(applicationId) -> ModelListResponse</code>
-
-# Standalone
-
-Types:
-
-- <code><a href="./src/resources/standalone.ts">StandaloneLmunitResponse</a></code>
-
-Methods:
-
-- <code title="post /lmunit">client.standalone.<a href="./src/resources/standalone.ts">lmunit</a>({ ...params }) -> StandaloneLmunitResponse</code>

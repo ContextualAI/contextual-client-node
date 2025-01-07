@@ -5,6 +5,16 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetApplicationResponse, Metadata } from './metadata';
+import * as QueryAPI from './query';
+import {
+  Query,
+  QueryFeedbackParams,
+  QueryFeedbackResponse,
+  QueryMetricsParams,
+  QueryMetricsResponse,
+  QueryResponse,
+  QueryStartParams,
+} from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -20,19 +30,9 @@ import {
 } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
-import * as QueryAPI from './query/query';
-import {
-  Query,
-  QueryFeedbackParams,
-  QueryFeedbackResponse,
-  QueryFormFillingParams,
-  QueryFormFillingResponse,
-  QueryResponse,
-  QueryStartParams,
-} from './query/query';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
-import { ApplicationsListPagination, type ApplicationsListPaginationParams } from '../../pagination';
+import { ApplicationsListResponse, type ApplicationsListResponseParams } from '../../pagination';
 
 export class Applications extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -80,18 +80,18 @@ export class Applications extends APIResource {
   list(
     query?: ApplicationListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse>;
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse>;
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse>;
   list(
     query: ApplicationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListPagination, ApplicationListResponse> {
+  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/applications', ApplicationListResponsesApplicationsListPagination, {
+    return this._client.getAPIList('/applications', ApplicationListResponsesApplicationsListResponse, {
       query,
       ...options,
     });
@@ -109,7 +109,7 @@ export class Applications extends APIResource {
   }
 }
 
-export class ApplicationListResponsesApplicationsListPagination extends ApplicationsListPagination<ApplicationListResponse> {}
+export class ApplicationListResponsesApplicationsListResponse extends ApplicationsListResponse<ApplicationListResponse> {}
 
 export interface ApplicationsResponse {
   /**
@@ -242,15 +242,15 @@ export interface ApplicationUpdateParams {
   system_prompt?: string;
 }
 
-export interface ApplicationListParams extends ApplicationsListPaginationParams {
+export interface ApplicationListParams extends ApplicationsListResponseParams {
   /**
    * Search text to filter applications by name
    */
   search?: string;
 }
 
-Applications.ApplicationListResponsesApplicationsListPagination =
-  ApplicationListResponsesApplicationsListPagination;
+Applications.ApplicationListResponsesApplicationsListResponse =
+  ApplicationListResponsesApplicationsListResponse;
 Applications.Metadata = Metadata;
 Applications.Query = Query;
 Applications.Evaluate = Evaluate;
@@ -264,7 +264,7 @@ export declare namespace Applications {
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
     type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
-    ApplicationListResponsesApplicationsListPagination as ApplicationListResponsesApplicationsListPagination,
+    ApplicationListResponsesApplicationsListResponse as ApplicationListResponsesApplicationsListResponse,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,
@@ -276,9 +276,9 @@ export declare namespace Applications {
     Query as Query,
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
-    type QueryFormFillingResponse as QueryFormFillingResponse,
+    type QueryMetricsResponse as QueryMetricsResponse,
     type QueryFeedbackParams as QueryFeedbackParams,
-    type QueryFormFillingParams as QueryFormFillingParams,
+    type QueryMetricsParams as QueryMetricsParams,
     type QueryStartParams as QueryStartParams,
   };
 

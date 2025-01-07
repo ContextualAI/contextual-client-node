@@ -3,18 +3,20 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as MetadataAPI from './metadata';
-import { GetDatastoreResponse, Metadata } from './metadata';
-import * as DocumentsAPI from './documents/documents';
+import * as DocumentsAPI from './documents';
 import {
   DocumentCreateParams,
   DocumentDeleteResponse,
+  DocumentDescription,
+  DocumentDescriptionsDatastoresDocumentsListResponse,
   DocumentListParams,
   Documents,
   GetDocumentsResponse,
   IngestionResponse,
-} from './documents/documents';
-import { DatastoresList, type DatastoresListParams } from '../../pagination';
+} from './documents';
+import * as MetadataAPI from './metadata';
+import { GetDatastoreResponse, Metadata } from './metadata';
+import { DatastoresListResponse, type DatastoresListResponseParams } from '../../pagination';
 
 export class Datastores extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -48,18 +50,18 @@ export class Datastores extends APIResource {
   list(
     query?: DatastoreListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse>;
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListResponse, DatastoreListResponse>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse>;
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListResponse, DatastoreListResponse>;
   list(
     query: DatastoreListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse> {
+  ): Core.PagePromise<DatastoreListResponsesDatastoresListResponse, DatastoreListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/datastores', DatastoreListResponsesDatastoresList, {
+    return this._client.getAPIList('/datastores', DatastoreListResponsesDatastoresListResponse, {
       query,
       ...options,
     });
@@ -74,7 +76,7 @@ export class Datastores extends APIResource {
   }
 }
 
-export class DatastoreListResponsesDatastoresList extends DatastoresList<DatastoreListResponse> {}
+export class DatastoreListResponsesDatastoresListResponse extends DatastoresListResponse<DatastoreListResponse> {}
 
 export interface CreateDatastoreResponse {
   /**
@@ -152,7 +154,7 @@ export interface DatastoreCreateParams {
   name: string;
 }
 
-export interface DatastoreListParams extends DatastoresListParams {
+export interface DatastoreListParams extends DatastoresListResponseParams {
   /**
    * ID of the application used to filter datastores. If provided, only datastores
    * linked to this application will be returned.
@@ -160,9 +162,11 @@ export interface DatastoreListParams extends DatastoresListParams {
   application_id?: string;
 }
 
-Datastores.DatastoreListResponsesDatastoresList = DatastoreListResponsesDatastoresList;
+Datastores.DatastoreListResponsesDatastoresListResponse = DatastoreListResponsesDatastoresListResponse;
 Datastores.Metadata = Metadata;
 Datastores.Documents = Documents;
+Datastores.DocumentDescriptionsDatastoresDocumentsListResponse =
+  DocumentDescriptionsDatastoresDocumentsListResponse;
 
 export declare namespace Datastores {
   export {
@@ -170,7 +174,7 @@ export declare namespace Datastores {
     type DatastoresResponse as DatastoresResponse,
     type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
-    DatastoreListResponsesDatastoresList as DatastoreListResponsesDatastoresList,
+    DatastoreListResponsesDatastoresListResponse as DatastoreListResponsesDatastoresListResponse,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
@@ -179,9 +183,11 @@ export declare namespace Datastores {
 
   export {
     Documents as Documents,
+    type DocumentDescription as DocumentDescription,
     type GetDocumentsResponse as GetDocumentsResponse,
     type IngestionResponse as IngestionResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
+    DocumentDescriptionsDatastoresDocumentsListResponse as DocumentDescriptionsDatastoresDocumentsListResponse,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentListParams as DocumentListParams,
   };
