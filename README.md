@@ -149,8 +149,8 @@ You can use the `for await … of` syntax to iterate through items across all pa
 async function fetchAllDatastores(params) {
   const allDatastores = [];
   // Automatically fetches more pages as needed.
-  for await (const datastoreListResponse of client.datastores.list()) {
-    allDatastores.push(datastoreListResponse);
+  for await (const datastore of client.datastores.list()) {
+    allDatastores.push(datastore);
   }
   return allDatastores;
 }
@@ -160,8 +160,8 @@ Alternatively, you can request a single page at a time:
 
 ```ts
 let page = await client.datastores.list();
-for (const datastoreListResponse of page.datastores) {
-  console.log(datastoreListResponse);
+for (const datastore of page.datastores) {
+  console.log(datastore);
 }
 
 // Convenience methods are provided for manually paginating:

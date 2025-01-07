@@ -1,17 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  DatastoreListResponsesDatastoresListResponse,
+  DatastoresDatastoresPage,
   Datastores,
   type CreateDatastoreResponse,
+  type Datastore,
   type DatastoresResponse,
-  type DatastoreListResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores';
 export {
-  DocumentDescriptionsDatastoresDocumentsListResponse,
+  DocumentDescriptionsDocumentsPage,
   Documents,
   type DocumentDescription,
   type GetDocumentsResponse,
