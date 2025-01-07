@@ -3,8 +3,8 @@
 export {
   Datasets,
   type CreateDatasetResponse,
+  type DatasetsResponse,
   type GetDatasetResponse,
-  type ListDatasetResponse,
   type DatasetRetrieveResponse,
   type DatasetDeleteResponse,
   type DatasetCreateParams,

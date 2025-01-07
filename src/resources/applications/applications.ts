@@ -15,8 +15,8 @@ import {
   DatasetRetrieveResponse,
   DatasetUpdateParams,
   Datasets,
+  DatasetsResponse,
   GetDatasetResponse,
-  ListDatasetResponse,
 } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
@@ -111,7 +111,7 @@ export class Applications extends APIResource {
 
 export class ApplicationListResponsesApplicationsListPagination extends ApplicationsListPagination<ApplicationListResponse> {}
 
-export interface ApplicationList {
+export interface ApplicationsResponse {
   /**
    * Total number of available applications
    */
@@ -120,7 +120,7 @@ export interface ApplicationList {
   /**
    * List of active applications
    */
-  applications?: Array<ApplicationList.Application>;
+  applications?: Array<ApplicationsResponse.Application>;
 
   /**
    * Next cursor to continue pagination. Omitted if there are no more applications to
@@ -129,7 +129,7 @@ export interface ApplicationList {
   next_cursor?: string;
 }
 
-export namespace ApplicationList {
+export namespace ApplicationsResponse {
   export interface Application {
     /**
      * ID of the application
@@ -259,7 +259,7 @@ Applications.Tune = Tune;
 
 export declare namespace Applications {
   export {
-    type ApplicationList as ApplicationList,
+    type ApplicationsResponse as ApplicationsResponse,
     type CreateApplicationOutput as CreateApplicationOutput,
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
     type ApplicationListResponse as ApplicationListResponse,
@@ -291,8 +291,8 @@ export declare namespace Applications {
   export {
     Datasets as Datasets,
     type CreateDatasetResponse as CreateDatasetResponse,
+    type DatasetsResponse as DatasetsResponse,
     type GetDatasetResponse as GetDatasetResponse,
-    type ListDatasetResponse as ListDatasetResponse,
     type DatasetRetrieveResponse as DatasetRetrieveResponse,
     type DatasetDeleteResponse as DatasetDeleteResponse,
     type DatasetCreateParams as DatasetCreateParams,

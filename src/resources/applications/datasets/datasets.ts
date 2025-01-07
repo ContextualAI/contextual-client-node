@@ -116,13 +116,13 @@ export class Datasets extends APIResource {
     applicationId: string,
     query?: DatasetListParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ListDatasetResponse>;
-  list(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<ListDatasetResponse>;
+  ): Core.APIPromise<DatasetsResponse>;
+  list(applicationId: string, options?: Core.RequestOptions): Core.APIPromise<DatasetsResponse>;
   list(
     applicationId: string,
     query: DatasetListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ListDatasetResponse> {
+  ): Core.APIPromise<DatasetsResponse> {
     if (isRequestOptions(query)) {
       return this.list(applicationId, {}, query);
     }
@@ -174,53 +174,10 @@ export interface CreateDatasetResponse {
 }
 
 /**
- * Response to GET /datasets/{name}
- */
-export interface GetDatasetResponse {
-  /**
-   * Timestamp indicating when the dataset was created
-   */
-  created_at: string;
-
-  /**
-   * Number of samples in the dataset
-   */
-  num_samples: number;
-
-  /**
-   * Schema of the dataset
-   */
-  schema: unknown;
-
-  /**
-   * Validation status of the dataset
-   */
-  status: 'validated' | 'validating' | 'failed';
-
-  /**
-   * Type of the dataset
-   */
-  type:
-    | 'response_generation_train'
-    | 'grounded_generation_train'
-    | 'response_generation_validation'
-    | 'grounded_generation_validation'
-    | 'evaluation_run'
-    | 'evaluation_set'
-    | 'evaluation_set_prediction'
-    | 'evaluation_run_result';
-
-  /**
-   * Version of the dataset
-   */
-  version: string;
-}
-
-/**
  * Response to GET /datasets list endpoint
  */
-export interface ListDatasetResponse {
-  dataset_summaries: Array<ListDatasetResponse.DatasetSummary>;
+export interface DatasetsResponse {
+  dataset_summaries: Array<DatasetsResponse.DatasetSummary>;
 
   /**
    * Total number of datasets
@@ -228,7 +185,7 @@ export interface ListDatasetResponse {
   total_count: number;
 }
 
-export namespace ListDatasetResponse {
+export namespace DatasetsResponse {
   /**
    * Summary information for a dataset
    */
@@ -276,6 +233,49 @@ export namespace ListDatasetResponse {
      */
     version: string;
   }
+}
+
+/**
+ * Response to GET /datasets/{name}
+ */
+export interface GetDatasetResponse {
+  /**
+   * Timestamp indicating when the dataset was created
+   */
+  created_at: string;
+
+  /**
+   * Number of samples in the dataset
+   */
+  num_samples: number;
+
+  /**
+   * Schema of the dataset
+   */
+  schema: unknown;
+
+  /**
+   * Validation status of the dataset
+   */
+  status: 'validated' | 'validating' | 'failed';
+
+  /**
+   * Type of the dataset
+   */
+  type:
+    | 'response_generation_train'
+    | 'grounded_generation_train'
+    | 'response_generation_validation'
+    | 'grounded_generation_validation'
+    | 'evaluation_run'
+    | 'evaluation_set'
+    | 'evaluation_set_prediction'
+    | 'evaluation_run_result';
+
+  /**
+   * Version of the dataset
+   */
+  version: string;
 }
 
 export type DatasetRetrieveResponse = unknown;
@@ -338,8 +338,8 @@ Datasets.Metadata = Metadata;
 export declare namespace Datasets {
   export {
     type CreateDatasetResponse as CreateDatasetResponse,
+    type DatasetsResponse as DatasetsResponse,
     type GetDatasetResponse as GetDatasetResponse,
-    type ListDatasetResponse as ListDatasetResponse,
     type DatasetRetrieveResponse as DatasetRetrieveResponse,
     type DatasetDeleteResponse as DatasetDeleteResponse,
     type DatasetCreateParams as DatasetCreateParams,

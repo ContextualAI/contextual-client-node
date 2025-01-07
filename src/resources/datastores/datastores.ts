@@ -31,7 +31,10 @@ export class Datastores extends APIResource {
    * `Application` is done through the `Create Application` or `Edit Application`
    * APIs.
    */
-  create(body: DatastoreCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateDatastoreOutput> {
+  create(
+    body: DatastoreCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CreateDatastoreResponse> {
     return this._client.post('/datastores', { body, ...options });
   }
 
@@ -73,18 +76,18 @@ export class Datastores extends APIResource {
 
 export class DatastoreListResponsesDatastoresListPagination extends DatastoresListPagination<DatastoreListResponse> {}
 
-export interface CreateDatastoreOutput {
+export interface CreateDatastoreResponse {
   /**
    * ID of the datastore
    */
   id: string;
 }
 
-export interface Datastore {
+export interface DatastoresResponse {
   /**
    * List of all datastores
    */
-  datastores: Array<Datastore.Datastore>;
+  datastores: Array<DatastoresResponse.Datastore>;
 
   /**
    * Total number of available datastores
@@ -98,7 +101,7 @@ export interface Datastore {
   next_cursor?: string;
 }
 
-export namespace Datastore {
+export namespace DatastoresResponse {
   /**
    * Datastore output entry with additional fields for public API.
    */
@@ -163,8 +166,8 @@ Datastores.Documents = Documents;
 
 export declare namespace Datastores {
   export {
-    type CreateDatastoreOutput as CreateDatastoreOutput,
-    type Datastore as Datastore,
+    type CreateDatastoreResponse as CreateDatastoreResponse,
+    type DatastoresResponse as DatastoresResponse,
     type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     DatastoreListResponsesDatastoresListPagination as DatastoreListResponsesDatastoresListPagination,

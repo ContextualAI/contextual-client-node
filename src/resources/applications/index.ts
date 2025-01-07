@@ -3,7 +3,7 @@
 export {
   ApplicationListResponsesApplicationsListPagination,
   Applications,
-  type ApplicationList,
+  type ApplicationsResponse,
   type CreateApplicationOutput,
   type ApplicationUpdateResponse,
   type ApplicationListResponse,
@@ -15,8 +15,8 @@ export {
 export {
   Datasets,
   type CreateDatasetResponse,
+  type DatasetsResponse,
   type GetDatasetResponse,
-  type ListDatasetResponse,
   type DatasetRetrieveResponse,
   type DatasetDeleteResponse,
   type DatasetCreateParams,
