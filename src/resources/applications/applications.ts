@@ -32,7 +32,7 @@ import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
-import { ApplicationsListResponse, type ApplicationsListResponseParams } from '../../pagination';
+import { ApplicationsPage, type ApplicationsPageParams } from '../../pagination';
 
 export class Applications extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -80,21 +80,16 @@ export class Applications extends APIResource {
   list(
     query?: ApplicationListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse>;
-  list(
-    options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse>;
+  ): Core.PagePromise<ApplicationsApplicationsPage, Application>;
+  list(options?: Core.RequestOptions): Core.PagePromise<ApplicationsApplicationsPage, Application>;
   list(
     query: ApplicationListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<ApplicationListResponsesApplicationsListResponse, ApplicationListResponse> {
+  ): Core.PagePromise<ApplicationsApplicationsPage, Application> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/applications', ApplicationListResponsesApplicationsListResponse, {
-      query,
-      ...options,
-    });
+    return this._client.getAPIList('/applications', ApplicationsApplicationsPage, { query, ...options });
   }
 
   /**
@@ -109,7 +104,24 @@ export class Applications extends APIResource {
   }
 }
 
-export class ApplicationListResponsesApplicationsListResponse extends ApplicationsListResponse<ApplicationListResponse> {}
+export class ApplicationsApplicationsPage extends ApplicationsPage<Application> {}
+
+export interface Application {
+  /**
+   * ID of the application
+   */
+  id: string;
+
+  /**
+   * Description of the application
+   */
+  description: string;
+
+  /**
+   * Name of the application
+   */
+  name: string;
+}
 
 export interface ApplicationsResponse {
   /**
@@ -120,32 +132,13 @@ export interface ApplicationsResponse {
   /**
    * List of active applications
    */
-  applications?: Array<ApplicationsResponse.Application>;
+  applications?: Array<Application>;
 
   /**
    * Next cursor to continue pagination. Omitted if there are no more applications to
    * retrieve.
    */
   next_cursor?: string;
-}
-
-export namespace ApplicationsResponse {
-  export interface Application {
-    /**
-     * ID of the application
-     */
-    id: string;
-
-    /**
-     * Description of the application
-     */
-    description: string;
-
-    /**
-     * Name of the application
-     */
-    name: string;
-  }
 }
 
 export interface CreateApplicationOutput {
@@ -163,23 +156,6 @@ export interface CreateApplicationOutput {
 }
 
 export type ApplicationUpdateResponse = unknown;
-
-export interface ApplicationListResponse {
-  /**
-   * ID of the application
-   */
-  id: string;
-
-  /**
-   * Description of the application
-   */
-  description: string;
-
-  /**
-   * Name of the application
-   */
-  name: string;
-}
 
 export type ApplicationDeleteResponse = unknown;
 
@@ -242,15 +218,14 @@ export interface ApplicationUpdateParams {
   system_prompt?: string;
 }
 
-export interface ApplicationListParams extends ApplicationsListResponseParams {
+export interface ApplicationListParams extends ApplicationsPageParams {
   /**
    * Search text to filter applications by name
    */
   search?: string;
 }
 
-Applications.ApplicationListResponsesApplicationsListResponse =
-  ApplicationListResponsesApplicationsListResponse;
+Applications.ApplicationsApplicationsPage = ApplicationsApplicationsPage;
 Applications.Metadata = Metadata;
 Applications.Query = Query;
 Applications.Evaluate = Evaluate;
@@ -259,12 +234,12 @@ Applications.Tune = Tune;
 
 export declare namespace Applications {
   export {
+    type Application as Application,
     type ApplicationsResponse as ApplicationsResponse,
     type CreateApplicationOutput as CreateApplicationOutput,
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
-    type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
-    ApplicationListResponsesApplicationsListResponse as ApplicationListResponsesApplicationsListResponse,
+    ApplicationsApplicationsPage as ApplicationsApplicationsPage,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,

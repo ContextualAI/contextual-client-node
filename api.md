@@ -13,14 +13,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/datastores/datastores.ts">CreateDatastoreResponse</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">Datastore</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoresResponse</a></code>
-- <code><a href="./src/resources/datastores/datastores.ts">DatastoreListResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreResponse</code>
-- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoreListResponsesDatastoresListResponse</code>
+- <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoresDatastoresPage</code>
 - <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
 
 ## Metadata
@@ -46,24 +46,24 @@ Methods:
 
 - <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">create</a>(datastoreId, { ...params }) -> IngestionResponse</code>
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">retrieve</a>(datastoreId, documentId) -> DocumentDescription</code>
-- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDatastoresDocumentsListResponse</code>
+- <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDocumentsPage</code>
 - <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
 
 # Applications
 
 Types:
 
+- <code><a href="./src/resources/applications/applications.ts">Application</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationsResponse</a></code>
 - <code><a href="./src/resources/applications/applications.ts">CreateApplicationOutput</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationUpdateResponse</a></code>
-- <code><a href="./src/resources/applications/applications.ts">ApplicationListResponse</a></code>
 - <code><a href="./src/resources/applications/applications.ts">ApplicationDeleteResponse</a></code>
 
 Methods:
 
 - <code title="post /applications">client.applications.<a href="./src/resources/applications/applications.ts">create</a>({ ...params }) -> CreateApplicationOutput</code>
 - <code title="put /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">update</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationListResponsesApplicationsListResponse</code>
+- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationsApplicationsPage</code>
 - <code title="delete /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">delete</a>(applicationId) -> unknown</code>
 
 ## Metadata

@@ -1,12 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  ApplicationListResponsesApplicationsListResponse,
+  ApplicationsApplicationsPage,
   Applications,
+  type Application,
   type ApplicationsResponse,
   type CreateApplicationOutput,
   type ApplicationUpdateResponse,
-  type ApplicationListResponse,
   type ApplicationDeleteResponse,
   type ApplicationCreateParams,
   type ApplicationUpdateParams,

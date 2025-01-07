@@ -6,37 +6,37 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
 import {
-  type ApplicationsListResponseParams,
-  ApplicationsListResponseResponse,
-  type DatastoresDocumentsListResponseParams,
-  DatastoresDocumentsListResponseResponse,
-  type DatastoresListResponseParams,
-  DatastoresListResponseResponse,
+  type ApplicationsPageParams,
+  ApplicationsPageResponse,
+  type DatastoresPageParams,
+  DatastoresPageResponse,
+  type DocumentsPageParams,
+  DocumentsPageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import * as TopLevelAPI from './resources/top-level';
 import { LMUnitParams, LMUnitResponse } from './resources/top-level';
 import {
+  Application,
   ApplicationCreateParams,
   ApplicationDeleteResponse,
   ApplicationListParams,
-  ApplicationListResponse,
-  ApplicationListResponsesApplicationsListResponse,
   ApplicationUpdateParams,
   ApplicationUpdateResponse,
   Applications,
+  ApplicationsApplicationsPage,
   ApplicationsResponse,
   CreateApplicationOutput,
 } from './resources/applications/applications';
 import {
   CreateDatastoreResponse,
+  Datastore,
   DatastoreCreateParams,
   DatastoreDeleteResponse,
   DatastoreListParams,
-  DatastoreListResponse,
-  DatastoreListResponsesDatastoresListResponse,
   Datastores,
+  DatastoresDatastoresPage,
   DatastoresResponse,
 } from './resources/datastores/datastores';
 
@@ -216,29 +216,28 @@ export class ContextualAI extends Core.APIClient {
 }
 
 ContextualAI.Datastores = Datastores;
-ContextualAI.DatastoreListResponsesDatastoresListResponse = DatastoreListResponsesDatastoresListResponse;
+ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Applications = Applications;
-ContextualAI.ApplicationListResponsesApplicationsListResponse =
-  ApplicationListResponsesApplicationsListResponse;
+ContextualAI.ApplicationsApplicationsPage = ApplicationsApplicationsPage;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
-  export import DatastoresListResponse = Pagination.DatastoresListResponse;
+  export import DatastoresPage = Pagination.DatastoresPage;
   export {
-    type DatastoresListResponseParams as DatastoresListResponseParams,
-    type DatastoresListResponseResponse as DatastoresListResponseResponse,
+    type DatastoresPageParams as DatastoresPageParams,
+    type DatastoresPageResponse as DatastoresPageResponse,
   };
 
-  export import DatastoresDocumentsListResponse = Pagination.DatastoresDocumentsListResponse;
+  export import DocumentsPage = Pagination.DocumentsPage;
   export {
-    type DatastoresDocumentsListResponseParams as DatastoresDocumentsListResponseParams,
-    type DatastoresDocumentsListResponseResponse as DatastoresDocumentsListResponseResponse,
+    type DocumentsPageParams as DocumentsPageParams,
+    type DocumentsPageResponse as DocumentsPageResponse,
   };
 
-  export import ApplicationsListResponse = Pagination.ApplicationsListResponse;
+  export import ApplicationsPage = Pagination.ApplicationsPage;
   export {
-    type ApplicationsListResponseParams as ApplicationsListResponseParams,
-    type ApplicationsListResponseResponse as ApplicationsListResponseResponse,
+    type ApplicationsPageParams as ApplicationsPageParams,
+    type ApplicationsPageResponse as ApplicationsPageResponse,
   };
 
   export { type LMUnitResponse as LMUnitResponse, type LMUnitParams as LMUnitParams };
@@ -246,22 +245,22 @@ export declare namespace ContextualAI {
   export {
     Datastores as Datastores,
     type CreateDatastoreResponse as CreateDatastoreResponse,
+    type Datastore as Datastore,
     type DatastoresResponse as DatastoresResponse,
-    type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
-    DatastoreListResponsesDatastoresListResponse as DatastoreListResponsesDatastoresListResponse,
+    DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
 
   export {
     Applications as Applications,
+    type Application as Application,
     type ApplicationsResponse as ApplicationsResponse,
     type CreateApplicationOutput as CreateApplicationOutput,
     type ApplicationUpdateResponse as ApplicationUpdateResponse,
-    type ApplicationListResponse as ApplicationListResponse,
     type ApplicationDeleteResponse as ApplicationDeleteResponse,
-    ApplicationListResponsesApplicationsListResponse as ApplicationListResponsesApplicationsListResponse,
+    ApplicationsApplicationsPage as ApplicationsApplicationsPage,
     type ApplicationCreateParams as ApplicationCreateParams,
     type ApplicationUpdateParams as ApplicationUpdateParams,
     type ApplicationListParams as ApplicationListParams,

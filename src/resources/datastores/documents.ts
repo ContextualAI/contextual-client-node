@@ -3,10 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import {
-  DatastoresDocumentsListResponse,
-  type DatastoresDocumentsListResponseParams,
-} from '../../pagination';
+import { DocumentsPage, type DocumentsPageParams } from '../../pagination';
 
 export class Documents extends APIResource {
   /**
@@ -57,22 +54,22 @@ export class Documents extends APIResource {
     datastoreId: string,
     query?: DocumentListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription>;
+  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription>;
   list(
     datastoreId: string,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription>;
+  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription>;
   list(
     datastoreId: string,
     query: DocumentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDatastoresDocumentsListResponse, DocumentDescription> {
+  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription> {
     if (isRequestOptions(query)) {
       return this.list(datastoreId, {}, query);
     }
     return this._client.getAPIList(
       `/datastores/${datastoreId}/documents`,
-      DocumentDescriptionsDatastoresDocumentsListResponse,
+      DocumentDescriptionsDocumentsPage,
       { query, ...options },
     );
   }
@@ -85,7 +82,7 @@ export class Documents extends APIResource {
   }
 }
 
-export class DocumentDescriptionsDatastoresDocumentsListResponse extends DatastoresDocumentsListResponse<DocumentDescription> {}
+export class DocumentDescriptionsDocumentsPage extends DocumentsPage<DocumentDescription> {}
 
 /**
  * Document description
@@ -148,7 +145,7 @@ export interface DocumentCreateParams {
   file: Core.Uploadable;
 }
 
-export interface DocumentListParams extends DatastoresDocumentsListResponseParams {
+export interface DocumentListParams extends DocumentsPageParams {
   /**
    * Filters documents whose ingestion job status matches (one of) the provided
    * status(es).
@@ -166,8 +163,7 @@ export interface DocumentListParams extends DatastoresDocumentsListResponseParam
   uploaded_before?: string;
 }
 
-Documents.DocumentDescriptionsDatastoresDocumentsListResponse =
-  DocumentDescriptionsDatastoresDocumentsListResponse;
+Documents.DocumentDescriptionsDocumentsPage = DocumentDescriptionsDocumentsPage;
 
 export declare namespace Documents {
   export {
@@ -175,7 +171,7 @@ export declare namespace Documents {
     type GetDocumentsResponse as GetDocumentsResponse,
     type IngestionResponse as IngestionResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
-    DocumentDescriptionsDatastoresDocumentsListResponse as DocumentDescriptionsDatastoresDocumentsListResponse,
+    DocumentDescriptionsDocumentsPage as DocumentDescriptionsDocumentsPage,
     type DocumentCreateParams as DocumentCreateParams,
     type DocumentListParams as DocumentListParams,
   };

@@ -2,22 +2,19 @@
 
 import { AbstractPage, Response, APIClient, FinalRequestOptions, PageInfo } from './core';
 
-export interface DatastoresListResponseResponse<Item> {
+export interface DatastoresPageResponse<Item> {
   datastores: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface DatastoresListResponseParams {
+export interface DatastoresPageParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class DatastoresListResponse<Item>
-  extends AbstractPage<Item>
-  implements DatastoresListResponseResponse<Item>
-{
+export class DatastoresPage<Item> extends AbstractPage<Item> implements DatastoresPageResponse<Item> {
   datastores: Array<Item>;
 
   next_cursor: string;
@@ -25,7 +22,7 @@ export class DatastoresListResponse<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: DatastoresListResponseResponse<Item>,
+    body: DatastoresPageResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -39,7 +36,7 @@ export class DatastoresListResponse<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<DatastoresListResponseParams> | null {
+  nextPageParams(): Partial<DatastoresPageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
@@ -62,22 +59,19 @@ export class DatastoresListResponse<Item>
   }
 }
 
-export interface DatastoresDocumentsListResponseResponse<Item> {
+export interface DocumentsPageResponse<Item> {
   documents: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface DatastoresDocumentsListResponseParams {
+export interface DocumentsPageParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class DatastoresDocumentsListResponse<Item>
-  extends AbstractPage<Item>
-  implements DatastoresDocumentsListResponseResponse<Item>
-{
+export class DocumentsPage<Item> extends AbstractPage<Item> implements DocumentsPageResponse<Item> {
   documents: Array<Item>;
 
   next_cursor: string;
@@ -85,7 +79,7 @@ export class DatastoresDocumentsListResponse<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: DatastoresDocumentsListResponseResponse<Item>,
+    body: DocumentsPageResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -99,7 +93,7 @@ export class DatastoresDocumentsListResponse<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<DatastoresDocumentsListResponseParams> | null {
+  nextPageParams(): Partial<DocumentsPageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
@@ -122,22 +116,19 @@ export class DatastoresDocumentsListResponse<Item>
   }
 }
 
-export interface ApplicationsListResponseResponse<Item> {
+export interface ApplicationsPageResponse<Item> {
   applications: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface ApplicationsListResponseParams {
+export interface ApplicationsPageParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class ApplicationsListResponse<Item>
-  extends AbstractPage<Item>
-  implements ApplicationsListResponseResponse<Item>
-{
+export class ApplicationsPage<Item> extends AbstractPage<Item> implements ApplicationsPageResponse<Item> {
   applications: Array<Item>;
 
   next_cursor: string;
@@ -145,7 +136,7 @@ export class ApplicationsListResponse<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: ApplicationsListResponseResponse<Item>,
+    body: ApplicationsPageResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -159,7 +150,7 @@ export class ApplicationsListResponse<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsListResponseParams> | null {
+  nextPageParams(): Partial<ApplicationsPageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
