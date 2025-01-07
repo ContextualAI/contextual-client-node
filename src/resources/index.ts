@@ -13,7 +13,7 @@ export {
   type ApplicationListParams,
 } from './applications/applications';
 export {
-  DatastoreListResponsesDatastoresListPagination,
+  DatastoreListResponsesDatastoresList,
   Datastores,
   type CreateDatastoreResponse,
   type DatastoresResponse,

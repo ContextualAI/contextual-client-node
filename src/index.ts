@@ -10,10 +10,8 @@ import {
   ApplicationsListPaginationResponse,
   type DatastoresDocumentsListPaginationParams,
   DatastoresDocumentsListPaginationResponse,
-  type DatastoresListPaginationParams,
-  DatastoresListPaginationResponse,
-  type EvalJobsListPaginationParams,
-  EvalJobsListPaginationResponse,
+  type DatastoresListParams,
+  DatastoresListResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
@@ -36,7 +34,7 @@ import {
   DatastoreDeleteResponse,
   DatastoreListParams,
   DatastoreListResponse,
-  DatastoreListResponsesDatastoresListPagination,
+  DatastoreListResponsesDatastoresList,
   Datastores,
   DatastoresResponse,
 } from './resources/datastores/datastores';
@@ -199,7 +197,7 @@ export class ContextualAI extends Core.APIClient {
 }
 
 ContextualAI.Datastores = Datastores;
-ContextualAI.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
+ContextualAI.DatastoreListResponsesDatastoresList = DatastoreListResponsesDatastoresList;
 ContextualAI.Applications = Applications;
 ContextualAI.ApplicationListResponsesApplicationsListPagination =
   ApplicationListResponsesApplicationsListPagination;
@@ -207,10 +205,10 @@ ContextualAI.Standalone = Standalone;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
-  export import DatastoresListPagination = Pagination.DatastoresListPagination;
+  export import DatastoresList = Pagination.DatastoresList;
   export {
-    type DatastoresListPaginationParams as DatastoresListPaginationParams,
-    type DatastoresListPaginationResponse as DatastoresListPaginationResponse,
+    type DatastoresListParams as DatastoresListParams,
+    type DatastoresListResponse as DatastoresListResponse,
   };
 
   export import DatastoresDocumentsListPagination = Pagination.DatastoresDocumentsListPagination;
@@ -225,37 +223,13 @@ export declare namespace ContextualAI {
     type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
   };
 
-  export import EvalJobsListPagination = Pagination.EvalJobsListPagination;
-  export {
-    type EvalJobsListPaginationParams as EvalJobsListPaginationParams,
-    type EvalJobsListPaginationResponse as EvalJobsListPaginationResponse,
-  };
-
-  export import ApplicationsListPagination = Pagination.ApplicationsListPagination;
-  export {
-    type ApplicationsListPaginationParams as ApplicationsListPaginationParams,
-    type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
-  };
-
-  export import ApplicationsListPagination = Pagination.ApplicationsListPagination;
-  export {
-    type ApplicationsListPaginationParams as ApplicationsListPaginationParams,
-    type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
-  };
-
-  export import ApplicationsListPagination = Pagination.ApplicationsListPagination;
-  export {
-    type ApplicationsListPaginationParams as ApplicationsListPaginationParams,
-    type ApplicationsListPaginationResponse as ApplicationsListPaginationResponse,
-  };
-
   export {
     Datastores as Datastores,
     type CreateDatastoreResponse as CreateDatastoreResponse,
     type DatastoresResponse as DatastoresResponse,
     type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
-    DatastoreListResponsesDatastoresListPagination as DatastoreListResponsesDatastoresListPagination,
+    DatastoreListResponsesDatastoresList as DatastoreListResponsesDatastoresList,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
