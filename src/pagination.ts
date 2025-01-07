@@ -2,19 +2,22 @@
 
 import { AbstractPage, Response, APIClient, FinalRequestOptions, PageInfo } from './core';
 
-export interface DatastoresListResponse<Item> {
+export interface DatastoresListResponseResponse<Item> {
   datastores: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface DatastoresListParams {
+export interface DatastoresListResponseParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class DatastoresList<Item> extends AbstractPage<Item> implements DatastoresListResponse<Item> {
+export class DatastoresListResponse<Item>
+  extends AbstractPage<Item>
+  implements DatastoresListResponseResponse<Item>
+{
   datastores: Array<Item>;
 
   next_cursor: string;
@@ -22,7 +25,7 @@ export class DatastoresList<Item> extends AbstractPage<Item> implements Datastor
   constructor(
     client: APIClient,
     response: Response,
-    body: DatastoresListResponse<Item>,
+    body: DatastoresListResponseResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -36,7 +39,7 @@ export class DatastoresList<Item> extends AbstractPage<Item> implements Datastor
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<DatastoresListParams> | null {
+  nextPageParams(): Partial<DatastoresListResponseParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
@@ -59,21 +62,21 @@ export class DatastoresList<Item> extends AbstractPage<Item> implements Datastor
   }
 }
 
-export interface DatastoresDocumentsListPaginationResponse<Item> {
+export interface DatastoresDocumentsListResponseResponse<Item> {
   documents: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface DatastoresDocumentsListPaginationParams {
+export interface DatastoresDocumentsListResponseParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class DatastoresDocumentsListPagination<Item>
+export class DatastoresDocumentsListResponse<Item>
   extends AbstractPage<Item>
-  implements DatastoresDocumentsListPaginationResponse<Item>
+  implements DatastoresDocumentsListResponseResponse<Item>
 {
   documents: Array<Item>;
 
@@ -82,7 +85,7 @@ export class DatastoresDocumentsListPagination<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: DatastoresDocumentsListPaginationResponse<Item>,
+    body: DatastoresDocumentsListResponseResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -96,7 +99,7 @@ export class DatastoresDocumentsListPagination<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<DatastoresDocumentsListPaginationParams> | null {
+  nextPageParams(): Partial<DatastoresDocumentsListResponseParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
@@ -119,21 +122,21 @@ export class DatastoresDocumentsListPagination<Item>
   }
 }
 
-export interface ApplicationsListPaginationResponse<Item> {
+export interface ApplicationsListResponseResponse<Item> {
   applications: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface ApplicationsListPaginationParams {
+export interface ApplicationsListResponseParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class ApplicationsListPagination<Item>
+export class ApplicationsListResponse<Item>
   extends AbstractPage<Item>
-  implements ApplicationsListPaginationResponse<Item>
+  implements ApplicationsListResponseResponse<Item>
 {
   applications: Array<Item>;
 
@@ -142,7 +145,7 @@ export class ApplicationsListPagination<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: ApplicationsListPaginationResponse<Item>,
+    body: ApplicationsListResponseResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -156,7 +159,7 @@ export class ApplicationsListPagination<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsListPaginationParams> | null {
+  nextPageParams(): Partial<ApplicationsListResponseParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;

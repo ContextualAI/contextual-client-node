@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  ApplicationListResponsesApplicationsListPagination,
+  ApplicationListResponsesApplicationsListResponse,
   Applications,
   type ApplicationsResponse,
   type CreateApplicationOutput,
@@ -13,7 +13,7 @@ export {
   type ApplicationListParams,
 } from './applications/applications';
 export {
-  DatastoreListResponsesDatastoresList,
+  DatastoreListResponsesDatastoresListResponse,
   Datastores,
   type CreateDatastoreResponse,
   type DatastoresResponse,
@@ -22,4 +22,4 @@ export {
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
-export { Standalone, type StandaloneLmunitResponse, type StandaloneLmunitParams } from './standalone';
+export { type LMUnitResponse, type LMUnitParams } from './top-level';

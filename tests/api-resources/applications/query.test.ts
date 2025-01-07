@@ -32,11 +32,8 @@ describe('resource query', () => {
     });
   });
 
-  test('formFilling: only required params', async () => {
-    const responsePromise = client.applications.query.formFilling('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      queries: [{ field: 'field', instructions: 'instructions' }],
-      scope_metadata: 'scope_metadata',
-    });
+  test('metrics', async () => {
+    const responsePromise = client.applications.query.metrics('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -46,11 +43,30 @@ describe('resource query', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('formFilling: required and optional params', async () => {
-    const response = await client.applications.query.formFilling('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      queries: [{ field: 'field', instructions: 'instructions' }],
-      scope_metadata: 'scope_metadata',
-    });
+  test('metrics: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.applications.query.metrics('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+        path: '/_stainless_unknown_path',
+      }),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
+  });
+
+  test('metrics: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.applications.query.metrics(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          created_after: '2019-12-27T18:11:19.117Z',
+          created_before: '2019-12-27T18:11:19.117Z',
+          include_contextual: true,
+          limit: 0,
+          offset: 0,
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 
   test('start: only required params', async () => {

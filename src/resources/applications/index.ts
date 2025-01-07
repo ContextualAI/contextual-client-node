@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  ApplicationListResponsesApplicationsListPagination,
+  ApplicationListResponsesApplicationsListResponse,
   Applications,
   type ApplicationsResponse,
   type CreateApplicationOutput,
@@ -30,9 +30,9 @@ export {
   Query,
   type QueryResponse,
   type QueryFeedbackResponse,
-  type QueryFormFillingResponse,
+  type QueryMetricsResponse,
   type QueryFeedbackParams,
-  type QueryFormFillingParams,
+  type QueryMetricsParams,
   type QueryStartParams,
-} from './query/index';
+} from './query';
 export { Tune, type TuneResponse, type TuneCreateParams } from './tune/index';
