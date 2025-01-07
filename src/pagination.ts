@@ -2,22 +2,19 @@
 
 import { AbstractPage, Response, APIClient, FinalRequestOptions, PageInfo } from './core';
 
-export interface DatastoresListPaginationResponse<Item> {
+export interface DatastoresListResponse<Item> {
   datastores: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface DatastoresListPaginationParams {
+export interface DatastoresListParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class DatastoresListPagination<Item>
-  extends AbstractPage<Item>
-  implements DatastoresListPaginationResponse<Item>
-{
+export class DatastoresList<Item> extends AbstractPage<Item> implements DatastoresListResponse<Item> {
   datastores: Array<Item>;
 
   next_cursor: string;
@@ -25,7 +22,7 @@ export class DatastoresListPagination<Item>
   constructor(
     client: APIClient,
     response: Response,
-    body: DatastoresListPaginationResponse<Item>,
+    body: DatastoresListResponse<Item>,
     options: FinalRequestOptions,
   ) {
     super(client, response, body, options);
@@ -39,7 +36,7 @@ export class DatastoresListPagination<Item>
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<DatastoresListPaginationParams> | null {
+  nextPageParams(): Partial<DatastoresListParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
@@ -100,246 +97,6 @@ export class DatastoresDocumentsListPagination<Item>
 
   // @deprecated Please use `nextPageInfo()` instead
   nextPageParams(): Partial<DatastoresDocumentsListPaginationParams> | null {
-    const info = this.nextPageInfo();
-    if (!info) return null;
-    if ('params' in info) return info.params;
-    const params = Object.fromEntries(info.url.searchParams);
-    if (!Object.keys(params).length) return null;
-    return params;
-  }
-
-  nextPageInfo(): PageInfo | null {
-    const cursor = this.next_cursor;
-    if (!cursor) {
-      return null;
-    }
-
-    return {
-      params: {
-        cursor: cursor,
-      },
-    };
-  }
-}
-
-export interface ApplicationsListPaginationResponse<Item> {
-  applications: Array<Item>;
-
-  next_cursor: string;
-}
-
-export interface ApplicationsListPaginationParams {
-  cursor?: string;
-
-  limit?: number;
-}
-
-export class ApplicationsListPagination<Item>
-  extends AbstractPage<Item>
-  implements ApplicationsListPaginationResponse<Item>
-{
-  applications: Array<Item>;
-
-  next_cursor: string;
-
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: ApplicationsListPaginationResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
-    super(client, response, body, options);
-
-    this.applications = body.applications || [];
-    this.next_cursor = body.next_cursor || '';
-  }
-
-  getPaginatedItems(): Item[] {
-    return this.applications ?? [];
-  }
-
-  // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsListPaginationParams> | null {
-    const info = this.nextPageInfo();
-    if (!info) return null;
-    if ('params' in info) return info.params;
-    const params = Object.fromEntries(info.url.searchParams);
-    if (!Object.keys(params).length) return null;
-    return params;
-  }
-
-  nextPageInfo(): PageInfo | null {
-    const cursor = this.next_cursor;
-    if (!cursor) {
-      return null;
-    }
-
-    return {
-      params: {
-        cursor: cursor,
-      },
-    };
-  }
-}
-
-export interface EvalJobsListPaginationResponse<Item> {
-  evaluation_rounds: Array<Item>;
-
-  next_cursor: string;
-}
-
-export interface EvalJobsListPaginationParams {
-  cursor?: string;
-
-  limit?: number;
-}
-
-export class EvalJobsListPagination<Item>
-  extends AbstractPage<Item>
-  implements EvalJobsListPaginationResponse<Item>
-{
-  evaluation_rounds: Array<Item>;
-
-  next_cursor: string;
-
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: EvalJobsListPaginationResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
-    super(client, response, body, options);
-
-    this.evaluation_rounds = body.evaluation_rounds || [];
-    this.next_cursor = body.next_cursor || '';
-  }
-
-  getPaginatedItems(): Item[] {
-    return this.evaluation_rounds ?? [];
-  }
-
-  // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<EvalJobsListPaginationParams> | null {
-    const info = this.nextPageInfo();
-    if (!info) return null;
-    if ('params' in info) return info.params;
-    const params = Object.fromEntries(info.url.searchParams);
-    if (!Object.keys(params).length) return null;
-    return params;
-  }
-
-  nextPageInfo(): PageInfo | null {
-    const cursor = this.next_cursor;
-    if (!cursor) {
-      return null;
-    }
-
-    return {
-      params: {
-        cursor: cursor,
-      },
-    };
-  }
-}
-
-export interface ApplicationsListPaginationResponse<Item> {
-  applications: Array<Item>;
-
-  next_cursor: string;
-}
-
-export interface ApplicationsListPaginationParams {
-  cursor?: string;
-
-  limit?: number;
-}
-
-export class ApplicationsListPagination<Item>
-  extends AbstractPage<Item>
-  implements ApplicationsListPaginationResponse<Item>
-{
-  applications: Array<Item>;
-
-  next_cursor: string;
-
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: ApplicationsListPaginationResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
-    super(client, response, body, options);
-
-    this.applications = body.applications || [];
-    this.next_cursor = body.next_cursor || '';
-  }
-
-  getPaginatedItems(): Item[] {
-    return this.applications ?? [];
-  }
-
-  // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsListPaginationParams> | null {
-    const info = this.nextPageInfo();
-    if (!info) return null;
-    if ('params' in info) return info.params;
-    const params = Object.fromEntries(info.url.searchParams);
-    if (!Object.keys(params).length) return null;
-    return params;
-  }
-
-  nextPageInfo(): PageInfo | null {
-    const cursor = this.next_cursor;
-    if (!cursor) {
-      return null;
-    }
-
-    return {
-      params: {
-        cursor: cursor,
-      },
-    };
-  }
-}
-
-export interface ApplicationsListPaginationResponse<Item> {
-  applications: Array<Item>;
-
-  next_cursor: string;
-}
-
-export interface ApplicationsListPaginationParams {
-  cursor?: string;
-
-  limit?: number;
-}
-
-export class ApplicationsListPagination<Item>
-  extends AbstractPage<Item>
-  implements ApplicationsListPaginationResponse<Item>
-{
-  applications: Array<Item>;
-
-  next_cursor: string;
-
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: ApplicationsListPaginationResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
-    super(client, response, body, options);
-
-    this.applications = body.applications || [];
-    this.next_cursor = body.next_cursor || '';
-  }
-
-  getPaginatedItems(): Item[] {
-    return this.applications ?? [];
-  }
-
-  // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsListPaginationParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;

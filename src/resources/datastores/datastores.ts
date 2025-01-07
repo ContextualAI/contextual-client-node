@@ -14,7 +14,7 @@ import {
   GetDocumentsResponse,
   IngestionResponse,
 } from './documents/documents';
-import { DatastoresListPagination, type DatastoresListPaginationParams } from '../../pagination';
+import { DatastoresList, type DatastoresListParams } from '../../pagination';
 
 export class Datastores extends APIResource {
   metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
@@ -48,18 +48,18 @@ export class Datastores extends APIResource {
   list(
     query?: DatastoreListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse>;
+  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse>;
   list(
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse>;
+  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse>;
   list(
     query: DatastoreListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DatastoreListResponsesDatastoresListPagination, DatastoreListResponse> {
+  ): Core.PagePromise<DatastoreListResponsesDatastoresList, DatastoreListResponse> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/datastores', DatastoreListResponsesDatastoresListPagination, {
+    return this._client.getAPIList('/datastores', DatastoreListResponsesDatastoresList, {
       query,
       ...options,
     });
@@ -74,7 +74,7 @@ export class Datastores extends APIResource {
   }
 }
 
-export class DatastoreListResponsesDatastoresListPagination extends DatastoresListPagination<DatastoreListResponse> {}
+export class DatastoreListResponsesDatastoresList extends DatastoresList<DatastoreListResponse> {}
 
 export interface CreateDatastoreResponse {
   /**
@@ -152,7 +152,7 @@ export interface DatastoreCreateParams {
   name: string;
 }
 
-export interface DatastoreListParams extends DatastoresListPaginationParams {
+export interface DatastoreListParams extends DatastoresListParams {
   /**
    * ID of the application used to filter datastores. If provided, only datastores
    * linked to this application will be returned.
@@ -160,7 +160,7 @@ export interface DatastoreListParams extends DatastoresListPaginationParams {
   application_id?: string;
 }
 
-Datastores.DatastoreListResponsesDatastoresListPagination = DatastoreListResponsesDatastoresListPagination;
+Datastores.DatastoreListResponsesDatastoresList = DatastoreListResponsesDatastoresList;
 Datastores.Metadata = Metadata;
 Datastores.Documents = Documents;
 
@@ -170,7 +170,7 @@ export declare namespace Datastores {
     type DatastoresResponse as DatastoresResponse,
     type DatastoreListResponse as DatastoreListResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
-    DatastoreListResponsesDatastoresListPagination as DatastoreListResponsesDatastoresListPagination,
+    DatastoreListResponsesDatastoresList as DatastoreListResponsesDatastoresList,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
