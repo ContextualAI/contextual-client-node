@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import ContextualAI from 'contextual-sdk';
-import { APIUserAbortError } from 'contextual-sdk';
-import { Headers } from 'contextual-sdk/core';
+import ContextualAI from 'contextual-client';
+import { APIUserAbortError } from 'contextual-client';
+import { Headers } from 'contextual-client/core';
 import defaultFetch, { Response, type RequestInit, type RequestInfo } from 'node-fetch';
 
 describe('instantiate client', () => {

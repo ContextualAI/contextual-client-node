@@ -1,5 +1,5 @@
-import { createResponseHeaders } from 'contextual-sdk/core';
-import { Headers } from 'contextual-sdk/_shims/index';
+import { createResponseHeaders } from 'contextual-client/core';
+import { Headers } from 'contextual-client/_shims/index';
 
 describe('response parsing', () => {
   // TODO: test unicode characters

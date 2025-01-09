@@ -1,6 +1,6 @@
 # Contextual AI Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/contextual-sdk.svg)](https://npmjs.org/package/contextual-sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/contextual-sdk)
+[![NPM version](https://img.shields.io/npm/v/contextual-client.svg)](https://npmjs.org/package/contextual-client) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/contextual-client)
 
 This library provides convenient access to the Contextual AI REST API from server-side TypeScript or JavaScript.
 
@@ -15,7 +15,7 @@ npm install git+ssh://git@github.com:stainless-sdks/sunrise-node.git
 ```
 
 > [!NOTE]
-> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install contextual-sdk`
+> Once this package is [published to npm](https://app.stainlessapi.com/docs/guides/publish), this will become: `npm install contextual-client`
 
 ## Usage
 
@@ -23,16 +23,16 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import ContextualAI from 'contextual-sdk';
+import ContextualAI from 'contextual-client';
 
 const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
 async function main() {
-  const createDatastoreResponse = await client.datastores.create({ name: 'name' });
+  const createApplicationOutput = await client.applications.create({ name: 'xxx' });
 
-  console.log(createDatastoreResponse.id);
+  console.log(createApplicationOutput.application_id);
 }
 
 main();
@@ -44,15 +44,15 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import ContextualAI from 'contextual-sdk';
+import ContextualAI from 'contextual-client';
 
 const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
 async function main() {
-  const params: ContextualAI.DatastoreCreateParams = { name: 'name' };
-  const createDatastoreResponse: ContextualAI.CreateDatastoreResponse = await client.datastores.create(
+  const params: ContextualAI.ApplicationCreateParams = { name: 'xxx' };
+  const createApplicationOutput: ContextualAI.CreateApplicationOutput = await client.applications.create(
     params,
   );
 }
@@ -71,7 +71,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const createDatastoreResponse = await client.datastores.create({ name: 'name' }).catch(async (err) => {
+  const createApplicationOutput = await client.applications.create({ name: 'xxx' }).catch(async (err) => {
     if (err instanceof ContextualAI.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -114,7 +114,7 @@ const client = new ContextualAI({
 });
 
 // Or, configure per-request:
-await client.datastores.create({ name: 'name' }, {
+await client.applications.create({ name: 'xxx' }, {
   maxRetries: 5,
 });
 ```
@@ -131,7 +131,7 @@ const client = new ContextualAI({
 });
 
 // Override per-request:
-await client.datastores.create({ name: 'name' }, {
+await client.applications.create({ name: 'xxx' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -146,22 +146,22 @@ List methods in the ContextualAI API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllDatastores(params) {
-  const allDatastores = [];
+async function fetchAllApplications(params) {
+  const allApplications = [];
   // Automatically fetches more pages as needed.
-  for await (const datastore of client.datastores.list()) {
-    allDatastores.push(datastore);
+  for await (const application of client.applications.list()) {
+    allApplications.push(application);
   }
-  return allDatastores;
+  return allApplications;
 }
 ```
 
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.datastores.list();
-for (const datastore of page.datastores) {
-  console.log(datastore);
+let page = await client.applications.list();
+for (const application of page.applications) {
+  console.log(application);
 }
 
 // Convenience methods are provided for manually paginating:
@@ -183,15 +183,15 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new ContextualAI();
 
-const response = await client.datastores.create({ name: 'name' }).asResponse();
+const response = await client.applications.create({ name: 'xxx' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: createDatastoreResponse, response: raw } = await client.datastores
-  .create({ name: 'name' })
+const { data: createApplicationOutput, response: raw } = await client.applications
+  .create({ name: 'xxx' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(createDatastoreResponse.id);
+console.log(createApplicationOutput.application_id);
 ```
 
 ### Making custom/undocumented requests
@@ -249,11 +249,11 @@ add the following import before your first import `from "ContextualAI"`:
 ```ts
 // Tell TypeScript and the package to use the global web fetch instead of node-fetch.
 // Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import 'contextual-sdk/shims/web';
-import ContextualAI from 'contextual-sdk';
+import 'contextual-client/shims/web';
+import ContextualAI from 'contextual-client';
 ```
 
-To do the inverse, add `import "contextual-sdk/shims/node"` (which does import polyfills).
+To do the inverse, add `import "contextual-client/shims/node"` (which does import polyfills).
 This can also be useful if you are getting the wrong TypeScript types for `Response` ([more details](https://github.com/stainless-sdks/sunrise-node/tree/main/src/_shims#readme)).
 
 ### Logging and middleware
@@ -263,7 +263,7 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import ContextualAI from 'contextual-sdk';
+import ContextualAI from 'contextual-client';
 
 const client = new ContextualAI({
   fetch: async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -295,8 +295,8 @@ const client = new ContextualAI({
 });
 
 // Override per-request:
-await client.datastores.create(
-  { name: 'name' },
+await client.applications.create(
+  { name: 'xxx' },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
   },

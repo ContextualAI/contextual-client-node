@@ -42,12 +42,12 @@ export let isFsReadStream: Shims['isFsReadStream'] | undefined = undefined;
 export function setShims(shims: Shims, options: { auto: boolean } = { auto: false }) {
   if (auto) {
     throw new Error(
-      `you must \`import 'contextual-sdk/shims/${shims.kind}'\` before importing anything else from contextual-sdk`,
+      `you must \`import 'contextual-client/shims/${shims.kind}'\` before importing anything else from contextual-client`,
     );
   }
   if (kind) {
     throw new Error(
-      `can't \`import 'contextual-sdk/shims/${shims.kind}'\` after \`import 'contextual-sdk/shims/${kind}'\``,
+      `can't \`import 'contextual-client/shims/${shims.kind}'\` after \`import 'contextual-client/shims/${kind}'\``,
     );
   }
   auto = options.auto;
