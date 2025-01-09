@@ -1,6 +1,6 @@
-import { multipartFormRequestOptions, createForm } from 'contextual-sdk/core';
-import { Blob } from 'contextual-sdk/_shims/index';
-import { toFile } from 'contextual-sdk';
+import { multipartFormRequestOptions, createForm } from 'contextual-client/core';
+import { Blob } from 'contextual-client/_shims/index';
+import { toFile } from 'contextual-client';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

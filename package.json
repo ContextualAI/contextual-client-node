@@ -1,5 +1,5 @@
 {
-  "name": "contextual-sdk",
+  "name": "contextual-client",
   "version": "0.0.1-alpha.0",
   "description": "The official TypeScript library for the Contextual AI API",
   "author": "Contextual AI <support@contextual.ai>",
@@ -59,8 +59,8 @@
     "./shims/web.mjs"
   ],
   "imports": {
-    "contextual-sdk": ".",
-    "contextual-sdk/*": "./src/*"
+    "contextual-client": ".",
+    "contextual-client/*": "./src/*"
   },
   "exports": {
     "./_shims/auto/*": {
