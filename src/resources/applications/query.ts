@@ -242,11 +242,6 @@ export interface QueryMetricsParams {
   created_before?: string;
 
   /**
-   * Filters messages from contextual.
-   */
-  include_contextual?: boolean;
-
-  /**
    * Limits the number of messages to return.
    */
   limit?: number;

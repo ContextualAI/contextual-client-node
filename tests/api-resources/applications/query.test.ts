@@ -60,7 +60,6 @@ describe('resource query', () => {
         {
           created_after: '2019-12-27T18:11:19.117Z',
           created_before: '2019-12-27T18:11:19.117Z',
-          include_contextual: true,
           limit: 0,
           offset: 0,
         },
