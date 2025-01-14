@@ -34,5 +34,5 @@ export {
   type QueryFeedbackParams,
   type QueryMetricsParams,
   type QueryStartParams,
-} from './query';
+} from './query/index';
 export { Tune, type TuneResponse, type TuneCreateParams } from './tune/index';

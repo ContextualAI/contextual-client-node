@@ -5,16 +5,6 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetAgentResponse, Metadata } from './metadata';
-import * as QueryAPI from './query';
-import {
-  Query,
-  QueryFeedbackParams,
-  QueryFeedbackResponse,
-  QueryMetricsParams,
-  QueryMetricsResponse,
-  QueryResponse,
-  QueryStartParams,
-} from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -30,6 +20,16 @@ import {
 } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
+import * as QueryAPI from './query/query';
+import {
+  Query,
+  QueryFeedbackParams,
+  QueryFeedbackResponse,
+  QueryMetricsParams,
+  QueryMetricsResponse,
+  QueryResponse,
+  QueryStartParams,
+} from './query/query';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
 import { Page, type PageParams } from '../../pagination';
