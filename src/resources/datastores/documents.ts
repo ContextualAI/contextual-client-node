@@ -105,9 +105,19 @@ export interface DocumentDescription {
 }
 
 /**
+ * Response body from POST /data/documents
+ */
+export interface IngestionResponse {
+  /**
+   * ID of the document being ingested
+   */
+  id: string;
+}
+
+/**
  * Response body from GET /data/documents
  */
-export interface GetDocumentsResponse {
+export interface ListDocumentsResponse {
   /**
    * List of documents retrieved based on the user's GET request
    */
@@ -124,16 +134,6 @@ export interface GetDocumentsResponse {
    * limit were specified. Ommitted if job_id was set in the request.
    */
   total_count?: number;
-}
-
-/**
- * Response body from POST /data/documents
- */
-export interface IngestionResponse {
-  /**
-   * ID of the document being ingested
-   */
-  id: string;
 }
 
 export type DocumentDeleteResponse = unknown;
@@ -168,8 +168,8 @@ Documents.DocumentDescriptionsDocumentsPage = DocumentDescriptionsDocumentsPage;
 export declare namespace Documents {
   export {
     type DocumentDescription as DocumentDescription,
-    type GetDocumentsResponse as GetDocumentsResponse,
     type IngestionResponse as IngestionResponse,
+    type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
     DocumentDescriptionsDocumentsPage as DocumentDescriptionsDocumentsPage,
     type DocumentCreateParams as DocumentCreateParams,

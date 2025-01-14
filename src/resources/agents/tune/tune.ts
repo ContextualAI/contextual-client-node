@@ -5,7 +5,7 @@ import * as Core from '../../../core';
 import * as ModelsAPI from './models';
 import { ModelListResponse, Models } from './models';
 import * as JobsAPI from './jobs/jobs';
-import { GetTuneJobResponse, JobDeleteResponse, Jobs, ListGetTuneJobResponse } from './jobs/jobs';
+import { JobDeleteResponse, Jobs, ListTuneJobsResponse, TuneJobResponse } from './jobs/jobs';
 
 export class Tune extends APIResource {
   jobs: JobsAPI.Jobs = new JobsAPI.Jobs(this._client);
@@ -108,8 +108,8 @@ export declare namespace Tune {
 
   export {
     Jobs as Jobs,
-    type GetTuneJobResponse as GetTuneJobResponse,
-    type ListGetTuneJobResponse as ListGetTuneJobResponse,
+    type ListTuneJobsResponse as ListTuneJobsResponse,
+    type TuneJobResponse as TuneJobResponse,
     type JobDeleteResponse as JobDeleteResponse,
   };
 

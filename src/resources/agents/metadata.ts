@@ -7,7 +7,7 @@ export class Metadata extends APIResource {
   /**
    * Get metadata and configuration of a given `Agent`.
    */
-  retrieve(agentId: string, options?: Core.RequestOptions): Core.APIPromise<GetAgentResponse> {
+  retrieve(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadataResponse> {
     return this._client.get(`/agents/${agentId}/metadata`, options);
   }
 }
@@ -15,7 +15,7 @@ export class Metadata extends APIResource {
 /**
  * Response to GET Agent request
  */
-export interface GetAgentResponse {
+export interface AgentMetadataResponse {
   /**
    * The IDs of the datastore(s) associated with the agent
    */
@@ -55,5 +55,5 @@ export interface GetAgentResponse {
 }
 
 export declare namespace Metadata {
-  export { type GetAgentResponse as GetAgentResponse };
+  export { type AgentMetadataResponse as AgentMetadataResponse };
 }

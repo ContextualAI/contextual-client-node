@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
-import { GetAgentResponse, Metadata } from './metadata';
+import { AgentMetadataResponse, Metadata } from './metadata';
 import * as QueryAPI from './query';
 import {
   Query,
@@ -18,18 +18,7 @@ import {
   RetrievalInfoResponse,
 } from './query';
 import * as DatasetsAPI from './datasets/datasets';
-import {
-  CreateDatasetResponse,
-  DatasetCreateParams,
-  DatasetDeleteResponse,
-  DatasetListParams,
-  DatasetRetrieveParams,
-  DatasetRetrieveResponse,
-  DatasetUpdateParams,
-  Datasets,
-  DatasetsResponse,
-  GetDatasetResponse,
-} from './datasets/datasets';
+import { CreateDatasetResponse, DatasetResponse, Datasets, ListDatasetsResponse } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
 import * as TuneAPI from './tune/tune';
@@ -115,24 +104,6 @@ export interface Agent {
   name: string;
 }
 
-export interface AgentsResponse {
-  /**
-   * Total number of available agents
-   */
-  total_count: number;
-
-  /**
-   * List of active agents
-   */
-  data?: Array<Agent>;
-
-  /**
-   * Next cursor to continue pagination. Omitted if there are no more agents to
-   * retrieve.
-   */
-  next_cursor?: string;
-}
-
 /**
  * Response to POST /agents request
  */
@@ -148,6 +119,24 @@ export interface CreateAgentOutput {
    * automatically created datastore.
    */
   datastore_ids: Array<string>;
+}
+
+export interface ListAgentsResponse {
+  /**
+   * Total number of available agents
+   */
+  total_count: number;
+
+  /**
+   * List of active agents
+   */
+  data?: Array<Agent>;
+
+  /**
+   * Next cursor to continue pagination. Omitted if there are no more agents to
+   * retrieve.
+   */
+  next_cursor?: string;
 }
 
 export type AgentUpdateResponse = unknown;
@@ -227,8 +216,8 @@ Agents.Tune = Tune;
 export declare namespace Agents {
   export {
     type Agent as Agent,
-    type AgentsResponse as AgentsResponse,
     type CreateAgentOutput as CreateAgentOutput,
+    type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
     AgentsPage as AgentsPage,
@@ -237,7 +226,7 @@ export declare namespace Agents {
     type AgentListParams as AgentListParams,
   };
 
-  export { Metadata as Metadata, type GetAgentResponse as GetAgentResponse };
+  export { Metadata as Metadata, type AgentMetadataResponse as AgentMetadataResponse };
 
   export {
     Query as Query,
@@ -260,14 +249,8 @@ export declare namespace Agents {
   export {
     Datasets as Datasets,
     type CreateDatasetResponse as CreateDatasetResponse,
-    type DatasetsResponse as DatasetsResponse,
-    type GetDatasetResponse as GetDatasetResponse,
-    type DatasetRetrieveResponse as DatasetRetrieveResponse,
-    type DatasetDeleteResponse as DatasetDeleteResponse,
-    type DatasetCreateParams as DatasetCreateParams,
-    type DatasetRetrieveParams as DatasetRetrieveParams,
-    type DatasetUpdateParams as DatasetUpdateParams,
-    type DatasetListParams as DatasetListParams,
+    type DatasetResponse as DatasetResponse,
+    type ListDatasetsResponse as ListDatasetsResponse,
   };
 
   export { Tune as Tune, type TuneResponse as TuneResponse, type TuneCreateParams as TuneCreateParams };

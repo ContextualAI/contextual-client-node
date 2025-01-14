@@ -8,12 +8,12 @@ export class Metadata extends APIResource {
    * Get the details of a given `Datastore`, including its name, create time, and the
    * list of `Agents` which are currently configured to use the `Datastore`.
    */
-  retrieve(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<GetDatastoreResponse> {
+  retrieve(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreMetadataResponse> {
     return this._client.get(`/datastores/${datastoreId}/metadata`, options);
   }
 }
 
-export interface GetDatastoreResponse {
+export interface DatastoreMetadataResponse {
   /**
    * List of agents using this datastore
    */
@@ -31,5 +31,5 @@ export interface GetDatastoreResponse {
 }
 
 export declare namespace Metadata {
-  export { type GetDatastoreResponse as GetDatastoreResponse };
+  export { type DatastoreMetadataResponse as DatastoreMetadataResponse };
 }

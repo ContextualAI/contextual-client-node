@@ -13,7 +13,7 @@ export class Metadata extends APIResource {
     agentId: string,
     jobId: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<JobsAPI.GetTuneJobResponse> {
+  ): Core.APIPromise<JobsAPI.TuneJobResponse> {
     return this._client.get(`/agents/${agentId}/tune/jobs/${jobId}/metadata`, options);
   }
 }

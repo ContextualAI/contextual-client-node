@@ -8,9 +8,13 @@ const client = new ContextualAI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('top level methods', () => {
-  test('lmUnit: only required params', async () => {
-    const responsePromise = client.lmUnit({ query: 'query', response: 'response', unit_test: 'unit_test' });
+describe('resource lmUnit', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.lmUnit.create({
+      query: 'query',
+      response: 'response',
+      unit_test: 'unit_test',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -20,7 +24,11 @@ describe('top level methods', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('lmUnit: required and optional params', async () => {
-    const response = await client.lmUnit({ query: 'query', response: 'response', unit_test: 'unit_test' });
+  test('create: required and optional params', async () => {
+    const response = await client.lmUnit.create({
+      query: 'query',
+      response: 'response',
+      unit_test: 'unit_test',
+    });
   });
 });

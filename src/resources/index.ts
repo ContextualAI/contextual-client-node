@@ -4,8 +4,8 @@ export {
   AgentsPage,
   Agents,
   type Agent,
-  type AgentsResponse,
   type CreateAgentOutput,
+  type ListAgentsResponse,
   type AgentUpdateResponse,
   type AgentDeleteResponse,
   type AgentCreateParams,
@@ -17,9 +17,9 @@ export {
   Datastores,
   type CreateDatastoreResponse,
   type Datastore,
-  type DatastoresResponse,
+  type ListDatastoresResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
-export { type LMUnitResponse, type LMUnitParams } from './top-level';
+export { LMUnit, type LMUnitCreateResponse, type LMUnitCreateParams } from './lmunit';
