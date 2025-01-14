@@ -9,6 +9,29 @@ const client = new ContextualAI({
 });
 
 describe('resource query', () => {
+  test('create: only required params', async () => {
+    const responsePromise = client.agents.query.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      messages: [{ content: 'content', role: 'user' }],
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('create: required and optional params', async () => {
+    const response = await client.agents.query.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      messages: [{ content: 'content', role: 'user' }],
+      retrievals_only: true,
+      conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      model_id: 'model_id',
+      stream: true,
+    });
+  });
+
   test('feedback: only required params', async () => {
     const responsePromise = client.agents.query.feedback('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       feedback: 'thumbs_up',
@@ -68,10 +91,12 @@ describe('resource query', () => {
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 
-  test('start: only required params', async () => {
-    const responsePromise = client.agents.query.start('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      messages: [{ content: 'content', role: 'user' }],
-    });
+  test('retrievalInfo: only required params', async () => {
+    const responsePromise = client.agents.query.retrievalInfo(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { content_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] },
+    );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -81,13 +106,11 @@ describe('resource query', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('start: required and optional params', async () => {
-    const response = await client.agents.query.start('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      messages: [{ content: 'content', role: 'user' }],
-      retrievals_only: true,
-      conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      model_id: 'model_id',
-      stream: true,
-    });
+  test('retrievalInfo: required and optional params', async () => {
+    const response = await client.agents.query.retrievalInfo(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { content_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'] },
+    );
   });
 });

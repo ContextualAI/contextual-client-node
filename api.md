@@ -80,25 +80,17 @@ Methods:
 
 Types:
 
-- <code><a href="./src/resources/agents/query/query.ts">QueryResponse</a></code>
-- <code><a href="./src/resources/agents/query/query.ts">QueryFeedbackResponse</a></code>
-- <code><a href="./src/resources/agents/query/query.ts">QueryMetricsResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryMetricsResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryRetrievalInfoResponse</a></code>
 
 Methods:
 
-- <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query/query.ts">feedback</a>(agentId, { ...params }) -> unknown</code>
-- <code title="get /agents/{agent_id}/metrics">client.agents.query.<a href="./src/resources/agents/query/query.ts">metrics</a>(agentId, { ...params }) -> QueryMetricsResponse</code>
-- <code title="post /agents/{agent_id}/query">client.agents.query.<a href="./src/resources/agents/query/query.ts">start</a>(agentId, { ...params }) -> QueryResponse</code>
-
-### Retrieval
-
-Types:
-
-- <code><a href="./src/resources/agents/query/retrieval.ts">RetrievalInfoResponse</a></code>
-
-Methods:
-
-- <code title="get /agents/{agent_id}/query/{message_id}/retrieval/info">client.agents.query.retrieval.<a href="./src/resources/agents/query/retrieval.ts">info</a>(agentId, messageId, { ...params }) -> RetrievalInfoResponse</code>
+- <code title="post /agents/{agent_id}/query">client.agents.query.<a href="./src/resources/agents/query.ts">create</a>(agentId, { ...params }) -> QueryResponse</code>
+- <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query.ts">feedback</a>(agentId, { ...params }) -> unknown</code>
+- <code title="get /agents/{agent_id}/metrics">client.agents.query.<a href="./src/resources/agents/query.ts">metrics</a>(agentId, { ...params }) -> QueryMetricsResponse</code>
+- <code title="get /agents/{agent_id}/query/{message_id}/retrieval/info">client.agents.query.<a href="./src/resources/agents/query.ts">retrievalInfo</a>(agentId, messageId, { ...params }) -> QueryRetrievalInfoResponse</code>
 
 ## Evaluate
 
