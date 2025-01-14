@@ -29,9 +29,9 @@ export { Metadata, type GetAgentResponse } from './metadata';
 export {
   Query,
   type QueryResponse,
+  type RetrievalInfoResponse,
   type QueryFeedbackResponse,
   type QueryMetricsResponse,
-  type QueryRetrievalInfoResponse,
   type QueryCreateParams,
   type QueryFeedbackParams,
   type QueryMetricsParams,
