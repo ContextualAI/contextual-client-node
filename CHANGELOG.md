@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-01-14)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* chore: update README. ([0b9ddd2](https://github.com/ContextualAI/contextual-client-node/commit/0b9ddd2eaf0ca3e0aad489131c5a803c64d922b8))
+
 ## 0.1.0-alpha.1 (2025-01-14)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/ContextualAI/contextual-client-node/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)
