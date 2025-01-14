@@ -1,10 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../resource';
-import { isRequestOptions } from '../../core';
-import * as Core from '../../core';
+import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
+import * as Core from '../../../core';
+import * as RetrievalAPI from './retrieval';
+import { Retrieval, RetrievalInfoParams, RetrievalInfoResponse } from './retrieval';
 
 export class Query extends APIResource {
+  retrieval: RetrievalAPI.Retrieval = new RetrievalAPI.Retrieval(this._client);
+
   /**
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
    * overall `Agent` performance through the `Feedback` page in the Contextual UI,
@@ -295,6 +299,8 @@ export namespace QueryStartParams {
   }
 }
 
+Query.Retrieval = Retrieval;
+
 export declare namespace Query {
   export {
     type QueryResponse as QueryResponse,
@@ -303,5 +309,11 @@ export declare namespace Query {
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,
     type QueryStartParams as QueryStartParams,
+  };
+
+  export {
+    Retrieval as Retrieval,
+    type RetrievalInfoResponse as RetrievalInfoResponse,
+    type RetrievalInfoParams as RetrievalInfoParams,
   };
 }
