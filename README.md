@@ -30,9 +30,9 @@ const client = new ContextualAI({
 });
 
 async function main() {
-  const createApplicationOutput = await client.applications.create({ name: 'xxx' });
+  const createAgentOutput = await client.agents.create({ name: 'xxx' });
 
-  console.log(createApplicationOutput.application_id);
+  console.log(createAgentOutput.id);
 }
 
 main();
@@ -51,10 +51,8 @@ const client = new ContextualAI({
 });
 
 async function main() {
-  const params: ContextualAI.ApplicationCreateParams = { name: 'xxx' };
-  const createApplicationOutput: ContextualAI.CreateApplicationOutput = await client.applications.create(
-    params,
-  );
+  const params: ContextualAI.AgentCreateParams = { name: 'xxx' };
+  const createAgentOutput: ContextualAI.CreateAgentOutput = await client.agents.create(params);
 }
 
 main();
@@ -71,7 +69,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const createApplicationOutput = await client.applications.create({ name: 'xxx' }).catch(async (err) => {
+  const createAgentOutput = await client.agents.create({ name: 'xxx' }).catch(async (err) => {
     if (err instanceof ContextualAI.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -114,7 +112,7 @@ const client = new ContextualAI({
 });
 
 // Or, configure per-request:
-await client.applications.create({ name: 'xxx' }, {
+await client.agents.create({ name: 'xxx' }, {
   maxRetries: 5,
 });
 ```
@@ -131,7 +129,7 @@ const client = new ContextualAI({
 });
 
 // Override per-request:
-await client.applications.create({ name: 'xxx' }, {
+await client.agents.create({ name: 'xxx' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -146,22 +144,22 @@ List methods in the ContextualAI API are paginated.
 You can use the `for await … of` syntax to iterate through items across all pages:
 
 ```ts
-async function fetchAllApplications(params) {
-  const allApplications = [];
+async function fetchAllAgents(params) {
+  const allAgents = [];
   // Automatically fetches more pages as needed.
-  for await (const application of client.applications.list()) {
-    allApplications.push(application);
+  for await (const agent of client.agents.list()) {
+    allAgents.push(agent);
   }
-  return allApplications;
+  return allAgents;
 }
 ```
 
 Alternatively, you can request a single page at a time:
 
 ```ts
-let page = await client.applications.list();
-for (const application of page.applications) {
-  console.log(application);
+let page = await client.agents.list();
+for (const agent of page.data) {
+  console.log(agent);
 }
 
 // Convenience methods are provided for manually paginating:
@@ -183,15 +181,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new ContextualAI();
 
-const response = await client.applications.create({ name: 'xxx' }).asResponse();
+const response = await client.agents.create({ name: 'xxx' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: createApplicationOutput, response: raw } = await client.applications
-  .create({ name: 'xxx' })
-  .withResponse();
+const { data: createAgentOutput, response: raw } = await client.agents.create({ name: 'xxx' }).withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(createApplicationOutput.application_id);
+console.log(createAgentOutput.id);
 ```
 
 ### Making custom/undocumented requests
@@ -295,7 +291,7 @@ const client = new ContextualAI({
 });
 
 // Override per-request:
-await client.applications.create(
+await client.agents.create(
   { name: 'xxx' },
   {
     httpAgent: new http.Agent({ keepAlive: false }),

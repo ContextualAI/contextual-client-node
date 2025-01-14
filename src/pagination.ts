@@ -116,41 +116,36 @@ export class DocumentsPage<Item> extends AbstractPage<Item> implements Documents
   }
 }
 
-export interface ApplicationsPageResponse<Item> {
-  applications: Array<Item>;
+export interface PageResponse<Item> {
+  data: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface ApplicationsPageParams {
+export interface PageParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class ApplicationsPage<Item> extends AbstractPage<Item> implements ApplicationsPageResponse<Item> {
-  applications: Array<Item>;
+export class Page<Item> extends AbstractPage<Item> implements PageResponse<Item> {
+  data: Array<Item>;
 
   next_cursor: string;
 
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: ApplicationsPageResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
+  constructor(client: APIClient, response: Response, body: PageResponse<Item>, options: FinalRequestOptions) {
     super(client, response, body, options);
 
-    this.applications = body.applications || [];
+    this.data = body.data || [];
     this.next_cursor = body.next_cursor || '';
   }
 
   getPaginatedItems(): Item[] {
-    return this.applications ?? [];
+    return this.data ?? [];
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<ApplicationsPageParams> | null {
+  nextPageParams(): Partial<PageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;

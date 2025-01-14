@@ -6,7 +6,7 @@ import * as Core from '../../core';
 export class Metadata extends APIResource {
   /**
    * Get the details of a given `Datastore`, including its name, create time, and the
-   * list of `Applications` which are currently configured to use the `Datastore`.
+   * list of `Agents` which are currently configured to use the `Datastore`.
    */
   retrieve(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<GetDatastoreResponse> {
     return this._client.get(`/datastores/${datastoreId}/metadata`, options);
@@ -15,9 +15,9 @@ export class Metadata extends APIResource {
 
 export interface GetDatastoreResponse {
   /**
-   * List of applications using this datastore
+   * List of agents using this datastore
    */
-  application_ids: Array<string>;
+  agent_ids: Array<string>;
 
   /**
    * Timestamp of when the datastore was created
