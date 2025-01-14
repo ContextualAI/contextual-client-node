@@ -6,7 +6,7 @@ import * as Core from '../../../core';
 import * as DatasetsAPI from './datasets';
 import { type Response } from '../../../_shims/index';
 
-export class Evaluation extends APIResource {
+export class Evaluate extends APIResource {
   /**
    * Create a new evaluation `Dataset` for the specified `Agent` using the provided
    * JSONL file. A `Dataset` is a versioned collection of samples conforming to a
@@ -33,11 +33,11 @@ export class Evaluation extends APIResource {
    */
   create(
     agentId: string,
-    body: EvaluationCreateParams,
+    body: EvaluateCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.CreateDatasetResponse> {
     return this._client.post(
-      `/agents/${agentId}/datasets/evaluation`,
+      `/agents/${agentId}/datasets/evaluate`,
       Core.multipartFormRequestOptions({ body, ...options }),
     );
   }
@@ -56,20 +56,20 @@ export class Evaluation extends APIResource {
   retrieve(
     agentId: string,
     datasetName: string,
-    query?: EvaluationRetrieveParams,
+    query?: EvaluateRetrieveParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<Response>;
   retrieve(agentId: string, datasetName: string, options?: Core.RequestOptions): Core.APIPromise<Response>;
   retrieve(
     agentId: string,
     datasetName: string,
-    query: EvaluationRetrieveParams | Core.RequestOptions = {},
+    query: EvaluateRetrieveParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<Response> {
     if (isRequestOptions(query)) {
       return this.retrieve(agentId, datasetName, {}, query);
     }
-    return this._client.get(`/agents/${agentId}/datasets/evaluation/${datasetName}`, {
+    return this._client.get(`/agents/${agentId}/datasets/evaluate/${datasetName}`, {
       query,
       ...options,
       headers: { Accept: 'application/octet-stream', ...options?.headers },
@@ -100,11 +100,11 @@ export class Evaluation extends APIResource {
   update(
     agentId: string,
     datasetName: string,
-    body: EvaluationUpdateParams,
+    body: EvaluateUpdateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.CreateDatasetResponse> {
     return this._client.put(
-      `/agents/${agentId}/datasets/evaluation/${datasetName}`,
+      `/agents/${agentId}/datasets/evaluate/${datasetName}`,
       Core.multipartFormRequestOptions({ body, ...options }),
     );
   }
@@ -120,19 +120,19 @@ export class Evaluation extends APIResource {
    */
   list(
     agentId: string,
-    query?: EvaluationListParams,
+    query?: EvaluateListParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.ListDatasetsResponse>;
   list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<DatasetsAPI.ListDatasetsResponse>;
   list(
     agentId: string,
-    query: EvaluationListParams | Core.RequestOptions = {},
+    query: EvaluateListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.ListDatasetsResponse> {
     if (isRequestOptions(query)) {
       return this.list(agentId, {}, query);
     }
-    return this._client.get(`/agents/${agentId}/datasets/evaluation`, { query, ...options });
+    return this._client.get(`/agents/${agentId}/datasets/evaluate`, { query, ...options });
   }
 
   /**
@@ -143,7 +143,7 @@ export class Evaluation extends APIResource {
    * This operation is irreversible.
    */
   delete(agentId: string, datasetName: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
-    return this._client.delete(`/agents/${agentId}/datasets/evaluation/${datasetName}`, options);
+    return this._client.delete(`/agents/${agentId}/datasets/evaluate/${datasetName}`, options);
   }
 
   /**
@@ -156,7 +156,7 @@ export class Evaluation extends APIResource {
   metadata(
     agentId: string,
     datasetName: string,
-    query?: EvaluationMetadataParams,
+    query?: EvaluateMetadataParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.DatasetMetadata>;
   metadata(
@@ -167,22 +167,22 @@ export class Evaluation extends APIResource {
   metadata(
     agentId: string,
     datasetName: string,
-    query: EvaluationMetadataParams | Core.RequestOptions = {},
+    query: EvaluateMetadataParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<DatasetsAPI.DatasetMetadata> {
     if (isRequestOptions(query)) {
       return this.metadata(agentId, datasetName, {}, query);
     }
-    return this._client.get(`/agents/${agentId}/datasets/evaluation/${datasetName}/metadata`, {
+    return this._client.get(`/agents/${agentId}/datasets/evaluate/${datasetName}/metadata`, {
       query,
       ...options,
     });
   }
 }
 
-export type EvaluationDeleteResponse = unknown;
+export type EvaluateDeleteResponse = unknown;
 
-export interface EvaluationCreateParams {
+export interface EvaluateCreateParams {
   /**
    * Name of the evaluation dataset
    */
@@ -199,7 +199,7 @@ export interface EvaluationCreateParams {
   file: Core.Uploadable;
 }
 
-export interface EvaluationRetrieveParams {
+export interface EvaluateRetrieveParams {
   /**
    * Batch size for processing
    */
@@ -212,7 +212,7 @@ export interface EvaluationRetrieveParams {
   version?: string;
 }
 
-export interface EvaluationUpdateParams {
+export interface EvaluateUpdateParams {
   /**
    * Type of evaluation dataset which determines its schema and validation rules.
    * Must match the `dataset_type` used at dataset creation time.
@@ -225,7 +225,7 @@ export interface EvaluationUpdateParams {
   file: Core.Uploadable;
 }
 
-export interface EvaluationListParams {
+export interface EvaluateListParams {
   /**
    * Optional dataset name to filter the results by. If provided, only versions from
    * that dataset are listed.
@@ -233,20 +233,20 @@ export interface EvaluationListParams {
   dataset_name?: string;
 }
 
-export interface EvaluationMetadataParams {
+export interface EvaluateMetadataParams {
   /**
    * Version number of the dataset. Defaults to the latest version if not specified.
    */
   version?: string;
 }
 
-export declare namespace Evaluation {
+export declare namespace Evaluate {
   export {
-    type EvaluationDeleteResponse as EvaluationDeleteResponse,
-    type EvaluationCreateParams as EvaluationCreateParams,
-    type EvaluationRetrieveParams as EvaluationRetrieveParams,
-    type EvaluationUpdateParams as EvaluationUpdateParams,
-    type EvaluationListParams as EvaluationListParams,
-    type EvaluationMetadataParams as EvaluationMetadataParams,
+    type EvaluateDeleteResponse as EvaluateDeleteResponse,
+    type EvaluateCreateParams as EvaluateCreateParams,
+    type EvaluateRetrieveParams as EvaluateRetrieveParams,
+    type EvaluateUpdateParams as EvaluateUpdateParams,
+    type EvaluateListParams as EvaluateListParams,
+    type EvaluateMetadataParams as EvaluateMetadataParams,
   };
 }
