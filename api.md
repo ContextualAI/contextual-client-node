@@ -113,20 +113,20 @@ Methods:
 - <code title="delete /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">delete</a>(agentId, datasetName) -> unknown</code>
 - <code title="get /agents/{agent_id}/datasets/tune/{dataset_name}/metadata">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">metadata</a>(agentId, datasetName, { ...params }) -> DatasetMetadata</code>
 
-### Evaluation
+### Evaluate
 
 Types:
 
-- <code><a href="./src/resources/agents/datasets/evaluation.ts">EvaluationDeleteResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/evaluate.ts">EvaluateDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /agents/{agent_id}/datasets/evaluation">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">create</a>(agentId, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /agents/{agent_id}/datasets/evaluation/{dataset_name}">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">retrieve</a>(agentId, datasetName, { ...params }) -> Response</code>
-- <code title="put /agents/{agent_id}/datasets/evaluation/{dataset_name}">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">update</a>(agentId, datasetName, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /agents/{agent_id}/datasets/evaluation">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">list</a>(agentId, { ...params }) -> ListDatasetsResponse</code>
-- <code title="delete /agents/{agent_id}/datasets/evaluation/{dataset_name}">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">delete</a>(agentId, datasetName) -> unknown</code>
-- <code title="get /agents/{agent_id}/datasets/evaluation/{dataset_name}/metadata">client.agents.datasets.evaluation.<a href="./src/resources/agents/datasets/evaluation.ts">metadata</a>(agentId, datasetName, { ...params }) -> DatasetMetadata</code>
+- <code title="post /agents/{agent_id}/datasets/evaluate">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">create</a>(agentId, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/evaluate/{dataset_name}">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">retrieve</a>(agentId, datasetName, { ...params }) -> Response</code>
+- <code title="put /agents/{agent_id}/datasets/evaluate/{dataset_name}">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">update</a>(agentId, datasetName, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/evaluate">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">list</a>(agentId, { ...params }) -> ListDatasetsResponse</code>
+- <code title="delete /agents/{agent_id}/datasets/evaluate/{dataset_name}">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">delete</a>(agentId, datasetName) -> unknown</code>
+- <code title="get /agents/{agent_id}/datasets/evaluate/{dataset_name}/metadata">client.agents.datasets.evaluate.<a href="./src/resources/agents/datasets/evaluate.ts">metadata</a>(agentId, datasetName, { ...params }) -> DatasetMetadata</code>
 
 ## Tune
 

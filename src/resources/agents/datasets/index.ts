@@ -7,14 +7,14 @@ export {
   type ListDatasetsResponse,
 } from './datasets';
 export {
-  Evaluation,
-  type EvaluationDeleteResponse,
-  type EvaluationCreateParams,
-  type EvaluationRetrieveParams,
-  type EvaluationUpdateParams,
-  type EvaluationListParams,
-  type EvaluationMetadataParams,
-} from './evaluation';
+  Evaluate,
+  type EvaluateDeleteResponse,
+  type EvaluateCreateParams,
+  type EvaluateRetrieveParams,
+  type EvaluateUpdateParams,
+  type EvaluateListParams,
+  type EvaluateMetadataParams,
+} from './evaluate';
 export {
   Tune,
   type TuneDeleteResponse,

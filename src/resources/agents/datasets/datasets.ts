@@ -1,16 +1,16 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
-import * as EvaluationAPI from './evaluation';
+import * as EvaluateAPI from './evaluate';
 import {
-  Evaluation,
-  EvaluationCreateParams,
-  EvaluationDeleteResponse,
-  EvaluationListParams,
-  EvaluationMetadataParams,
-  EvaluationRetrieveParams,
-  EvaluationUpdateParams,
-} from './evaluation';
+  Evaluate,
+  EvaluateCreateParams,
+  EvaluateDeleteResponse,
+  EvaluateListParams,
+  EvaluateMetadataParams,
+  EvaluateRetrieveParams,
+  EvaluateUpdateParams,
+} from './evaluate';
 import * as TuneAPI from './tune';
 import {
   Tune,
@@ -24,7 +24,7 @@ import {
 
 export class Datasets extends APIResource {
   tune: TuneAPI.Tune = new TuneAPI.Tune(this._client);
-  evaluation: EvaluationAPI.Evaluation = new EvaluationAPI.Evaluation(this._client);
+  evaluate: EvaluateAPI.Evaluate = new EvaluateAPI.Evaluate(this._client);
 }
 
 /**
@@ -137,7 +137,7 @@ export namespace ListDatasetsResponse {
 }
 
 Datasets.Tune = Tune;
-Datasets.Evaluation = Evaluation;
+Datasets.Evaluate = Evaluate;
 
 export declare namespace Datasets {
   export {
@@ -157,12 +157,12 @@ export declare namespace Datasets {
   };
 
   export {
-    Evaluation as Evaluation,
-    type EvaluationDeleteResponse as EvaluationDeleteResponse,
-    type EvaluationCreateParams as EvaluationCreateParams,
-    type EvaluationRetrieveParams as EvaluationRetrieveParams,
-    type EvaluationUpdateParams as EvaluationUpdateParams,
-    type EvaluationListParams as EvaluationListParams,
-    type EvaluationMetadataParams as EvaluationMetadataParams,
+    Evaluate as Evaluate,
+    type EvaluateDeleteResponse as EvaluateDeleteResponse,
+    type EvaluateCreateParams as EvaluateCreateParams,
+    type EvaluateRetrieveParams as EvaluateRetrieveParams,
+    type EvaluateUpdateParams as EvaluateUpdateParams,
+    type EvaluateListParams as EvaluateListParams,
+    type EvaluateMetadataParams as EvaluateMetadataParams,
   };
 }

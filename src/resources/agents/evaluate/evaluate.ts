@@ -46,6 +46,7 @@ export interface CreateEvaluationResponse {
 export interface EvaluateCreateParams {
   /**
    * List of metrics to use. Supported metrics are `equivalence` and `groundedness`.
+   * Use comma-separated list to pass multiple values or use repeated keys.
    */
   metrics: Array<'equivalence' | 'groundedness'>;
 
