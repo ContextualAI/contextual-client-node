@@ -1,17 +1,17 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
-  ApplicationsApplicationsPage,
-  Applications,
-  type Application,
-  type ApplicationsResponse,
-  type CreateApplicationOutput,
-  type ApplicationUpdateResponse,
-  type ApplicationDeleteResponse,
-  type ApplicationCreateParams,
-  type ApplicationUpdateParams,
-  type ApplicationListParams,
-} from './applications/applications';
+  AgentsPage,
+  Agents,
+  type Agent,
+  type AgentsResponse,
+  type CreateAgentOutput,
+  type AgentUpdateResponse,
+  type AgentDeleteResponse,
+  type AgentCreateParams,
+  type AgentUpdateParams,
+  type AgentListParams,
+} from './agents/agents';
 export {
   DatastoresDatastoresPage,
   Datastores,

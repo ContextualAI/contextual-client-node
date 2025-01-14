@@ -28,10 +28,9 @@ export class Datastores extends APIResource {
    * A `Datastore` is a collection of documents. Documents can be ingested into and
    * deleted from a `Datastore`.
    *
-   * A `Datastore` can be linked to one or more `Applications` to provide data on
-   * which the `Application` can ground its answers. This linkage of `Datastore` to
-   * `Application` is done through the `Create Application` or `Edit Application`
-   * APIs.
+   * A `Datastore` can be linked to one or more `Agents` to provide data on which the
+   * `Agent` can ground its answers. This linkage of `Datastore` to `Agent` is done
+   * through the `Create Agent` or `Edit Agent` APIs.
    */
   create(
     body: DatastoreCreateParams,
@@ -65,6 +64,9 @@ export class Datastores extends APIResource {
   /**
    * Delete a given `Datastore`, including all the documents ingested into it. This
    * operation is irreversible.
+   *
+   * This operation will fail with status code 400 if there is an active `Agent`
+   * associated with the `Datastore`.
    */
   delete(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/datastores/${datastoreId}`, options);
@@ -129,15 +131,10 @@ export interface DatastoreCreateParams {
 
 export interface DatastoreListParams extends DatastoresPageParams {
   /**
-   * ID of the application used to filter datastores. If provided, only datastores
-   * linked to this application will be returned.
+   * ID of the agent used to filter datastores. If provided, only datastores linked
+   * to this agent will be returned.
    */
-  application_id?: string;
-
-  /**
-   * Search text to filter datastores by name
-   */
-  search?: string;
+  agent_id?: string;
 }
 
 Datastores.DatastoresDatastoresPage = DatastoresDatastoresPage;

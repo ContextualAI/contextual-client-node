@@ -8,9 +8,9 @@ const client = new ContextualAI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource datastores', () => {
+describe('resource agents', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.datastores.create({ name: 'name' });
+    const responsePromise = client.agents.create({ name: 'xxx' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -21,11 +21,28 @@ describe('resource datastores', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.datastores.create({ name: 'name' });
+    const response = await client.agents.create({
+      name: 'xxx',
+      datastore_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+      description: 'xxx',
+      suggested_queries: ['string'],
+      system_prompt: 'system_prompt',
+    });
+  });
+
+  test('update', async () => {
+    const responsePromise = client.agents.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {});
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('list', async () => {
-    const responsePromise = client.datastores.list();
+    const responsePromise = client.agents.list();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -37,7 +54,7 @@ describe('resource datastores', () => {
 
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(client.datastores.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
+    await expect(client.agents.list({ path: '/_stainless_unknown_path' })).rejects.toThrow(
       ContextualAI.NotFoundError,
     );
   });
@@ -45,15 +62,12 @@ describe('resource datastores', () => {
   test('list: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.datastores.list(
-        { agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', cursor: 'cursor', limit: 1 },
-        { path: '/_stainless_unknown_path' },
-      ),
+      client.agents.list({ cursor: 'cursor', limit: 1 }, { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 
   test('delete', async () => {
-    const responsePromise = client.datastores.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.agents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -66,7 +80,7 @@ describe('resource datastores', () => {
   test('delete: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.datastores.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
+      client.agents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 });

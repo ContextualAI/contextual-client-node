@@ -49,135 +49,135 @@ Methods:
 - <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentDescriptionsDocumentsPage</code>
 - <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
 
-# Applications
+# Agents
 
 Types:
 
-- <code><a href="./src/resources/applications/applications.ts">Application</a></code>
-- <code><a href="./src/resources/applications/applications.ts">ApplicationsResponse</a></code>
-- <code><a href="./src/resources/applications/applications.ts">CreateApplicationOutput</a></code>
-- <code><a href="./src/resources/applications/applications.ts">ApplicationUpdateResponse</a></code>
-- <code><a href="./src/resources/applications/applications.ts">ApplicationDeleteResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">Agent</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentsResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">CreateAgentOutput</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentUpdateResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /applications">client.applications.<a href="./src/resources/applications/applications.ts">create</a>({ ...params }) -> CreateApplicationOutput</code>
-- <code title="put /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">update</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="get /applications">client.applications.<a href="./src/resources/applications/applications.ts">list</a>({ ...params }) -> ApplicationsApplicationsPage</code>
-- <code title="delete /applications/{application_id}">client.applications.<a href="./src/resources/applications/applications.ts">delete</a>(applicationId) -> unknown</code>
+- <code title="post /agents">client.agents.<a href="./src/resources/agents/agents.ts">create</a>({ ...params }) -> CreateAgentOutput</code>
+- <code title="put /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">update</a>(agentId, { ...params }) -> unknown</code>
+- <code title="get /agents">client.agents.<a href="./src/resources/agents/agents.ts">list</a>({ ...params }) -> AgentsPage</code>
+- <code title="delete /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">delete</a>(agentId) -> unknown</code>
 
 ## Metadata
 
 Types:
 
-- <code><a href="./src/resources/applications/metadata.ts">GetApplicationResponse</a></code>
+- <code><a href="./src/resources/agents/metadata.ts">GetAgentResponse</a></code>
 
 Methods:
 
-- <code title="get /applications/{application_id}/metadata">client.applications.metadata.<a href="./src/resources/applications/metadata.ts">retrieve</a>(applicationId) -> GetApplicationResponse</code>
+- <code title="get /agents/{agent_id}/metadata">client.agents.metadata.<a href="./src/resources/agents/metadata.ts">retrieve</a>(agentId) -> GetAgentResponse</code>
 
 ## Query
 
 Types:
 
-- <code><a href="./src/resources/applications/query.ts">QueryResponse</a></code>
-- <code><a href="./src/resources/applications/query.ts">QueryFeedbackResponse</a></code>
-- <code><a href="./src/resources/applications/query.ts">QueryMetricsResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryFeedbackResponse</a></code>
+- <code><a href="./src/resources/agents/query.ts">QueryMetricsResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/feedback">client.applications.query.<a href="./src/resources/applications/query.ts">feedback</a>(applicationId, { ...params }) -> unknown</code>
-- <code title="get /applications/{application_id}/metrics">client.applications.query.<a href="./src/resources/applications/query.ts">metrics</a>(applicationId, { ...params }) -> QueryMetricsResponse</code>
-- <code title="post /applications/{application_id}/query">client.applications.query.<a href="./src/resources/applications/query.ts">start</a>(applicationId, { ...params }) -> QueryResponse</code>
+- <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query.ts">feedback</a>(agentId, { ...params }) -> unknown</code>
+- <code title="get /agents/{agent_id}/metrics">client.agents.query.<a href="./src/resources/agents/query.ts">metrics</a>(agentId, { ...params }) -> QueryMetricsResponse</code>
+- <code title="post /agents/{agent_id}/query">client.agents.query.<a href="./src/resources/agents/query.ts">start</a>(agentId, { ...params }) -> QueryResponse</code>
 
 ## Evaluate
 
 Types:
 
-- <code><a href="./src/resources/applications/evaluate/evaluate.ts">LaunchEvaluationResponse</a></code>
+- <code><a href="./src/resources/agents/evaluate/evaluate.ts">LaunchEvaluationResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/evaluate">client.applications.evaluate.<a href="./src/resources/applications/evaluate/evaluate.ts">launch</a>(applicationId, { ...params }) -> LaunchEvaluationResponse</code>
+- <code title="post /agents/{agent_id}/evaluate">client.agents.evaluate.<a href="./src/resources/agents/evaluate/evaluate.ts">launch</a>(agentId, { ...params }) -> LaunchEvaluationResponse</code>
 
 ### Jobs
 
 Types:
 
-- <code><a href="./src/resources/applications/evaluate/jobs/jobs.ts">EvaluationRoundResponse</a></code>
-- <code><a href="./src/resources/applications/evaluate/jobs/jobs.ts">ListEvaluationResponse</a></code>
-- <code><a href="./src/resources/applications/evaluate/jobs/jobs.ts">JobCancelResponse</a></code>
+- <code><a href="./src/resources/agents/evaluate/jobs/jobs.ts">EvaluationRoundResponse</a></code>
+- <code><a href="./src/resources/agents/evaluate/jobs/jobs.ts">ListEvaluationResponse</a></code>
+- <code><a href="./src/resources/agents/evaluate/jobs/jobs.ts">JobCancelResponse</a></code>
 
 Methods:
 
-- <code title="get /applications/{application_id}/evaluate/jobs">client.applications.evaluate.jobs.<a href="./src/resources/applications/evaluate/jobs/jobs.ts">list</a>(applicationId) -> ListEvaluationResponse</code>
-- <code title="post /applications/{application_id}/evaluate/jobs/{job_id}/cancel">client.applications.evaluate.jobs.<a href="./src/resources/applications/evaluate/jobs/jobs.ts">cancel</a>(applicationId, jobId) -> unknown</code>
+- <code title="get /agents/{agent_id}/evaluate/jobs">client.agents.evaluate.jobs.<a href="./src/resources/agents/evaluate/jobs/jobs.ts">list</a>(agentId) -> ListEvaluationResponse</code>
+- <code title="post /agents/{agent_id}/evaluate/jobs/{job_id}/cancel">client.agents.evaluate.jobs.<a href="./src/resources/agents/evaluate/jobs/jobs.ts">cancel</a>(agentId, jobId) -> unknown</code>
 
 #### Metadata
 
 Methods:
 
-- <code title="get /applications/{application_id}/evaluate/jobs/{job_id}/metadata">client.applications.evaluate.jobs.metadata.<a href="./src/resources/applications/evaluate/jobs/metadata.ts">retrieve</a>(applicationId, jobId) -> EvaluationRoundResponse</code>
+- <code title="get /agents/{agent_id}/evaluate/jobs/{job_id}/metadata">client.agents.evaluate.jobs.metadata.<a href="./src/resources/agents/evaluate/jobs/metadata.ts">retrieve</a>(agentId, jobId) -> EvaluationRoundResponse</code>
 
 ## Datasets
 
 Types:
 
-- <code><a href="./src/resources/applications/datasets/datasets.ts">CreateDatasetResponse</a></code>
-- <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetsResponse</a></code>
-- <code><a href="./src/resources/applications/datasets/datasets.ts">GetDatasetResponse</a></code>
-- <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetRetrieveResponse</a></code>
-- <code><a href="./src/resources/applications/datasets/datasets.ts">DatasetDeleteResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/datasets.ts">CreateDatasetResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/datasets.ts">DatasetsResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/datasets.ts">GetDatasetResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/datasets.ts">DatasetRetrieveResponse</a></code>
+- <code><a href="./src/resources/agents/datasets/datasets.ts">DatasetDeleteResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/datasets">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">create</a>(applicationId, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">retrieve</a>(applicationId, datasetName, { ...params }) -> unknown</code>
-- <code title="put /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">update</a>(applicationId, datasetName, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /applications/{application_id}/datasets">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">list</a>(applicationId, { ...params }) -> DatasetsResponse</code>
-- <code title="delete /applications/{application_id}/datasets/{dataset_name}">client.applications.datasets.<a href="./src/resources/applications/datasets/datasets.ts">delete</a>(applicationId, datasetName) -> unknown</code>
+- <code title="post /agents/{agent_id}/datasets">client.agents.datasets.<a href="./src/resources/agents/datasets/datasets.ts">create</a>(agentId, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/{dataset_name}">client.agents.datasets.<a href="./src/resources/agents/datasets/datasets.ts">retrieve</a>(agentId, datasetName, { ...params }) -> unknown</code>
+- <code title="put /agents/{agent_id}/datasets/{dataset_name}">client.agents.datasets.<a href="./src/resources/agents/datasets/datasets.ts">update</a>(agentId, datasetName, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets">client.agents.datasets.<a href="./src/resources/agents/datasets/datasets.ts">list</a>(agentId, { ...params }) -> DatasetsResponse</code>
+- <code title="delete /agents/{agent_id}/datasets/{dataset_name}">client.agents.datasets.<a href="./src/resources/agents/datasets/datasets.ts">delete</a>(agentId, datasetName) -> unknown</code>
 
 ### Metadata
 
 Methods:
 
-- <code title="get /applications/{application_id}/datasets/{dataset_name}/metadata">client.applications.datasets.metadata.<a href="./src/resources/applications/datasets/metadata.ts">retrieve</a>(applicationId, datasetName, { ...params }) -> GetDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/{dataset_name}/metadata">client.agents.datasets.metadata.<a href="./src/resources/agents/datasets/metadata.ts">retrieve</a>(agentId, datasetName, { ...params }) -> GetDatasetResponse</code>
 
 ## Tune
 
 Types:
 
-- <code><a href="./src/resources/applications/tune/tune.ts">TuneResponse</a></code>
+- <code><a href="./src/resources/agents/tune/tune.ts">TuneResponse</a></code>
 
 Methods:
 
-- <code title="post /applications/{application_id}/tune">client.applications.tune.<a href="./src/resources/applications/tune/tune.ts">create</a>(applicationId, { ...params }) -> TuneResponse</code>
+- <code title="post /agents/{agent_id}/tune">client.agents.tune.<a href="./src/resources/agents/tune/tune.ts">create</a>(agentId, { ...params }) -> TuneResponse</code>
 
 ### Jobs
 
 Types:
 
-- <code><a href="./src/resources/applications/tune/jobs/jobs.ts">GetTuneJobResponse</a></code>
-- <code><a href="./src/resources/applications/tune/jobs/jobs.ts">ListGetTuneJobResponse</a></code>
-- <code><a href="./src/resources/applications/tune/jobs/jobs.ts">JobDeleteResponse</a></code>
+- <code><a href="./src/resources/agents/tune/jobs/jobs.ts">GetTuneJobResponse</a></code>
+- <code><a href="./src/resources/agents/tune/jobs/jobs.ts">ListGetTuneJobResponse</a></code>
+- <code><a href="./src/resources/agents/tune/jobs/jobs.ts">JobDeleteResponse</a></code>
 
 Methods:
 
-- <code title="get /applications/{application_id}/tune/jobs">client.applications.tune.jobs.<a href="./src/resources/applications/tune/jobs/jobs.ts">list</a>(applicationId) -> ListGetTuneJobResponse</code>
-- <code title="delete /applications/{application_id}/tune/jobs/{job_id}">client.applications.tune.jobs.<a href="./src/resources/applications/tune/jobs/jobs.ts">delete</a>(applicationId, jobId) -> unknown</code>
+- <code title="get /agents/{agent_id}/tune/jobs">client.agents.tune.jobs.<a href="./src/resources/agents/tune/jobs/jobs.ts">list</a>(agentId) -> ListGetTuneJobResponse</code>
+- <code title="delete /agents/{agent_id}/tune/jobs/{job_id}">client.agents.tune.jobs.<a href="./src/resources/agents/tune/jobs/jobs.ts">delete</a>(agentId, jobId) -> unknown</code>
 
 #### Metadata
 
 Methods:
 
-- <code title="get /applications/{application_id}/tune/jobs/{job_id}/metadata">client.applications.tune.jobs.metadata.<a href="./src/resources/applications/tune/jobs/metadata.ts">retrieve</a>(applicationId, jobId) -> GetTuneJobResponse</code>
+- <code title="get /agents/{agent_id}/tune/jobs/{job_id}/metadata">client.agents.tune.jobs.metadata.<a href="./src/resources/agents/tune/jobs/metadata.ts">retrieve</a>(agentId, jobId) -> GetTuneJobResponse</code>
 
 ### Models
 
 Types:
 
-- <code><a href="./src/resources/applications/tune/models.ts">ModelListResponse</a></code>
+- <code><a href="./src/resources/agents/tune/models.ts">ModelListResponse</a></code>
 
 Methods:
 
-- <code title="get /applications/{application_id}/tune/models">client.applications.tune.models.<a href="./src/resources/applications/tune/models.ts">list</a>(applicationId) -> ModelListResponse</code>
+- <code title="get /agents/{agent_id}/tune/models">client.agents.tune.models.<a href="./src/resources/agents/tune/models.ts">list</a>(agentId) -> ModelListResponse</code>

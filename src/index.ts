@@ -6,29 +6,29 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
 import {
-  type ApplicationsPageParams,
-  ApplicationsPageResponse,
   type DatastoresPageParams,
   DatastoresPageResponse,
   type DocumentsPageParams,
   DocumentsPageResponse,
+  type PageParams,
+  PageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import * as TopLevelAPI from './resources/top-level';
 import { LMUnitParams, LMUnitResponse } from './resources/top-level';
 import {
-  Application,
-  ApplicationCreateParams,
-  ApplicationDeleteResponse,
-  ApplicationListParams,
-  ApplicationUpdateParams,
-  ApplicationUpdateResponse,
-  Applications,
-  ApplicationsApplicationsPage,
-  ApplicationsResponse,
-  CreateApplicationOutput,
-} from './resources/applications/applications';
+  Agent as AgentsAPIAgent,
+  AgentCreateParams,
+  AgentDeleteResponse,
+  AgentListParams,
+  AgentUpdateParams,
+  AgentUpdateResponse,
+  Agents,
+  AgentsPage,
+  AgentsResponse,
+  CreateAgentOutput,
+} from './resources/agents/agents';
 import {
   CreateDatastoreResponse,
   Datastore,
@@ -154,7 +154,7 @@ export class ContextualAI extends Core.APIClient {
   }
 
   datastores: API.Datastores = new API.Datastores(this);
-  applications: API.Applications = new API.Applications(this);
+  agents: API.Agents = new API.Agents(this);
 
   /**
    * Given a `query`, `response`, and a `unit_test`, return the response's `score` on
@@ -217,8 +217,8 @@ export class ContextualAI extends Core.APIClient {
 
 ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
-ContextualAI.Applications = Applications;
-ContextualAI.ApplicationsApplicationsPage = ApplicationsApplicationsPage;
+ContextualAI.Agents = Agents;
+ContextualAI.AgentsPage = AgentsPage;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -234,11 +234,8 @@ export declare namespace ContextualAI {
     type DocumentsPageResponse as DocumentsPageResponse,
   };
 
-  export import ApplicationsPage = Pagination.ApplicationsPage;
-  export {
-    type ApplicationsPageParams as ApplicationsPageParams,
-    type ApplicationsPageResponse as ApplicationsPageResponse,
-  };
+  export import Page = Pagination.Page;
+  export { type PageParams as PageParams, type PageResponse as PageResponse };
 
   export { type LMUnitResponse as LMUnitResponse, type LMUnitParams as LMUnitParams };
 
@@ -254,16 +251,16 @@ export declare namespace ContextualAI {
   };
 
   export {
-    Applications as Applications,
-    type Application as Application,
-    type ApplicationsResponse as ApplicationsResponse,
-    type CreateApplicationOutput as CreateApplicationOutput,
-    type ApplicationUpdateResponse as ApplicationUpdateResponse,
-    type ApplicationDeleteResponse as ApplicationDeleteResponse,
-    ApplicationsApplicationsPage as ApplicationsApplicationsPage,
-    type ApplicationCreateParams as ApplicationCreateParams,
-    type ApplicationUpdateParams as ApplicationUpdateParams,
-    type ApplicationListParams as ApplicationListParams,
+    Agents as Agents,
+    type AgentsAPIAgent as Agent,
+    type AgentsResponse as AgentsResponse,
+    type CreateAgentOutput as CreateAgentOutput,
+    type AgentUpdateResponse as AgentUpdateResponse,
+    type AgentDeleteResponse as AgentDeleteResponse,
+    AgentsPage as AgentsPage,
+    type AgentCreateParams as AgentCreateParams,
+    type AgentUpdateParams as AgentUpdateParams,
+    type AgentListParams as AgentListParams,
   };
 }
 
