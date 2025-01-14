@@ -6,8 +6,6 @@ This library provides convenient access to the Contextual AI REST API from serve
 
 The REST API documentation can be found on [docs.contextual.ai](https://docs.contextual.ai). The full API of this library can be found in [api.md](api.md).
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
-
 ## Installation
 
 ```sh
