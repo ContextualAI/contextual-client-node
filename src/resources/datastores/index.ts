@@ -5,7 +5,7 @@ export {
   Datastores,
   type CreateDatastoreResponse,
   type Datastore,
-  type DatastoresResponse,
+  type ListDatastoresResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
@@ -14,10 +14,10 @@ export {
   DocumentDescriptionsDocumentsPage,
   Documents,
   type DocumentDescription,
-  type GetDocumentsResponse,
   type IngestionResponse,
+  type ListDocumentsResponse,
   type DocumentDeleteResponse,
   type DocumentCreateParams,
   type DocumentListParams,
 } from './documents';
-export { Metadata, type GetDatastoreResponse } from './metadata';
+export { Metadata, type DatastoreMetadataResponse } from './metadata';

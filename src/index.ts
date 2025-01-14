@@ -15,8 +15,7 @@ import {
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
-import * as TopLevelAPI from './resources/top-level';
-import { LMUnitParams, LMUnitResponse } from './resources/top-level';
+import { LMUnit, LMUnitCreateParams, LMUnitCreateResponse } from './resources/lmunit';
 import {
   Agent as AgentsAPIAgent,
   AgentCreateParams,
@@ -26,8 +25,8 @@ import {
   AgentUpdateResponse,
   Agents,
   AgentsPage,
-  AgentsResponse,
   CreateAgentOutput,
+  ListAgentsResponse,
 } from './resources/agents/agents';
 import {
   CreateDatastoreResponse,
@@ -37,7 +36,7 @@ import {
   DatastoreListParams,
   Datastores,
   DatastoresDatastoresPage,
-  DatastoresResponse,
+  ListDatastoresResponse,
 } from './resources/datastores/datastores';
 
 export interface ClientOptions {
@@ -155,25 +154,7 @@ export class ContextualAI extends Core.APIClient {
 
   datastores: API.Datastores = new API.Datastores(this);
   agents: API.Agents = new API.Agents(this);
-
-  /**
-   * Given a `query`, `response`, and a `unit_test`, return the response's `score` on
-   * the unit test on a 5-point continuous scale. The total input cannot exceed 7000
-   * tokens.
-   *
-   * See a code example in [our blog post](https://contextual.ai/news/lmunit/). Email
-   * [lmunit-feedback@contextual.ai](mailto:lmunit-feedback@contextual.ai) with any
-   * feedback or questions.
-   *
-   * > 🚀 Obtain an LMUnit API key by completing
-   * > [this form](https://contextual.ai/request-lmunit-api/)
-   */
-  lmUnit(
-    body: TopLevelAPI.LMUnitParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<TopLevelAPI.LMUnitResponse> {
-    return this.post('/lmunit', { body, ...options });
-  }
+  lmUnit: API.LMUnit = new API.LMUnit(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -219,6 +200,7 @@ ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Agents = Agents;
 ContextualAI.AgentsPage = AgentsPage;
+ContextualAI.LMUnit = LMUnit;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -237,13 +219,11 @@ export declare namespace ContextualAI {
   export import Page = Pagination.Page;
   export { type PageParams as PageParams, type PageResponse as PageResponse };
 
-  export { type LMUnitResponse as LMUnitResponse, type LMUnitParams as LMUnitParams };
-
   export {
     Datastores as Datastores,
     type CreateDatastoreResponse as CreateDatastoreResponse,
     type Datastore as Datastore,
-    type DatastoresResponse as DatastoresResponse,
+    type ListDatastoresResponse as ListDatastoresResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
@@ -253,14 +233,20 @@ export declare namespace ContextualAI {
   export {
     Agents as Agents,
     type AgentsAPIAgent as Agent,
-    type AgentsResponse as AgentsResponse,
     type CreateAgentOutput as CreateAgentOutput,
+    type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
     AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+  };
+
+  export {
+    LMUnit as LMUnit,
+    type LMUnitCreateResponse as LMUnitCreateResponse,
+    type LMUnitCreateParams as LMUnitCreateParams,
   };
 }
 

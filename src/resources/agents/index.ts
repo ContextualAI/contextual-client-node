@@ -4,8 +4,8 @@ export {
   AgentsPage,
   Agents,
   type Agent,
-  type AgentsResponse,
   type CreateAgentOutput,
+  type ListAgentsResponse,
   type AgentUpdateResponse,
   type AgentDeleteResponse,
   type AgentCreateParams,
@@ -15,17 +15,11 @@ export {
 export {
   Datasets,
   type CreateDatasetResponse,
-  type DatasetsResponse,
-  type GetDatasetResponse,
-  type DatasetRetrieveResponse,
-  type DatasetDeleteResponse,
-  type DatasetCreateParams,
-  type DatasetRetrieveParams,
-  type DatasetUpdateParams,
-  type DatasetListParams,
+  type DatasetResponse,
+  type ListDatasetsResponse,
 } from './datasets/index';
 export { Evaluate, type LaunchEvaluationResponse, type EvaluateLaunchParams } from './evaluate/index';
-export { Metadata, type GetAgentResponse } from './metadata';
+export { Metadata, type AgentMetadataResponse } from './metadata';
 export {
   Query,
   type QueryResponse,

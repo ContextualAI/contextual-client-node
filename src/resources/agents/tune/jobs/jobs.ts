@@ -12,7 +12,7 @@ export class Jobs extends APIResource {
    * Retrieve a list of all tune jobs run on a specified `Agent`, including their
    * `status`, `evaluation_results`, and resultant `model_id`.
    */
-  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListGetTuneJobResponse> {
+  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListTuneJobsResponse> {
     return this._client.get(`/agents/${agentId}/tune/jobs`, options);
   }
 
@@ -26,34 +26,11 @@ export class Jobs extends APIResource {
   }
 }
 
-/**
- * Response to GET /agents/{agent_id}/tune/jobs/{job_id}
- */
-export interface GetTuneJobResponse {
-  /**
-   * Status of the tune job
-   */
-  job_status: string;
-
-  /**
-   * Evaluation results of the tuned model, represented as an object mapping metric
-   * names (strings) to their scores (floats). Omitted if the tuning job failed or is
-   * still in progress.
-   */
-  evaluation_results?: Record<string, number>;
-
-  /**
-   * ID of the trained model. Omitted if the tuning job failed or is still in
-   * progress.
-   */
-  model_id?: string;
-}
-
-export interface ListGetTuneJobResponse {
+export interface ListTuneJobsResponse {
   /**
    * List of tune jobs
    */
-  jobs: Array<ListGetTuneJobResponse.Job>;
+  jobs: Array<ListTuneJobsResponse.Job>;
 
   /**
    * Next cursor to continue pagination. Omitted if there are no more specialization
@@ -67,7 +44,7 @@ export interface ListGetTuneJobResponse {
   total_count?: number;
 }
 
-export namespace ListGetTuneJobResponse {
+export namespace ListTuneJobsResponse {
   /**
    * Response to GET /agents/{agent_id}/tune/jobs/{job_id}
    */
@@ -97,14 +74,37 @@ export namespace ListGetTuneJobResponse {
   }
 }
 
+/**
+ * Response to GET /agents/{agent_id}/tune/jobs/{job_id}
+ */
+export interface TuneJobResponse {
+  /**
+   * Status of the tune job
+   */
+  job_status: string;
+
+  /**
+   * Evaluation results of the tuned model, represented as an object mapping metric
+   * names (strings) to their scores (floats). Omitted if the tuning job failed or is
+   * still in progress.
+   */
+  evaluation_results?: Record<string, number>;
+
+  /**
+   * ID of the trained model. Omitted if the tuning job failed or is still in
+   * progress.
+   */
+  model_id?: string;
+}
+
 export type JobDeleteResponse = unknown;
 
 Jobs.Metadata = Metadata;
 
 export declare namespace Jobs {
   export {
-    type GetTuneJobResponse as GetTuneJobResponse,
-    type ListGetTuneJobResponse as ListGetTuneJobResponse,
+    type ListTuneJobsResponse as ListTuneJobsResponse,
+    type TuneJobResponse as TuneJobResponse,
     type JobDeleteResponse as JobDeleteResponse,
   };
 

@@ -11,11 +11,11 @@ import {
   DocumentDescriptionsDocumentsPage,
   DocumentListParams,
   Documents,
-  GetDocumentsResponse,
   IngestionResponse,
+  ListDocumentsResponse,
 } from './documents';
 import * as MetadataAPI from './metadata';
-import { GetDatastoreResponse, Metadata } from './metadata';
+import { DatastoreMetadataResponse, Metadata } from './metadata';
 import { DatastoresPage, type DatastoresPageParams } from '../../pagination';
 
 export class Datastores extends APIResource {
@@ -102,7 +102,7 @@ export interface Datastore {
   name: string;
 }
 
-export interface DatastoresResponse {
+export interface ListDatastoresResponse {
   /**
    * List of all datastores
    */
@@ -146,20 +146,20 @@ export declare namespace Datastores {
   export {
     type CreateDatastoreResponse as CreateDatastoreResponse,
     type Datastore as Datastore,
-    type DatastoresResponse as DatastoresResponse,
+    type ListDatastoresResponse as ListDatastoresResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
   };
 
-  export { Metadata as Metadata, type GetDatastoreResponse as GetDatastoreResponse };
+  export { Metadata as Metadata, type DatastoreMetadataResponse as DatastoreMetadataResponse };
 
   export {
     Documents as Documents,
     type DocumentDescription as DocumentDescription,
-    type GetDocumentsResponse as GetDocumentsResponse,
     type IngestionResponse as IngestionResponse,
+    type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
     DocumentDescriptionsDocumentsPage as DocumentDescriptionsDocumentsPage,
     type DocumentCreateParams as DocumentCreateParams,

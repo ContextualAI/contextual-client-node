@@ -3,13 +3,24 @@
 export {
   Datasets,
   type CreateDatasetResponse,
-  type DatasetsResponse,
-  type GetDatasetResponse,
-  type DatasetRetrieveResponse,
-  type DatasetDeleteResponse,
-  type DatasetCreateParams,
-  type DatasetRetrieveParams,
-  type DatasetUpdateParams,
-  type DatasetListParams,
+  type DatasetResponse,
+  type ListDatasetsResponse,
 } from './datasets';
-export { Metadata, type MetadataRetrieveParams } from './metadata';
+export {
+  Evaluation,
+  type EvaluationDeleteResponse,
+  type EvaluationCreateParams,
+  type EvaluationRetrieveParams,
+  type EvaluationUpdateParams,
+  type EvaluationListParams,
+  type EvaluationMetadataParams,
+} from './evaluation';
+export {
+  Tune,
+  type TuneDeleteResponse,
+  type TuneCreateParams,
+  type TuneRetrieveParams,
+  type TuneUpdateParams,
+  type TuneListParams,
+  type TuneMetadataParams,
+} from './tune';
