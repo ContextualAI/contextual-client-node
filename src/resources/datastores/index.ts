@@ -5,19 +5,19 @@ export {
   Datastores,
   type CreateDatastoreResponse,
   type Datastore,
+  type DatastoreMetadata,
   type ListDatastoresResponse,
   type DatastoreDeleteResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores';
 export {
-  DocumentDescriptionsDocumentsPage,
+  DocumentMetadataDocumentsPage,
   Documents,
-  type DocumentDescription,
+  type DocumentMetadata,
   type IngestionResponse,
   type ListDocumentsResponse,
   type DocumentDeleteResponse,
-  type DocumentCreateParams,
   type DocumentListParams,
+  type DocumentIngestParams,
 } from './documents';
-export { Metadata, type DatastoreMetadataResponse } from './metadata';

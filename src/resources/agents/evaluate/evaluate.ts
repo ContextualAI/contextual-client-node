@@ -2,8 +2,8 @@
 
 import { APIResource } from '../../../resource';
 import * as Core from '../../../core';
-import * as JobsAPI from './jobs/jobs';
-import { EvaluationRoundResponse, JobCancelResponse, Jobs, ListEvaluationResponse } from './jobs/jobs';
+import * as JobsAPI from './jobs';
+import { EvaluationJobMetadata, JobCancelResponse, Jobs, ListEvaluationJobsResponse } from './jobs';
 
 export class Evaluate extends APIResource {
   jobs: JobsAPI.Jobs = new JobsAPI.Jobs(this._client);
@@ -21,11 +21,11 @@ export class Evaluate extends APIResource {
    * and `knowledge` (optional `list[str]` of retrieved knowledge) - A `dataset_name`
    * which refers to an `evaluation_set` `Dataset` created through the `Dataset` API.
    */
-  launch(
+  create(
     agentId: string,
-    body: EvaluateLaunchParams,
+    body: EvaluateCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<LaunchEvaluationResponse> {
+  ): Core.APIPromise<CreateEvaluationResponse> {
     return this._client.post(
       `/agents/${agentId}/evaluate`,
       Core.multipartFormRequestOptions({ body, ...options }),
@@ -36,14 +36,14 @@ export class Evaluate extends APIResource {
 /**
  * Response from Launch Evaluation request
  */
-export interface LaunchEvaluationResponse {
+export interface CreateEvaluationResponse {
   /**
    * ID of the launched evaluation
    */
   id: string;
 }
 
-export interface EvaluateLaunchParams {
+export interface EvaluateCreateParams {
   /**
    * List of metrics to use. Supported metrics are `equivalence` and `groundedness`.
    */
@@ -74,14 +74,14 @@ Evaluate.Jobs = Jobs;
 
 export declare namespace Evaluate {
   export {
-    type LaunchEvaluationResponse as LaunchEvaluationResponse,
-    type EvaluateLaunchParams as EvaluateLaunchParams,
+    type CreateEvaluationResponse as CreateEvaluationResponse,
+    type EvaluateCreateParams as EvaluateCreateParams,
   };
 
   export {
     Jobs as Jobs,
-    type EvaluationRoundResponse as EvaluationRoundResponse,
-    type ListEvaluationResponse as ListEvaluationResponse,
+    type EvaluationJobMetadata as EvaluationJobMetadata,
+    type ListEvaluationJobsResponse as ListEvaluationJobsResponse,
     type JobCancelResponse as JobCancelResponse,
   };
 }
