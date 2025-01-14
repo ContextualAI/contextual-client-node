@@ -15,7 +15,7 @@ import {
   QueryMetricsResponse,
   QueryResponse,
   QueryRetrievalInfoParams,
-  QueryRetrievalInfoResponse,
+  RetrievalInfoResponse,
 } from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
@@ -242,9 +242,9 @@ export declare namespace Agents {
   export {
     Query as Query,
     type QueryResponse as QueryResponse,
+    type RetrievalInfoResponse as RetrievalInfoResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
     type QueryMetricsResponse as QueryMetricsResponse,
-    type QueryRetrievalInfoResponse as QueryRetrievalInfoResponse,
     type QueryCreateParams as QueryCreateParams,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,

@@ -66,7 +66,7 @@ export class Query extends APIResource {
     messageId: string,
     query: QueryRetrievalInfoParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<QueryRetrievalInfoResponse> {
+  ): Core.APIPromise<RetrievalInfoResponse> {
     return this._client.get(`/agents/${agentId}/query/${messageId}/retrieval/info`, { query, ...options });
   }
 }
@@ -195,34 +195,14 @@ export namespace QueryResponse {
   }
 }
 
-export type QueryFeedbackResponse = unknown;
-
-export interface QueryMetricsResponse {
-  /**
-   * Total number of messages.
-   */
-  total_count: number;
-
-  /**
-   * List of messages.
-   */
-  messages?: Array<unknown>;
-
-  /**
-   * Offset for the next page. If there are no more messages to get, then this is not
-   * set.
-   */
-  next_offset?: number;
-}
-
-export interface QueryRetrievalInfoResponse {
+export interface RetrievalInfoResponse {
   /**
    * List of content metadatas.
    */
-  content_metadatas?: Array<QueryRetrievalInfoResponse.ContentMetadata>;
+  content_metadatas?: Array<RetrievalInfoResponse.ContentMetadata>;
 }
 
-export namespace QueryRetrievalInfoResponse {
+export namespace RetrievalInfoResponse {
   export interface ContentMetadata {
     /**
      * Id of the content.
@@ -264,6 +244,26 @@ export namespace QueryRetrievalInfoResponse {
      */
     y1: number;
   }
+}
+
+export type QueryFeedbackResponse = unknown;
+
+export interface QueryMetricsResponse {
+  /**
+   * Total number of messages.
+   */
+  total_count: number;
+
+  /**
+   * List of messages.
+   */
+  messages?: Array<unknown>;
+
+  /**
+   * Offset for the next page. If there are no more messages to get, then this is not
+   * set.
+   */
+  next_offset?: number;
 }
 
 export interface QueryCreateParams {
@@ -369,9 +369,9 @@ export interface QueryRetrievalInfoParams {
 export declare namespace Query {
   export {
     type QueryResponse as QueryResponse,
+    type RetrievalInfoResponse as RetrievalInfoResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
     type QueryMetricsResponse as QueryMetricsResponse,
-    type QueryRetrievalInfoResponse as QueryRetrievalInfoResponse,
     type QueryCreateParams as QueryCreateParams,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,
