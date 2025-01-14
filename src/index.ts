@@ -172,7 +172,7 @@ export class ContextualAI extends Core.APIClient {
   }
 
   protected override stringifyQuery(query: Record<string, unknown>): string {
-    return qs.stringify(query, { arrayFormat: 'brackets' });
+    return qs.stringify(query, { arrayFormat: 'repeat' });
   }
 
   static ContextualAI = this;
