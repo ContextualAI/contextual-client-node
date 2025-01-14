@@ -1,13 +1,22 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../resource';
-import { isRequestOptions } from '../../../core';
-import * as Core from '../../../core';
-import * as RetrievalAPI from './retrieval';
-import { Retrieval, RetrievalInfoParams, RetrievalInfoResponse } from './retrieval';
+import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
+import * as Core from '../../core';
 
 export class Query extends APIResource {
-  retrieval: RetrievalAPI.Retrieval = new RetrievalAPI.Retrieval(this._client);
+  /**
+   * Start a conversation with an `Agent` and receive its generated response, along
+   * with relevant retrieved data and attributions.
+   */
+  create(
+    agentId: string,
+    params: QueryCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<QueryResponse> {
+    const { retrievals_only, ...body } = params;
+    return this._client.post(`/agents/${agentId}/query`, { query: { retrievals_only }, body, ...options });
+  }
 
   /**
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
@@ -49,16 +58,16 @@ export class Query extends APIResource {
   }
 
   /**
-   * Start a conversation with an `Agent` and receive its generated response, along
-   * with relevant retrieved data and attributions.
+   * Return content metadata of the contents used to generate response for a given
+   * message.
    */
-  start(
+  retrievalInfo(
     agentId: string,
-    params: QueryStartParams,
+    messageId: string,
+    query: QueryRetrievalInfoParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<QueryResponse> {
-    const { retrievals_only, ...body } = params;
-    return this._client.post(`/agents/${agentId}/query`, { query: { retrievals_only }, body, ...options });
+  ): Core.APIPromise<QueryRetrievalInfoResponse> {
+    return this._client.get(`/agents/${agentId}/query/${messageId}/retrieval/info`, { query, ...options });
   }
 }
 
@@ -206,6 +215,104 @@ export interface QueryMetricsResponse {
   next_offset?: number;
 }
 
+export interface QueryRetrievalInfoResponse {
+  /**
+   * List of content metadatas.
+   */
+  content_metadatas?: Array<QueryRetrievalInfoResponse.ContentMetadata>;
+}
+
+export namespace QueryRetrievalInfoResponse {
+  export interface ContentMetadata {
+    /**
+     * Id of the content.
+     */
+    content_id: string;
+
+    /**
+     * Height of the image.
+     */
+    height: number;
+
+    /**
+     * Image of the page on which the content occurs.
+     */
+    page_img: string;
+
+    /**
+     * Width of the image.
+     */
+    width: number;
+
+    /**
+     * X coordinate of the top left corner on the bounding box.
+     */
+    x0: number;
+
+    /**
+     * X coordinate of the bottom right corner on the bounding box.
+     */
+    x1: number;
+
+    /**
+     * Y coordinate of the top left corner on the bounding box.
+     */
+    y0: number;
+
+    /**
+     * Y coordinate of the bottom right corner on the bounding box.
+     */
+    y1: number;
+  }
+}
+
+export interface QueryCreateParams {
+  /**
+   * Body param: Message objects in the conversation
+   */
+  messages: Array<QueryCreateParams.Message>;
+
+  /**
+   * Query param: Set to `true` to skip generation of the response.
+   */
+  retrievals_only?: boolean;
+
+  /**
+   * Body param: Conversation ID. An optional alternative to providing message
+   * history in the `messages` field. If provided, history in the `messages` field
+   * will be ignored.
+   */
+  conversation_id?: string;
+
+  /**
+   * Body param: Model ID of the specific fine-tuned or aligned model to use.
+   * Defaults to base model if not specified.
+   */
+  model_id?: string;
+
+  /**
+   * Body param: Set to `true` to receive a streamed response
+   */
+  stream?: boolean;
+}
+
+export namespace QueryCreateParams {
+  /**
+   * Message object for a message sent or received in a /query conversation
+   */
+  export interface Message {
+    /**
+     * Content of the message
+     */
+    content: string;
+
+    /**
+     * Role of sender
+     */
+    role: 'user' | 'system' | 'assistant';
+  }
+}
+
 export interface QueryFeedbackParams {
   /**
    * Feedback to provide on the message. Set to "removed" to undo previously provided
@@ -252,68 +359,22 @@ export interface QueryMetricsParams {
   offset?: number;
 }
 
-export interface QueryStartParams {
+export interface QueryRetrievalInfoParams {
   /**
-   * Body param: Message objects in the conversation
+   * List of content ids for which to get the metadata.
    */
-  messages: Array<QueryStartParams.Message>;
-
-  /**
-   * Query param: Set to `true` to skip generation of the response.
-   */
-  retrievals_only?: boolean;
-
-  /**
-   * Body param: Conversation ID. An optional alternative to providing message
-   * history in the `messages` field. If provided, history in the `messages` field
-   * will be ignored.
-   */
-  conversation_id?: string;
-
-  /**
-   * Body param: Model ID of the specific fine-tuned or aligned model to use.
-   * Defaults to base model if not specified.
-   */
-  model_id?: string;
-
-  /**
-   * Body param: Set to `true` to receive a streamed response
-   */
-  stream?: boolean;
+  content_ids: Array<string>;
 }
-
-export namespace QueryStartParams {
-  /**
-   * Message object for a message sent or received in a /query conversation
-   */
-  export interface Message {
-    /**
-     * Content of the message
-     */
-    content: string;
-
-    /**
-     * Role of sender
-     */
-    role: 'user' | 'system' | 'assistant';
-  }
-}
-
-Query.Retrieval = Retrieval;
 
 export declare namespace Query {
   export {
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
     type QueryMetricsResponse as QueryMetricsResponse,
+    type QueryRetrievalInfoResponse as QueryRetrievalInfoResponse,
+    type QueryCreateParams as QueryCreateParams,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,
-    type QueryStartParams as QueryStartParams,
-  };
-
-  export {
-    Retrieval as Retrieval,
-    type RetrievalInfoResponse as RetrievalInfoResponse,
-    type RetrievalInfoParams as RetrievalInfoParams,
+    type QueryRetrievalInfoParams as QueryRetrievalInfoParams,
   };
 }

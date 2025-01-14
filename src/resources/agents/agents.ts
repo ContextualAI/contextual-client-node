@@ -5,6 +5,18 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as MetadataAPI from './metadata';
 import { GetAgentResponse, Metadata } from './metadata';
+import * as QueryAPI from './query';
+import {
+  Query,
+  QueryCreateParams,
+  QueryFeedbackParams,
+  QueryFeedbackResponse,
+  QueryMetricsParams,
+  QueryMetricsResponse,
+  QueryResponse,
+  QueryRetrievalInfoParams,
+  QueryRetrievalInfoResponse,
+} from './query';
 import * as DatasetsAPI from './datasets/datasets';
 import {
   CreateDatasetResponse,
@@ -20,16 +32,6 @@ import {
 } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
 import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
-import * as QueryAPI from './query/query';
-import {
-  Query,
-  QueryFeedbackParams,
-  QueryFeedbackResponse,
-  QueryMetricsParams,
-  QueryMetricsResponse,
-  QueryResponse,
-  QueryStartParams,
-} from './query/query';
 import * as TuneAPI from './tune/tune';
 import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
 import { Page, type PageParams } from '../../pagination';
@@ -242,9 +244,11 @@ export declare namespace Agents {
     type QueryResponse as QueryResponse,
     type QueryFeedbackResponse as QueryFeedbackResponse,
     type QueryMetricsResponse as QueryMetricsResponse,
+    type QueryRetrievalInfoResponse as QueryRetrievalInfoResponse,
+    type QueryCreateParams as QueryCreateParams,
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,
-    type QueryStartParams as QueryStartParams,
+    type QueryRetrievalInfoParams as QueryRetrievalInfoParams,
   };
 
   export {

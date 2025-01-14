@@ -31,8 +31,10 @@ export {
   type QueryResponse,
   type QueryFeedbackResponse,
   type QueryMetricsResponse,
+  type QueryRetrievalInfoResponse,
+  type QueryCreateParams,
   type QueryFeedbackParams,
   type QueryMetricsParams,
-  type QueryStartParams,
-} from './query/index';
+  type QueryRetrievalInfoParams,
+} from './query';
 export { Tune, type TuneResponse, type TuneCreateParams } from './tune/index';
