@@ -14,7 +14,7 @@ export class Evaluate extends APIResource {
    * An `Evaluation` is an asynchronous operation which evaluates an `Agent` on a set
    * of test questions and reference answers. An `Evaluation` can select one or more
    * metrics to assess the quality of generated answers. These metrics include
-   * `equivalence` and `factuality`.
+   * `equivalence` and `groundedness`.
    *
    * `Evaluation` test set data can be provided in one of two forms: - A CSV
    * `evalset_file` containing the columns `prompt`, `reference` (i.e. gold-answers),
