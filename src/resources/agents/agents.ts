@@ -3,8 +3,6 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as MetadataAPI from './metadata';
-import { AgentMetadataResponse, Metadata } from './metadata';
 import * as QueryAPI from './query';
 import {
   Query,
@@ -18,15 +16,14 @@ import {
   RetrievalInfoResponse,
 } from './query';
 import * as DatasetsAPI from './datasets/datasets';
-import { CreateDatasetResponse, DatasetResponse, Datasets, ListDatasetsResponse } from './datasets/datasets';
+import { CreateDatasetResponse, DatasetMetadata, Datasets, ListDatasetsResponse } from './datasets/datasets';
 import * as EvaluateAPI from './evaluate/evaluate';
-import { Evaluate, EvaluateLaunchParams, LaunchEvaluationResponse } from './evaluate/evaluate';
+import { CreateEvaluationResponse, Evaluate, EvaluateCreateParams } from './evaluate/evaluate';
 import * as TuneAPI from './tune/tune';
-import { Tune, TuneCreateParams, TuneResponse } from './tune/tune';
+import { CreateTuneResponse, Tune, TuneCreateParams } from './tune/tune';
 import { Page, type PageParams } from '../../pagination';
 
 export class Agents extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
   evaluate: EvaluateAPI.Evaluate = new EvaluateAPI.Evaluate(this._client);
   datasets: DatasetsAPI.Datasets = new DatasetsAPI.Datasets(this._client);
@@ -83,6 +80,13 @@ export class Agents extends APIResource {
   delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/agents/${agentId}`, options);
   }
+
+  /**
+   * Get metadata and configuration of a given `Agent`.
+   */
+  metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadata> {
+    return this._client.get(`/agents/${agentId}/metadata`, options);
+  }
 }
 
 export class AgentsPage extends Page<Agent> {}
@@ -102,6 +106,48 @@ export interface Agent {
    * Name of the agent
    */
   name: string;
+}
+
+/**
+ * Response to GET Agent request
+ */
+export interface AgentMetadata {
+  /**
+   * The IDs of the datastore(s) associated with the agent
+   */
+  datastore_ids: Array<string>;
+
+  /**
+   * Name of the agent
+   */
+  name: string;
+
+  /**
+   * Description of the agent
+   */
+  description?: string;
+
+  /**
+   * Optional model ID of a tuned model to use for generation. Model must have been
+   * tuned on this agent; tuned models cannot be used across agents. Uses default
+   * model if none is specified. Set to `default` to deactivate the tuned model and
+   * use the default model.
+   */
+  llm_model_id?: string;
+
+  /**
+   * These queries will show up as suggestions in the Contextual UI when users load
+   * the agent. We recommend including common queries that users will ask, as well as
+   * complex queries so users understand the types of complex queries the system can
+   * handle.
+   */
+  suggested_queries?: Array<string>;
+
+  /**
+   * Instructions that your agent references when generating responses. Note that we
+   * do not guarantee that the system will follow these instructions exactly.
+   */
+  system_prompt?: string;
 }
 
 /**
@@ -207,7 +253,6 @@ export interface AgentUpdateParams {
 export interface AgentListParams extends PageParams {}
 
 Agents.AgentsPage = AgentsPage;
-Agents.Metadata = Metadata;
 Agents.Query = Query;
 Agents.Evaluate = Evaluate;
 Agents.Datasets = Datasets;
@@ -216,6 +261,7 @@ Agents.Tune = Tune;
 export declare namespace Agents {
   export {
     type Agent as Agent,
+    type AgentMetadata as AgentMetadata,
     type CreateAgentOutput as CreateAgentOutput,
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
@@ -225,8 +271,6 @@ export declare namespace Agents {
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
   };
-
-  export { Metadata as Metadata, type AgentMetadataResponse as AgentMetadataResponse };
 
   export {
     Query as Query,
@@ -242,16 +286,20 @@ export declare namespace Agents {
 
   export {
     Evaluate as Evaluate,
-    type LaunchEvaluationResponse as LaunchEvaluationResponse,
-    type EvaluateLaunchParams as EvaluateLaunchParams,
+    type CreateEvaluationResponse as CreateEvaluationResponse,
+    type EvaluateCreateParams as EvaluateCreateParams,
   };
 
   export {
     Datasets as Datasets,
     type CreateDatasetResponse as CreateDatasetResponse,
-    type DatasetResponse as DatasetResponse,
+    type DatasetMetadata as DatasetMetadata,
     type ListDatasetsResponse as ListDatasetsResponse,
   };
 
-  export { Tune as Tune, type TuneResponse as TuneResponse, type TuneCreateParams as TuneCreateParams };
+  export {
+    Tune as Tune,
+    type CreateTuneResponse as CreateTuneResponse,
+    type TuneCreateParams as TuneCreateParams,
+  };
 }

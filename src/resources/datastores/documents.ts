@@ -7,41 +7,6 @@ import { DocumentsPage, type DocumentsPageParams } from '../../pagination';
 
 export class Documents extends APIResource {
   /**
-   * Ingest a document into a given `Datastore`.
-   *
-   * Ingestion is an asynchronous task. Returns a document `id` which can be used to
-   * track the status of the ingestion job through calls to the
-   * `GET /datastores/{datastore_id}/documents/{document_id}/metadata` API.
-   *
-   * This `id` can also be used to delete the document through the
-   * `DELETE /datastores/{datastore_id}/documents/{document_id}` API.
-   *
-   * `file` must be a PDF or HTML file.
-   */
-  create(
-    datastoreId: string,
-    body: DocumentCreateParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<IngestionResponse> {
-    return this._client.post(
-      `/datastores/${datastoreId}/documents`,
-      Core.multipartFormRequestOptions({ body, ...options }),
-    );
-  }
-
-  /**
-   * Get details of a given document, including its `name` and ingestion job
-   * `status`.
-   */
-  retrieve(
-    datastoreId: string,
-    documentId: string,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<DocumentDescription> {
-    return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/metadata`, options);
-  }
-
-  /**
    * Get list of documents in a given `Datastore`, including document `id`, `name`,
    * and ingestion job `status`.
    *
@@ -54,24 +19,23 @@ export class Documents extends APIResource {
     datastoreId: string,
     query?: DocumentListParams,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription>;
+  ): Core.PagePromise<DocumentMetadataDocumentsPage, DocumentMetadata>;
   list(
     datastoreId: string,
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription>;
+  ): Core.PagePromise<DocumentMetadataDocumentsPage, DocumentMetadata>;
   list(
     datastoreId: string,
     query: DocumentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<DocumentDescriptionsDocumentsPage, DocumentDescription> {
+  ): Core.PagePromise<DocumentMetadataDocumentsPage, DocumentMetadata> {
     if (isRequestOptions(query)) {
       return this.list(datastoreId, {}, query);
     }
-    return this._client.getAPIList(
-      `/datastores/${datastoreId}/documents`,
-      DocumentDescriptionsDocumentsPage,
-      { query, ...options },
-    );
+    return this._client.getAPIList(`/datastores/${datastoreId}/documents`, DocumentMetadataDocumentsPage, {
+      query,
+      ...options,
+    });
   }
 
   /**
@@ -80,14 +44,49 @@ export class Documents extends APIResource {
   delete(datastoreId: string, documentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/datastores/${datastoreId}/documents/${documentId}`, options);
   }
+
+  /**
+   * Ingest a document into a given `Datastore`.
+   *
+   * Ingestion is an asynchronous task. Returns a document `id` which can be used to
+   * track the status of the ingestion job through calls to the
+   * `GET /datastores/{datastore_id}/documents/{document_id}/metadata` API.
+   *
+   * This `id` can also be used to delete the document through the
+   * `DELETE /datastores/{datastore_id}/documents/{document_id}` API.
+   *
+   * `file` must be a PDF or HTML file.
+   */
+  ingest(
+    datastoreId: string,
+    body: DocumentIngestParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<IngestionResponse> {
+    return this._client.post(
+      `/datastores/${datastoreId}/documents`,
+      Core.multipartFormRequestOptions({ body, ...options }),
+    );
+  }
+
+  /**
+   * Get details of a given document, including its `name` and ingestion job
+   * `status`.
+   */
+  metadata(
+    datastoreId: string,
+    documentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentMetadata> {
+    return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/metadata`, options);
+  }
 }
 
-export class DocumentDescriptionsDocumentsPage extends DocumentsPage<DocumentDescription> {}
+export class DocumentMetadataDocumentsPage extends DocumentsPage<DocumentMetadata> {}
 
 /**
  * Document description
  */
-export interface DocumentDescription {
+export interface DocumentMetadata {
   /**
    * ID of the document that was ingested
    */
@@ -121,7 +120,7 @@ export interface ListDocumentsResponse {
   /**
    * List of documents retrieved based on the user's GET request
    */
-  documents: Array<DocumentDescription>;
+  documents: Array<DocumentMetadata>;
 
   /**
    * Next cursor to continue pagination. Ommitted if there are no more documents
@@ -137,13 +136,6 @@ export interface ListDocumentsResponse {
 }
 
 export type DocumentDeleteResponse = unknown;
-
-export interface DocumentCreateParams {
-  /**
-   * File to ingest
-   */
-  file: Core.Uploadable;
-}
 
 export interface DocumentListParams extends DocumentsPageParams {
   /**
@@ -163,16 +155,23 @@ export interface DocumentListParams extends DocumentsPageParams {
   uploaded_before?: string;
 }
 
-Documents.DocumentDescriptionsDocumentsPage = DocumentDescriptionsDocumentsPage;
+export interface DocumentIngestParams {
+  /**
+   * File to ingest
+   */
+  file: Core.Uploadable;
+}
+
+Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
 
 export declare namespace Documents {
   export {
-    type DocumentDescription as DocumentDescription,
+    type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
-    DocumentDescriptionsDocumentsPage as DocumentDescriptionsDocumentsPage,
-    type DocumentCreateParams as DocumentCreateParams,
+    DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
+    type DocumentIngestParams as DocumentIngestParams,
   };
 }

@@ -2,10 +2,10 @@
 
 import { APIResource } from '../../../resource';
 import * as Core from '../../../core';
+import * as JobsAPI from './jobs';
+import { JobDeleteResponse, Jobs, ListTuneJobsResponse, TuneJobMetadata } from './jobs';
 import * as ModelsAPI from './models';
-import { ModelListResponse, Models } from './models';
-import * as JobsAPI from './jobs/jobs';
-import { JobDeleteResponse, Jobs, ListTuneJobsResponse, TuneJobResponse } from './jobs/jobs';
+import { ListTuneModelsResponse, Models } from './models';
 
 export class Tune extends APIResource {
   jobs: JobsAPI.Jobs = new JobsAPI.Jobs(this._client);
@@ -31,7 +31,7 @@ export class Tune extends APIResource {
     agentId: string,
     body: TuneCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<TuneResponse> {
+  ): Core.APIPromise<CreateTuneResponse> {
     return this._client.post(
       `/agents/${agentId}/tune`,
       Core.multipartFormRequestOptions({ body, ...options }),
@@ -42,7 +42,7 @@ export class Tune extends APIResource {
 /**
  * Response to POST /agents/{agent_id}/tune request
  */
-export interface TuneResponse {
+export interface CreateTuneResponse {
   /**
    * ID of the created tune job
    */
@@ -104,14 +104,14 @@ Tune.Jobs = Jobs;
 Tune.Models = Models;
 
 export declare namespace Tune {
-  export { type TuneResponse as TuneResponse, type TuneCreateParams as TuneCreateParams };
+  export { type CreateTuneResponse as CreateTuneResponse, type TuneCreateParams as TuneCreateParams };
 
   export {
     Jobs as Jobs,
     type ListTuneJobsResponse as ListTuneJobsResponse,
-    type TuneJobResponse as TuneJobResponse,
+    type TuneJobMetadata as TuneJobMetadata,
     type JobDeleteResponse as JobDeleteResponse,
   };
 
-  export { Models as Models, type ModelListResponse as ModelListResponse };
+  export { Models as Models, type ListTuneModelsResponse as ListTuneModelsResponse };
 }

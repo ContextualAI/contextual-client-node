@@ -1,18 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../../resource';
-import * as Core from '../../../../core';
-import * as MetadataAPI from './metadata';
-import { Metadata } from './metadata';
+import { APIResource } from '../../../resource';
+import * as Core from '../../../core';
 
 export class Jobs extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
-
   /**
    * Retrieve a list of `Evaluation` rounds run on a given `Agent`, including the
    * `Evaluation`'s status and other metadata.
    */
-  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListEvaluationResponse> {
+  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListEvaluationJobsResponse> {
     return this._client.get(`/agents/${agentId}/evaluate/jobs`, options);
   }
 
@@ -22,12 +18,23 @@ export class Jobs extends APIResource {
   cancel(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post(`/agents/${agentId}/evaluate/jobs/${jobId}/cancel`, options);
   }
+
+  /**
+   * Get an `Evaluation` round's status and results.
+   */
+  metadata(
+    agentId: string,
+    jobId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<EvaluationJobMetadata> {
+    return this._client.get(`/agents/${agentId}/evaluate/jobs/${jobId}/metadata`, options);
+  }
 }
 
 /**
  * Response from Get Evaluation Results request
  */
-export interface EvaluationRoundResponse {
+export interface EvaluationJobMetadata {
   /**
    * Dataset name containing the individual results of the evaluation round
    */
@@ -37,7 +44,7 @@ export interface EvaluationRoundResponse {
    * Metadata of the evaluation round with the number of predictions, failed
    * predictions, and successful predictions.
    */
-  job_metadata: EvaluationRoundResponse.JobMetadata;
+  job_metadata: EvaluationJobMetadata.JobMetadata;
 
   /**
    * Results of the evaluation round, grouped by each metric
@@ -50,7 +57,7 @@ export interface EvaluationRoundResponse {
   status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
 }
 
-export namespace EvaluationRoundResponse {
+export namespace EvaluationJobMetadata {
   /**
    * Metadata of the evaluation round with the number of predictions, failed
    * predictions, and successful predictions.
@@ -76,14 +83,14 @@ export namespace EvaluationRoundResponse {
 /**
  * Response from List Evaluations request
  */
-export interface ListEvaluationResponse {
+export interface ListEvaluationJobsResponse {
   /**
    * List of evaluation results
    */
-  evaluation_rounds: Array<ListEvaluationResponse.EvaluationRound>;
+  evaluation_rounds: Array<ListEvaluationJobsResponse.EvaluationRound>;
 }
 
-export namespace ListEvaluationResponse {
+export namespace ListEvaluationJobsResponse {
   /**
    * Metadata of an evaluation round
    */
@@ -112,14 +119,10 @@ export namespace ListEvaluationResponse {
 
 export type JobCancelResponse = unknown;
 
-Jobs.Metadata = Metadata;
-
 export declare namespace Jobs {
   export {
-    type EvaluationRoundResponse as EvaluationRoundResponse,
-    type ListEvaluationResponse as ListEvaluationResponse,
+    type EvaluationJobMetadata as EvaluationJobMetadata,
+    type ListEvaluationJobsResponse as ListEvaluationJobsResponse,
     type JobCancelResponse as JobCancelResponse,
   };
-
-  export { Metadata as Metadata };
 }

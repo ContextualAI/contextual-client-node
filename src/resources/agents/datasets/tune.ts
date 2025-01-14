@@ -153,18 +153,18 @@ export class Tune extends APIResource {
     datasetName: string,
     query?: TuneMetadataParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse>;
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata>;
   metadata(
     agentId: string,
     datasetName: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse>;
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata>;
   metadata(
     agentId: string,
     datasetName: string,
     query: TuneMetadataParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse> {
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata> {
     if (isRequestOptions(query)) {
       return this.metadata(agentId, datasetName, {}, query);
     }

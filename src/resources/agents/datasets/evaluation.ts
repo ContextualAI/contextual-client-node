@@ -158,18 +158,18 @@ export class Evaluation extends APIResource {
     datasetName: string,
     query?: EvaluationMetadataParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse>;
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata>;
   metadata(
     agentId: string,
     datasetName: string,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse>;
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata>;
   metadata(
     agentId: string,
     datasetName: string,
     query: EvaluationMetadataParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<DatasetsAPI.DatasetResponse> {
+  ): Core.APIPromise<DatasetsAPI.DatasetMetadata> {
     if (isRequestOptions(query)) {
       return this.metadata(agentId, datasetName, {}, query);
     }

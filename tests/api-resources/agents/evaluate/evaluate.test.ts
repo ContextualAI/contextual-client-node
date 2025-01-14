@@ -9,8 +9,8 @@ const client = new ContextualAI({
 });
 
 describe('resource evaluate', () => {
-  test('launch: only required params', async () => {
-    const responsePromise = client.agents.evaluate.launch('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('create: only required params', async () => {
+    const responsePromise = client.agents.evaluate.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       metrics: ['equivalence'],
     });
     const rawResponse = await responsePromise.asResponse();
@@ -22,8 +22,8 @@ describe('resource evaluate', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('launch: required and optional params', async () => {
-    const response = await client.agents.evaluate.launch('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+  test('create: required and optional params', async () => {
+    const response = await client.agents.evaluate.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       metrics: ['equivalence'],
       evalset_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
       evalset_name: 'evalset_name',

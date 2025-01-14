@@ -1,13 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIResource } from '../../../../resource';
-import * as Core from '../../../../core';
-import * as MetadataAPI from './metadata';
-import { Metadata } from './metadata';
+import { APIResource } from '../../../resource';
+import * as Core from '../../../core';
 
 export class Jobs extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
-
   /**
    * Retrieve a list of all tune jobs run on a specified `Agent`, including their
    * `status`, `evaluation_results`, and resultant `model_id`.
@@ -23,6 +19,14 @@ export class Jobs extends APIResource {
    */
   delete(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/agents/${agentId}/tune/jobs/${jobId}`, options);
+  }
+
+  /**
+   * Retrieve the status of a specific tuning job. Fetches the current status and
+   * evaluation results, if available, for the specified tuning job.
+   */
+  metadata(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<TuneJobMetadata> {
+    return this._client.get(`/agents/${agentId}/tune/jobs/${jobId}/metadata`, options);
   }
 }
 
@@ -77,7 +81,7 @@ export namespace ListTuneJobsResponse {
 /**
  * Response to GET /agents/{agent_id}/tune/jobs/{job_id}
  */
-export interface TuneJobResponse {
+export interface TuneJobMetadata {
   /**
    * Status of the tune job
    */
@@ -99,14 +103,10 @@ export interface TuneJobResponse {
 
 export type JobDeleteResponse = unknown;
 
-Jobs.Metadata = Metadata;
-
 export declare namespace Jobs {
   export {
     type ListTuneJobsResponse as ListTuneJobsResponse,
-    type TuneJobResponse as TuneJobResponse,
+    type TuneJobMetadata as TuneJobMetadata,
     type JobDeleteResponse as JobDeleteResponse,
   };
-
-  export { Metadata as Metadata };
 }

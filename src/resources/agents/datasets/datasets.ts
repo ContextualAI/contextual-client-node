@@ -50,7 +50,7 @@ export interface CreateDatasetResponse {
 /**
  * Response to GET /datasets/{name}
  */
-export interface DatasetResponse {
+export interface DatasetMetadata {
   /**
    * Timestamp indicating when the dataset was created
    */
@@ -142,7 +142,7 @@ Datasets.Evaluation = Evaluation;
 export declare namespace Datasets {
   export {
     type CreateDatasetResponse as CreateDatasetResponse,
-    type DatasetResponse as DatasetResponse,
+    type DatasetMetadata as DatasetMetadata,
     type ListDatasetsResponse as ListDatasetsResponse,
   };
 

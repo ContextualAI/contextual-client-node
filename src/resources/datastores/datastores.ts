@@ -5,21 +5,18 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as DocumentsAPI from './documents';
 import {
-  DocumentCreateParams,
   DocumentDeleteResponse,
-  DocumentDescription,
-  DocumentDescriptionsDocumentsPage,
+  DocumentIngestParams,
   DocumentListParams,
+  DocumentMetadata,
+  DocumentMetadataDocumentsPage,
   Documents,
   IngestionResponse,
   ListDocumentsResponse,
 } from './documents';
-import * as MetadataAPI from './metadata';
-import { DatastoreMetadataResponse, Metadata } from './metadata';
 import { DatastoresPage, type DatastoresPageParams } from '../../pagination';
 
 export class Datastores extends APIResource {
-  metadata: MetadataAPI.Metadata = new MetadataAPI.Metadata(this._client);
   documents: DocumentsAPI.Documents = new DocumentsAPI.Documents(this._client);
 
   /**
@@ -71,6 +68,14 @@ export class Datastores extends APIResource {
   delete(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/datastores/${datastoreId}`, options);
   }
+
+  /**
+   * Get the details of a given `Datastore`, including its name, create time, and the
+   * list of `Agents` which are currently configured to use the `Datastore`.
+   */
+  metadata(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreMetadata> {
+    return this._client.get(`/datastores/${datastoreId}/metadata`, options);
+  }
 }
 
 export class DatastoresDatastoresPage extends DatastoresPage<Datastore> {}
@@ -90,6 +95,23 @@ export interface Datastore {
    * ID of the datastore
    */
   id: string;
+
+  /**
+   * Timestamp of when the datastore was created
+   */
+  created_at: string;
+
+  /**
+   * Name of the datastore
+   */
+  name: string;
+}
+
+export interface DatastoreMetadata {
+  /**
+   * List of agents using this datastore
+   */
+  agent_ids: Array<string>;
 
   /**
    * Timestamp of when the datastore was created
@@ -138,14 +160,14 @@ export interface DatastoreListParams extends DatastoresPageParams {
 }
 
 Datastores.DatastoresDatastoresPage = DatastoresDatastoresPage;
-Datastores.Metadata = Metadata;
 Datastores.Documents = Documents;
-Datastores.DocumentDescriptionsDocumentsPage = DocumentDescriptionsDocumentsPage;
+Datastores.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
 
 export declare namespace Datastores {
   export {
     type CreateDatastoreResponse as CreateDatastoreResponse,
     type Datastore as Datastore,
+    type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
@@ -153,16 +175,14 @@ export declare namespace Datastores {
     type DatastoreListParams as DatastoreListParams,
   };
 
-  export { Metadata as Metadata, type DatastoreMetadataResponse as DatastoreMetadataResponse };
-
   export {
     Documents as Documents,
-    type DocumentDescription as DocumentDescription,
+    type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
-    DocumentDescriptionsDocumentsPage as DocumentDescriptionsDocumentsPage,
-    type DocumentCreateParams as DocumentCreateParams,
+    DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
+    type DocumentIngestParams as DocumentIngestParams,
   };
 }

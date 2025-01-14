@@ -3,7 +3,7 @@
 export {
   Datasets,
   type CreateDatasetResponse,
-  type DatasetResponse,
+  type DatasetMetadata,
   type ListDatasetsResponse,
 } from './datasets';
 export {

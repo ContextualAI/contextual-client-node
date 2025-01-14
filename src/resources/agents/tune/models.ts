@@ -7,7 +7,7 @@ export class Models extends APIResource {
   /**
    * Retrieves a list of tuned models associated with the specified agent.
    */
-  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ModelListResponse> {
+  list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListTuneModelsResponse> {
     return this._client.get(`/agents/${agentId}/tune/models`, options);
   }
 }
@@ -15,7 +15,7 @@ export class Models extends APIResource {
 /**
  * Response model to list registered models
  */
-export interface ModelListResponse {
+export interface ListTuneModelsResponse {
   /**
    * Whether there are more models to retrieve
    */
@@ -24,7 +24,7 @@ export interface ModelListResponse {
   /**
    * List of registered models for the application
    */
-  models: Array<ModelListResponse.Model>;
+  models: Array<ListTuneModelsResponse.Model>;
 
   /**
    * Total number of models associated with the application
@@ -37,7 +37,7 @@ export interface ModelListResponse {
   next_after?: string;
 }
 
-export namespace ModelListResponse {
+export namespace ListTuneModelsResponse {
   /**
    * Response model to list individual registered model
    */
@@ -60,5 +60,5 @@ export namespace ModelListResponse {
 }
 
 export declare namespace Models {
-  export { type ModelListResponse as ModelListResponse };
+  export { type ListTuneModelsResponse as ListTuneModelsResponse };
 }

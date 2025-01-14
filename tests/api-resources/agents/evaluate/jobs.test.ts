@@ -10,7 +10,7 @@ const client = new ContextualAI({
 
 describe('resource jobs', () => {
   test('list', async () => {
-    const responsePromise = client.agents.tune.jobs.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const responsePromise = client.agents.evaluate.jobs.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -23,14 +23,14 @@ describe('resource jobs', () => {
   test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.agents.tune.jobs.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      client.agents.evaluate.jobs.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 
-  test('delete', async () => {
-    const responsePromise = client.agents.tune.jobs.delete(
+  test('cancel', async () => {
+    const responsePromise = client.agents.evaluate.jobs.cancel(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     );
@@ -43,10 +43,35 @@ describe('resource jobs', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('delete: request options instead of params are passed correctly', async () => {
+  test('cancel: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.agents.tune.jobs.delete(
+      client.agents.evaluate.jobs.cancel(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
+  });
+
+  test('metadata', async () => {
+    const responsePromise = client.agents.evaluate.jobs.metadata(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+    );
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('metadata: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.agents.evaluate.jobs.metadata(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         { path: '/_stainless_unknown_path' },
