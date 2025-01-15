@@ -25,9 +25,11 @@ export class Datastores extends APIResource {
    * A `Datastore` is a collection of documents. Documents can be ingested into and
    * deleted from a `Datastore`.
    *
-   * A `Datastore` can be linked to one or more `Agents` to provide data on which the
-   * `Agent` can ground its answers. This linkage of `Datastore` to `Agent` is done
-   * through the `Create Agent` or `Edit Agent` APIs.
+   * A `Datastore` can be linked to one or more `Agents`, and conversely, an `Agent`
+   * can be associated with one or more `Datastores` to ground its responses with
+   * relevant data. This flexible many-to-many relationship allows `Agents` to draw
+   * from multiple sources of information. This linkage of `Datastore` to `Agent` is
+   * done through the `Create Agent` or `Edit Agent` APIs.
    */
   create(
     body: DatastoreCreateParams,
@@ -37,7 +39,7 @@ export class Datastores extends APIResource {
   }
 
   /**
-   * List all the `Datastores`.
+   * Retrieve a list of `Datastores`.
    *
    * Performs `cursor`-based pagination if the number of `Datastores` exceeds the
    * requested `limit`. The returned `cursor` can be passed to the next

@@ -32,8 +32,8 @@ export class Agents extends APIResource {
   /**
    * Create a new `Agent` with a specific configuration.
    *
-   * This creates a specialized RAG `Agent` which queries over a `Datastore` to
-   * retrieve relevant data on which its generations are grounded.
+   * This creates a specialized RAG `Agent` which queries over one or multiple
+   * `Datastores` to retrieve relevant data on which its generations are grounded.
    *
    * Retrieval and generation parameters are defined in the provided `Agent`
    * configuration.
@@ -128,10 +128,9 @@ export interface AgentMetadata {
   description?: string;
 
   /**
-   * Optional model ID of a tuned model to use for generation. Model must have been
-   * tuned on this agent; tuned models cannot be used across agents. Uses default
-   * model if none is specified. Set to `default` to deactivate the tuned model and
-   * use the default model.
+   * The model ID to use for generation. Tuned models can only be used for the agents
+   * on which they were tuned. If no model is specified, the default model is used.
+   * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
 
@@ -176,7 +175,7 @@ export interface ListAgentsResponse {
   /**
    * List of active agents
    */
-  data?: Array<Agent>;
+  agents?: Array<Agent>;
 
   /**
    * Next cursor to continue pagination. Omitted if there are no more agents to
@@ -228,10 +227,9 @@ export interface AgentUpdateParams {
   datastore_ids?: Array<string>;
 
   /**
-   * Optional model ID of a tuned model to use for generation. Model must have been
-   * tuned on this agent; tuned models cannot be used across agents. Uses default
-   * model if none is specified. Set to `default` to deactivate the tuned model and
-   * use the default model.
+   * The model ID to use for generation. Tuned models can only be used for the agents
+   * on which they were tuned. If no model is specified, the default model is used.
+   * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
 

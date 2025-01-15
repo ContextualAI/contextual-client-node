@@ -117,7 +117,7 @@ export class DocumentsPage<Item> extends AbstractPage<Item> implements Documents
 }
 
 export interface PageResponse<Item> {
-  data: Array<Item>;
+  agents: Array<Item>;
 
   next_cursor: string;
 }
@@ -129,19 +129,19 @@ export interface PageParams {
 }
 
 export class Page<Item> extends AbstractPage<Item> implements PageResponse<Item> {
-  data: Array<Item>;
+  agents: Array<Item>;
 
   next_cursor: string;
 
   constructor(client: APIClient, response: Response, body: PageResponse<Item>, options: FinalRequestOptions) {
     super(client, response, body, options);
 
-    this.data = body.data || [];
+    this.agents = body.agents || [];
     this.next_cursor = body.next_cursor || '';
   }
 
   getPaginatedItems(): Item[] {
-    return this.data ?? [];
+    return this.agents ?? [];
   }
 
   // @deprecated Please use `nextPageInfo()` instead

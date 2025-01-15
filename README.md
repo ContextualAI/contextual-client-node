@@ -153,7 +153,7 @@ Alternatively, you can request a single page at a time:
 
 ```ts
 let page = await client.agents.list();
-for (const agent of page.data) {
+for (const agent of page.agents) {
   console.log(agent);
 }
 

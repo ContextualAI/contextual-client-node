@@ -98,21 +98,6 @@ Types:
 - <code><a href="./src/resources/agents/datasets/datasets.ts">DatasetMetadata</a></code>
 - <code><a href="./src/resources/agents/datasets/datasets.ts">ListDatasetsResponse</a></code>
 
-### Tune
-
-Types:
-
-- <code><a href="./src/resources/agents/datasets/tune.ts">TuneDeleteResponse</a></code>
-
-Methods:
-
-- <code title="post /agents/{agent_id}/datasets/tune">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">create</a>(agentId, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">retrieve</a>(agentId, datasetName, { ...params }) -> Response</code>
-- <code title="put /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">update</a>(agentId, datasetName, { ...params }) -> CreateDatasetResponse</code>
-- <code title="get /agents/{agent_id}/datasets/tune">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">list</a>(agentId, { ...params }) -> ListDatasetsResponse</code>
-- <code title="delete /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">delete</a>(agentId, datasetName) -> unknown</code>
-- <code title="get /agents/{agent_id}/datasets/tune/{dataset_name}/metadata">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">metadata</a>(agentId, datasetName, { ...params }) -> DatasetMetadata</code>
-
 ### Evaluate
 
 Types:

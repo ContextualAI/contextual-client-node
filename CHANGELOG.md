@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0 (2025-01-15)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0-alpha.2...v0.1.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#6](https://github.com/ContextualAI/contextual-client-node/issues/6)) ([c4716b9](https://github.com/ContextualAI/contextual-client-node/commit/c4716b9941567e8194e7a423d3964bb10f9b0eb8))
+* **api:** update via SDK Studio ([#8](https://github.com/ContextualAI/contextual-client-node/issues/8)) ([b0ff25d](https://github.com/ContextualAI/contextual-client-node/commit/b0ff25db12010d4b6e2b8adf1dc08b2c03041499))
+* **api:** update via SDK Studio ([#9](https://github.com/ContextualAI/contextual-client-node/issues/9)) ([a2cb696](https://github.com/ContextualAI/contextual-client-node/commit/a2cb696735d01fe00508f2d6d5dfd40d30bebb9f))
+
 ## 0.1.0-alpha.2 (2025-01-14)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
