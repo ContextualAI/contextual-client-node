@@ -21,7 +21,7 @@ import * as EvaluateAPI from './evaluate/evaluate';
 import { CreateEvaluationResponse, Evaluate, EvaluateCreateParams } from './evaluate/evaluate';
 import * as TuneAPI from './tune/tune';
 import { CreateTuneResponse, Tune, TuneCreateParams } from './tune/tune';
-import { AgentsPage, type AgentsPageParams } from '../../pagination';
+import { Page, type PageParams } from '../../pagination';
 
 export class Agents extends APIResource {
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
@@ -58,16 +58,16 @@ export class Agents extends APIResource {
   /**
    * Retrieve a list of all `Agents`.
    */
-  list(query?: AgentListParams, options?: Core.RequestOptions): Core.PagePromise<AgentsAgentsPage, Agent>;
-  list(options?: Core.RequestOptions): Core.PagePromise<AgentsAgentsPage, Agent>;
+  list(query?: AgentListParams, options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
+  list(options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
   list(
     query: AgentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AgentsAgentsPage, Agent> {
+  ): Core.PagePromise<AgentsPage, Agent> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/agents', AgentsAgentsPage, { query, ...options });
+    return this._client.getAPIList('/agents', AgentsPage, { query, ...options });
   }
 
   /**
@@ -89,7 +89,7 @@ export class Agents extends APIResource {
   }
 }
 
-export class AgentsAgentsPage extends AgentsPage<Agent> {}
+export class AgentsPage extends Page<Agent> {}
 
 export interface Agent {
   /**
@@ -248,9 +248,9 @@ export interface AgentUpdateParams {
   system_prompt?: string;
 }
 
-export interface AgentListParams extends AgentsPageParams {}
+export interface AgentListParams extends PageParams {}
 
-Agents.AgentsAgentsPage = AgentsAgentsPage;
+Agents.AgentsPage = AgentsPage;
 Agents.Query = Query;
 Agents.Evaluate = Evaluate;
 Agents.Datasets = Datasets;
@@ -264,7 +264,7 @@ export declare namespace Agents {
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
-    AgentsAgentsPage as AgentsAgentsPage,
+    AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,

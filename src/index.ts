@@ -6,12 +6,12 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
 import {
-  type AgentsPageParams,
-  AgentsPageResponse,
   type DatastoresPageParams,
   DatastoresPageResponse,
   type DocumentsPageParams,
   DocumentsPageResponse,
+  type PageParams,
+  PageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
@@ -25,7 +25,7 @@ import {
   AgentUpdateParams,
   AgentUpdateResponse,
   Agents,
-  AgentsAgentsPage,
+  AgentsPage,
   CreateAgentOutput,
   ListAgentsResponse,
 } from './resources/agents/agents';
@@ -201,7 +201,7 @@ export class ContextualAI extends Core.APIClient {
 ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Agents = Agents;
-ContextualAI.AgentsAgentsPage = AgentsAgentsPage;
+ContextualAI.AgentsPage = AgentsPage;
 ContextualAI.LMUnit = LMUnit;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
@@ -218,8 +218,8 @@ export declare namespace ContextualAI {
     type DocumentsPageResponse as DocumentsPageResponse,
   };
 
-  export import AgentsPage = Pagination.AgentsPage;
-  export { type AgentsPageParams as AgentsPageParams, type AgentsPageResponse as AgentsPageResponse };
+  export import Page = Pagination.Page;
+  export { type PageParams as PageParams, type PageResponse as PageResponse };
 
   export {
     Datastores as Datastores,
@@ -241,7 +241,7 @@ export declare namespace ContextualAI {
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
-    AgentsAgentsPage as AgentsAgentsPage,
+    AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,

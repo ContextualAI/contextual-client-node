@@ -116,29 +116,24 @@ export class DocumentsPage<Item> extends AbstractPage<Item> implements Documents
   }
 }
 
-export interface AgentsPageResponse<Item> {
+export interface PageResponse<Item> {
   agents: Array<Item>;
 
   next_cursor: string;
 }
 
-export interface AgentsPageParams {
+export interface PageParams {
   cursor?: string;
 
   limit?: number;
 }
 
-export class AgentsPage<Item> extends AbstractPage<Item> implements AgentsPageResponse<Item> {
+export class Page<Item> extends AbstractPage<Item> implements PageResponse<Item> {
   agents: Array<Item>;
 
   next_cursor: string;
 
-  constructor(
-    client: APIClient,
-    response: Response,
-    body: AgentsPageResponse<Item>,
-    options: FinalRequestOptions,
-  ) {
+  constructor(client: APIClient, response: Response, body: PageResponse<Item>, options: FinalRequestOptions) {
     super(client, response, body, options);
 
     this.agents = body.agents || [];
@@ -150,7 +145,7 @@ export class AgentsPage<Item> extends AbstractPage<Item> implements AgentsPageRe
   }
 
   // @deprecated Please use `nextPageInfo()` instead
-  nextPageParams(): Partial<AgentsPageParams> | null {
+  nextPageParams(): Partial<PageParams> | null {
     const info = this.nextPageInfo();
     if (!info) return null;
     if ('params' in info) return info.params;
