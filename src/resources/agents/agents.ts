@@ -21,7 +21,7 @@ import * as EvaluateAPI from './evaluate/evaluate';
 import { CreateEvaluationResponse, Evaluate, EvaluateCreateParams } from './evaluate/evaluate';
 import * as TuneAPI from './tune/tune';
 import { CreateTuneResponse, Tune, TuneCreateParams } from './tune/tune';
-import { Page, type PageParams } from '../../pagination';
+import { AgentsPage, type AgentsPageParams } from '../../pagination';
 
 export class Agents extends APIResource {
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
@@ -32,8 +32,8 @@ export class Agents extends APIResource {
   /**
    * Create a new `Agent` with a specific configuration.
    *
-   * This creates a specialized RAG `Agent` which queries over a `Datastore` to
-   * retrieve relevant data on which its generations are grounded.
+   * This creates a specialized RAG `Agent` which queries over one or multiple
+   * `Datastores` to retrieve relevant data on which its generations are grounded.
    *
    * Retrieval and generation parameters are defined in the provided `Agent`
    * configuration.
@@ -58,16 +58,16 @@ export class Agents extends APIResource {
   /**
    * Retrieve a list of all `Agents`.
    */
-  list(query?: AgentListParams, options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
-  list(options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
+  list(query?: AgentListParams, options?: Core.RequestOptions): Core.PagePromise<AgentsAgentsPage, Agent>;
+  list(options?: Core.RequestOptions): Core.PagePromise<AgentsAgentsPage, Agent>;
   list(
     query: AgentListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.PagePromise<AgentsPage, Agent> {
+  ): Core.PagePromise<AgentsAgentsPage, Agent> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.getAPIList('/agents', AgentsPage, { query, ...options });
+    return this._client.getAPIList('/agents', AgentsAgentsPage, { query, ...options });
   }
 
   /**
@@ -89,7 +89,7 @@ export class Agents extends APIResource {
   }
 }
 
-export class AgentsPage extends Page<Agent> {}
+export class AgentsAgentsPage extends AgentsPage<Agent> {}
 
 export interface Agent {
   /**
@@ -128,10 +128,9 @@ export interface AgentMetadata {
   description?: string;
 
   /**
-   * Optional model ID of a tuned model to use for generation. Model must have been
-   * tuned on this agent; tuned models cannot be used across agents. Uses default
-   * model if none is specified. Set to `default` to deactivate the tuned model and
-   * use the default model.
+   * The model ID to use for generation. Tuned models can only be used for the agents
+   * on which they were tuned. If no model is specified, the default model is used.
+   * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
 
@@ -176,7 +175,7 @@ export interface ListAgentsResponse {
   /**
    * List of active agents
    */
-  data?: Array<Agent>;
+  agents?: Array<Agent>;
 
   /**
    * Next cursor to continue pagination. Omitted if there are no more agents to
@@ -228,10 +227,9 @@ export interface AgentUpdateParams {
   datastore_ids?: Array<string>;
 
   /**
-   * Optional model ID of a tuned model to use for generation. Model must have been
-   * tuned on this agent; tuned models cannot be used across agents. Uses default
-   * model if none is specified. Set to `default` to deactivate the tuned model and
-   * use the default model.
+   * The model ID to use for generation. Tuned models can only be used for the agents
+   * on which they were tuned. If no model is specified, the default model is used.
+   * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
 
@@ -250,9 +248,9 @@ export interface AgentUpdateParams {
   system_prompt?: string;
 }
 
-export interface AgentListParams extends PageParams {}
+export interface AgentListParams extends AgentsPageParams {}
 
-Agents.AgentsPage = AgentsPage;
+Agents.AgentsAgentsPage = AgentsAgentsPage;
 Agents.Query = Query;
 Agents.Evaluate = Evaluate;
 Agents.Datasets = Datasets;
@@ -266,7 +264,7 @@ export declare namespace Agents {
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
-    AgentsPage as AgentsPage,
+    AgentsAgentsPage as AgentsAgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
