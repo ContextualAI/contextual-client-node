@@ -27,7 +27,7 @@ describe('resource evaluate', () => {
       metrics: ['equivalence'],
       evalset_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
       evalset_name: 'evalset_name',
-      model_name: 'model_name',
+      llm_model_id: 'llm_model_id',
     });
   });
 });

@@ -5,7 +5,7 @@ import * as Core from '../../../core';
 
 export class Jobs extends APIResource {
   /**
-   * Retrieve a list of all tune jobs run on a specified `Agent`, including their
+   * Retrieve a list of all tune jobs run for a specified `Agent`, including their
    * `status`, `evaluation_results`, and resultant `model_id`.
    */
   list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListTuneJobsResponse> {
@@ -13,17 +13,20 @@ export class Jobs extends APIResource {
   }
 
   /**
-   * Cancel a specific tuning job. Terminates the tuning job if it is still in
-   * progress. If the tuning job has already completed, the tuned model will not be
-   * deleted.
+   * Cancel a tuning job if it is still in progress. If the tuning job has already
+   * completed, the tuned model will not be deleted.
    */
   delete(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.delete(`/agents/${agentId}/tune/jobs/${jobId}`, options);
   }
 
   /**
-   * Retrieve the status of a specific tuning job. Fetches the current status and
-   * evaluation results, if available, for the specified tuning job.
+   * Retrieve the status of a specific tuning job.
+   *
+   * After the tuning job is complete, the metadata associated with the tune job will
+   * include evaluation results and a model ID. You can then deploy the tuned model
+   * to the agent by editing its config with the tuned model ID and the "Edit Agent"
+   * API (i.e. the `PUT /agents/{agent_id}` API).
    */
   metadata(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<TuneJobMetadata> {
     return this._client.get(`/agents/${agentId}/tune/jobs/${jobId}/metadata`, options);
@@ -59,7 +62,8 @@ export namespace ListTuneJobsResponse {
     id: string;
 
     /**
-     * Status of the tune job
+     * Status of the tune job. There are four possible statuses: 'failed', 'pending',
+     * 'processing' and 'completed'.
      */
     job_status: string;
 
@@ -71,8 +75,7 @@ export namespace ListTuneJobsResponse {
     evaluation_results?: Record<string, number>;
 
     /**
-     * ID of the trained model. Omitted if the tuning job failed or is still in
-     * progress.
+     * ID of the tuned model. Omitted if the tuning job failed or is still in progress.
      */
     model_id?: string;
   }
@@ -83,14 +86,15 @@ export namespace ListTuneJobsResponse {
  */
 export interface TuneJobMetadata {
   /**
-   * Status of the tune job
+   * Status of the tune job. There are four possible statuses: 'failed', 'pending',
+   * 'processing', 'completed'.
    */
   job_status: string;
 
   /**
-   * Evaluation results of the tuned model, represented as an object mapping metric
-   * names (strings) to their scores (floats). Omitted if the tuning job failed or is
-   * still in progress.
+   * Evaluation results of the tuned model, represented as a dictionary mapping
+   * metric names (strings) to their scores (floats). Omitted if the tuning job
+   * failed or is still in progress.
    */
   evaluation_results?: Record<string, number>;
 

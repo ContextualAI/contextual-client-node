@@ -5,7 +5,7 @@ import * as Core from '../../../core';
 
 export class Jobs extends APIResource {
   /**
-   * Retrieve a list of `Evaluation` rounds run on a given `Agent`, including the
+   * Retrieve a list of `Evaluation` jobs run for a given `Agent`, including the
    * `Evaluation`'s status and other metadata.
    */
   list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListEvaluationJobsResponse> {
@@ -13,14 +13,20 @@ export class Jobs extends APIResource {
   }
 
   /**
-   * Cancels an `Evaluation` round.
+   * Cancels an `Evaluation` job if it is still in progress.
    */
   cancel(agentId: string, jobId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.post(`/agents/${agentId}/evaluate/jobs/${jobId}/cancel`, options);
   }
 
   /**
-   * Get an `Evaluation` round's status and results.
+   * Get an `Evaluation` job's status and results. There are six possible statuses:
+   * 'pending', 'processing', 'retrying', 'completed', 'failed', 'cancelled'.
+   *
+   * If the evaluation job has completed, you will see your evaluation `metrics` ,
+   * `job_metadata`, and the `dataset_name` where your eval metrics and row-by-row
+   * results are stored. You can use the `/datasets/evaluate` API to view the
+   * specified `dataset`.
    */
   metadata(
     agentId: string,
