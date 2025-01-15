@@ -12,8 +12,6 @@ import {
   DatastoresPageResponse,
   type DocumentsPageParams,
   DocumentsPageResponse,
-  type PageParams,
-  PageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
@@ -222,9 +220,6 @@ export declare namespace ContextualAI {
 
   export import AgentsPage = Pagination.AgentsPage;
   export { type AgentsPageParams as AgentsPageParams, type AgentsPageResponse as AgentsPageResponse };
-
-  export import Page = Pagination.Page;
-  export { type PageParams as PageParams, type PageResponse as PageResponse };
 
   export {
     Datastores as Datastores,
