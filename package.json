@@ -1,6 +1,6 @@
 {
   "name": "contextual-client",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "The official TypeScript library for the Contextual AI API",
   "author": "Contextual AI <support@contextual.ai>",
   "types": "dist/index.d.ts",
