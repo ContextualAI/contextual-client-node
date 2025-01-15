@@ -18,18 +18,11 @@ export class Evaluate extends APIResource {
    * defined for the `dataset_type`.
    *
    * File schema for `dataset_type` `evaluation_set` is a JSONL or CSV file where
-   * each line is one JSON object with the following keys:
+   * each line is one JSON object with the following required keys:
    *
    * - `prompt` (required, `string`): Prompt or question
    *
-   * - `response` (optional, `string`): Optional response to evaluate
-   *
    * - `reference` (required, `string`): Required reference or ground truth response
-   *
-   * - `guideline` (optional, `string`): Optional evaluation guidelines
-   *
-   * - `knowledge` (optional, `string`): Optional retrieved context for evaluation,
-   *   as a list of string text chunks
    */
   create(
     agentId: string,
@@ -49,9 +42,13 @@ export class Evaluate extends APIResource {
    * The `Dataset` content is downloaded in batches. Batch size can be configured to
    * meet specific processing requirements.
    *
-   * Returns a `StreamingResponse`, an asynchronous stream of `Dataset` content
-   * with: - Content-Type: application/octet-stream - Content-Disposition:
-   * attachment - Chunked transfer encoding
+   * Returns a `StreamingResponse`, an asynchronous stream of `Dataset` content with:
+   *
+   * - Content-Type: application/octet-stream
+   *
+   * - Content-Disposition: attachment
+   *
+   * - Chunked transfer encoding
    */
   retrieve(
     agentId: string,
@@ -84,18 +81,11 @@ export class Evaluate extends APIResource {
    * validating against its schema.
    *
    * File schema for `dataset_type` `evaluation_set` is a JSONL file where each line
-   * is one JSON object with the following keys:
+   * is one JSON object with the following required keys:
    *
-   * - `prompt` (required, `string`): Prompt or question
+   * - `prompt` (`string`): Prompt or question
    *
-   * - `response` (optional, `string`): Optional response to evaluate
-   *
-   * - `reference` (required, `string`): Required reference or ground truth response
-   *
-   * - `guideline` (optional, `string`): Optional evaluation guidelines
-   *
-   * - `knowledge` (optional, `string`): Optional retrieved context for evaluation,
-   *   as a list of string text chunks
+   * - `reference` (`string`): Required reference or ground truth response
    */
   update(
     agentId: string,

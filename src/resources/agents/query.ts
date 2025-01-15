@@ -38,7 +38,8 @@ export class Query extends APIResource {
   }
 
   /**
-   * Get feedbacks a given agent.
+   * Returns usage and user-provided feedback data. This information can be used for
+   * data-driven improvements and optimization.
    */
   metrics(
     agentId: string,
@@ -58,7 +59,7 @@ export class Query extends APIResource {
   }
 
   /**
-   * Return content metadata of the contents used to generate response for a given
+   * Return metadata of the contents used to generate the response for a given
    * message.
    */
   retrievalInfo(
@@ -268,7 +269,9 @@ export interface QueryMetricsResponse {
 
 export interface QueryCreateParams {
   /**
-   * Body param: Message objects in the conversation
+   * Body param: Messages sent so far in the conversation, ending in the latest user
+   * message. Add multiple objects to provide conversation history. Last message in
+   * the list must be a `user`-sent message (i.e. `role` equals `"user"`).
    */
   messages: Array<QueryCreateParams.Message>;
 
@@ -278,17 +281,17 @@ export interface QueryCreateParams {
   retrievals_only?: boolean;
 
   /**
-   * Body param: Conversation ID. An optional alternative to providing message
-   * history in the `messages` field. If provided, history in the `messages` field
-   * will be ignored.
+   * Body param: An optional alternative to providing message history in the
+   * `messages` field. If provided, all messages in the `messages` list prior to the
+   * latest user-sent query will be ignored.
    */
   conversation_id?: string;
 
   /**
-   * Body param: Model ID of the specific fine-tuned or aligned model to use.
+   * Body param: Model ID of the specific fine-tuned or aligned LLM model to use.
    * Defaults to base model if not specified.
    */
-  model_id?: string;
+  llm_model_id?: string;
 
   /**
    * Body param: Set to `true` to receive a streamed response
@@ -321,13 +324,13 @@ export interface QueryFeedbackParams {
   feedback: 'thumbs_up' | 'thumbs_down' | 'flagged' | 'removed';
 
   /**
-   * ID of the message to provide feedback on.
+   * ID of the message on which to provide feedback.
    */
   message_id: string;
 
   /**
-   * Content ID to provide feedback on, if feedback is on retrieval. Set to None for
-   * generation feedback.
+   * ID of the content on which to provide feedback, if feedback is on retrieval. Do
+   * not set (or set to null) while providing generation feedback.
    */
   content_id?: string;
 
@@ -339,12 +342,12 @@ export interface QueryFeedbackParams {
 
 export interface QueryMetricsParams {
   /**
-   * Filters messages that are created before specified timestamp.
+   * Filters messages that are created after the specified timestamp.
    */
   created_after?: string;
 
   /**
-   * Filters messages that are created after specified timestamp.
+   * Filters messages that are created before specified timestamp.
    */
   created_before?: string;
 

@@ -17,11 +17,6 @@ export class Models extends APIResource {
  */
 export interface ListTuneModelsResponse {
   /**
-   * Whether there are more models to retrieve
-   */
-  has_more: boolean;
-
-  /**
    * List of registered models for the application
    */
   models: Array<ListTuneModelsResponse.Model>;
@@ -30,11 +25,6 @@ export interface ListTuneModelsResponse {
    * Total number of models associated with the application
    */
   total: number;
-
-  /**
-   * Identifier of the last model from the current request, used for pagination
-   */
-  next_after?: string;
 }
 
 export namespace ListTuneModelsResponse {
