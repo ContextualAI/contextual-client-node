@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1 (2025-01-28)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* **internal:** codegen related update ([#11](https://github.com/ContextualAI/contextual-client-node/issues/11)) ([30253b7](https://github.com/ContextualAI/contextual-client-node/commit/30253b751d480a41574804fa080a02449c37936a))
+* **internal:** codegen related update ([#13](https://github.com/ContextualAI/contextual-client-node/issues/13)) ([69a063a](https://github.com/ContextualAI/contextual-client-node/commit/69a063afb19f3739fc877ddbc90bf3c8da826d48))
+* **internal:** codegen related update ([#14](https://github.com/ContextualAI/contextual-client-node/issues/14)) ([ed84da5](https://github.com/ContextualAI/contextual-client-node/commit/ed84da5bd3a9085f5d9bed012112d8ef386a9f64))
+
 ## 0.1.0 (2025-01-15)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0-alpha.2...v0.1.0)
