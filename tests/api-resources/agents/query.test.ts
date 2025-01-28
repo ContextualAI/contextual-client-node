@@ -83,7 +83,7 @@ describe('resource query', () => {
         {
           created_after: '2019-12-27T18:11:19.117Z',
           created_before: '2019-12-27T18:11:19.117Z',
-          limit: 0,
+          limit: 1000,
           offset: 0,
         },
         { path: '/_stainless_unknown_path' },
