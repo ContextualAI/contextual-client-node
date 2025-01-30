@@ -190,7 +190,7 @@ export namespace QueryResponse {
     content: string;
 
     /**
-     * Role of sender
+     * Role of the sender
      */
     role: 'user' | 'system' | 'assistant';
   }
@@ -301,7 +301,8 @@ export interface QueryCreateParams {
 
 export namespace QueryCreateParams {
   /**
-   * Message object for a message sent or received in a /query conversation
+   * Message object for a message sent or received in a /query and /generate
+   * conversation
    */
   export interface Message {
     /**
@@ -310,7 +311,7 @@ export namespace QueryCreateParams {
     content: string;
 
     /**
-     * Role of sender
+     * Role of the sender
      */
     role: 'user' | 'system' | 'assistant';
   }
