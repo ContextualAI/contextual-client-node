@@ -156,3 +156,23 @@ Types:
 Methods:
 
 - <code title="post /lmunit">client.lmUnit.<a href="./src/resources/lmunit.ts">create</a>({ ...params }) -> LMUnitCreateResponse</code>
+
+# Rerank
+
+Types:
+
+- <code><a href="./src/resources/rerank.ts">RerankCreateResponse</a></code>
+
+Methods:
+
+- <code title="post /rerank">client.rerank.<a href="./src/resources/rerank.ts">create</a>({ ...params }) -> RerankCreateResponse</code>
+
+# Generate
+
+Types:
+
+- <code><a href="./src/resources/generate.ts">GenerateCreateResponse</a></code>
+
+Methods:
+
+- <code title="post /generate">client.generate.<a href="./src/resources/generate.ts">create</a>({ ...params }) -> GenerateCreateResponse</code>
