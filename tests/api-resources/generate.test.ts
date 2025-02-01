@@ -11,7 +11,7 @@ const client = new ContextualAI({
 describe('resource generate', () => {
   test('create: only required params', async () => {
     const responsePromise = client.generate.create({
-      extra_body: { knowledge: ['string'] },
+      knowledge: ['string'],
       messages: [{ content: 'content', role: 'user' }],
       model: 'model',
     });
@@ -26,9 +26,10 @@ describe('resource generate', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.generate.create({
-      extra_body: { knowledge: ['string'], system_prompt: 'system_prompt' },
+      knowledge: ['string'],
       messages: [{ content: 'content', role: 'user' }],
       model: 'model',
+      system_prompt: 'system_prompt',
     });
   });
 });
