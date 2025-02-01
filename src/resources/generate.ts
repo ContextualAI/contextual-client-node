@@ -28,9 +28,9 @@ export interface GenerateCreateResponse {
 
 export interface GenerateCreateParams {
   /**
-   * Extra parameters to be passed to Contextual's GLM
+   * The knowledge sources the model can use when generating a response.
    */
-  extra_body: GenerateCreateParams.ExtraBody;
+  knowledge: Array<string>;
 
   /**
    * List of messages in the conversation so far. The last message must be from the
@@ -42,25 +42,15 @@ export interface GenerateCreateParams {
    * The version of the Contextual's GLM to use. Currently, we just have "v1".
    */
   model: string;
+
+  /**
+   * Instructions that the model follows when generating responses. Note that we do
+   * not guarantee that the model follows these instructions exactly.
+   */
+  system_prompt?: string;
 }
 
 export namespace GenerateCreateParams {
-  /**
-   * Extra parameters to be passed to Contextual's GLM
-   */
-  export interface ExtraBody {
-    /**
-     * The knowledge sources the model can use when generating a response.
-     */
-    knowledge: Array<string>;
-
-    /**
-     * Instructions that the model follows when generating responses. Note that we do
-     * not guarantee that the model follows these instructions exactly.
-     */
-    system_prompt?: string;
-  }
-
   /**
    * Message object for a message sent or received in a /query and /generate
    * conversation
