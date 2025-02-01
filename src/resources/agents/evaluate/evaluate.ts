@@ -72,7 +72,7 @@ export interface EvaluateCreateParams {
   /**
    * ID of the model to evaluate. Uses the default model if not specified.
    */
-  llm_model_id?: string | null;
+  llm_model_id?: string;
 }
 
 Evaluate.Jobs = Jobs;
