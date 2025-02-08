@@ -24,4 +24,6 @@ export {
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
+export { Generate, type GenerateCreateResponse, type GenerateCreateParams } from './generate';
 export { LMUnit, type LMUnitCreateResponse, type LMUnitCreateParams } from './lmunit';
+export { Rerank, type RerankCreateResponse, type RerankCreateParams } from './rerank';

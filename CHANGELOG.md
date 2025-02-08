@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.0 (2025-02-08)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#15](https://github.com/ContextualAI/contextual-client-node/issues/15)) ([6aaf723](https://github.com/ContextualAI/contextual-client-node/commit/6aaf723c236fa90c113f89e3c455c071fdf311e4))
+* **api:** update via SDK Studio ([#16](https://github.com/ContextualAI/contextual-client-node/issues/16)) ([0cfb143](https://github.com/ContextualAI/contextual-client-node/commit/0cfb143e6a706365c1ea6d21404e1d3dfdca87eb))
+* **api:** update via SDK Studio ([#18](https://github.com/ContextualAI/contextual-client-node/issues/18)) ([54f5551](https://github.com/ContextualAI/contextual-client-node/commit/54f55516820f04498db0f45997539d9fa142f589))
+* **client:** send `X-Stainless-Timeout` header ([#17](https://github.com/ContextualAI/contextual-client-node/issues/17)) ([6cb5614](https://github.com/ContextualAI/contextual-client-node/commit/6cb56149556ce93fae414e40e23114229929f8ed))
+
+
+### Chores
+
+* **internal:** codegen related update ([#11](https://github.com/ContextualAI/contextual-client-node/issues/11)) ([30253b7](https://github.com/ContextualAI/contextual-client-node/commit/30253b751d480a41574804fa080a02449c37936a))
+* **internal:** codegen related update ([#13](https://github.com/ContextualAI/contextual-client-node/issues/13)) ([69a063a](https://github.com/ContextualAI/contextual-client-node/commit/69a063afb19f3739fc877ddbc90bf3c8da826d48))
+* **internal:** codegen related update ([#14](https://github.com/ContextualAI/contextual-client-node/issues/14)) ([ed84da5](https://github.com/ContextualAI/contextual-client-node/commit/ed84da5bd3a9085f5d9bed012112d8ef386a9f64))
+
 ## 0.1.0 (2025-01-15)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0-alpha.2...v0.1.0)

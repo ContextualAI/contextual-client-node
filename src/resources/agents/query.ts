@@ -14,8 +14,12 @@ export class Query extends APIResource {
     params: QueryCreateParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<QueryResponse> {
-    const { retrievals_only, ...body } = params;
-    return this._client.post(`/agents/${agentId}/query`, { query: { retrievals_only }, body, ...options });
+    const { include_retrieval_content_text, retrievals_only, ...body } = params;
+    return this._client.post(`/agents/${agentId}/query`, {
+      query: { include_retrieval_content_text, retrievals_only },
+      body,
+      ...options,
+    });
   }
 
   /**
@@ -135,14 +139,10 @@ export namespace QueryResponse {
     type: string;
 
     /**
-     * Retrieved content
+     * Text of the retrieved content. Included in response to a query if
+     * `include_retrieval_content_text` is True
      */
-    content?: string;
-
-    /**
-     * Reserved for extra metadata
-     */
-    extras?: Record<string, string>;
+    content_text?: string;
 
     /**
      * Index of the retrieved item in the retrieval_contents list (starting from 1)
@@ -190,7 +190,7 @@ export namespace QueryResponse {
     content: string;
 
     /**
-     * Role of sender
+     * Role of the sender
      */
     role: 'user' | 'system' | 'assistant';
   }
@@ -209,6 +209,11 @@ export namespace RetrievalInfoResponse {
      * Id of the content.
      */
     content_id: string;
+
+    /**
+     * Text of the content.
+     */
+    content_text: string;
 
     /**
      * Height of the image.
@@ -276,7 +281,17 @@ export interface QueryCreateParams {
   messages: Array<QueryCreateParams.Message>;
 
   /**
-   * Query param: Set to `true` to skip generation of the response.
+   * Query param: Ignored if `retrievals_only` is True. Set to `true` to include the
+   * text of the retrieved contents in the response. If `false`, only metadata about
+   * the retrieved contents will be included, not content text. Content text and
+   * other metadata can also be fetched separately using the
+   * `/agents/{agent_id}/query/{message_id}/retrieval/info` endpoint.
+   */
+  include_retrieval_content_text?: boolean;
+
+  /**
+   * Query param: Set to `true` to fetch retrieval content and metadata, and then
+   * skip generation of the response.
    */
   retrievals_only?: boolean;
 
@@ -301,7 +316,8 @@ export interface QueryCreateParams {
 
 export namespace QueryCreateParams {
   /**
-   * Message object for a message sent or received in a /query conversation
+   * Message object for a message sent or received in a /query and /generate
+   * conversation
    */
   export interface Message {
     /**
@@ -310,7 +326,7 @@ export namespace QueryCreateParams {
     content: string;
 
     /**
-     * Role of sender
+     * Role of the sender
      */
     role: 'user' | 'system' | 'assistant';
   }

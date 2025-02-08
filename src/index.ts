@@ -15,7 +15,9 @@ import {
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
+import { Generate, GenerateCreateParams, GenerateCreateResponse } from './resources/generate';
 import { LMUnit, LMUnitCreateParams, LMUnitCreateResponse } from './resources/lmunit';
+import { Rerank, RerankCreateParams, RerankCreateResponse } from './resources/rerank';
 import {
   Agent as AgentsAPIAgent,
   AgentCreateParams,
@@ -61,7 +63,7 @@ export interface ClientOptions {
    * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
    * much longer than this timeout before the promise succeeds or fails.
    */
-  timeout?: number;
+  timeout?: number | undefined;
 
   /**
    * An HTTP agent used to manage HTTP(S) connections.
@@ -69,7 +71,7 @@ export interface ClientOptions {
    * If not provided, an agent will be constructed by default in the Node.js environment,
    * otherwise no agent is used.
    */
-  httpAgent?: Agent;
+  httpAgent?: Agent | undefined;
 
   /**
    * Specify a custom `fetch` function implementation.
@@ -85,7 +87,7 @@ export interface ClientOptions {
    *
    * @default 2
    */
-  maxRetries?: number;
+  maxRetries?: number | undefined;
 
   /**
    * Default headers to include with every request to the API.
@@ -93,7 +95,7 @@ export interface ClientOptions {
    * These can be removed in individual requests by explicitly setting the
    * header to `undefined` or `null` in request options.
    */
-  defaultHeaders?: Core.Headers;
+  defaultHeaders?: Core.Headers | undefined;
 
   /**
    * Default query parameters to include with every request to the API.
@@ -101,7 +103,7 @@ export interface ClientOptions {
    * These can be removed in individual requests by explicitly setting the
    * param to `undefined` in request options.
    */
-  defaultQuery?: Core.DefaultQuery;
+  defaultQuery?: Core.DefaultQuery | undefined;
 }
 
 /**
@@ -157,6 +159,8 @@ export class ContextualAI extends Core.APIClient {
   datastores: API.Datastores = new API.Datastores(this);
   agents: API.Agents = new API.Agents(this);
   lmUnit: API.LMUnit = new API.LMUnit(this);
+  rerank: API.Rerank = new API.Rerank(this);
+  generate: API.Generate = new API.Generate(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -203,6 +207,8 @@ ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Agents = Agents;
 ContextualAI.AgentsPage = AgentsPage;
 ContextualAI.LMUnit = LMUnit;
+ContextualAI.Rerank = Rerank;
+ContextualAI.Generate = Generate;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -251,6 +257,18 @@ export declare namespace ContextualAI {
     LMUnit as LMUnit,
     type LMUnitCreateResponse as LMUnitCreateResponse,
     type LMUnitCreateParams as LMUnitCreateParams,
+  };
+
+  export {
+    Rerank as Rerank,
+    type RerankCreateResponse as RerankCreateResponse,
+    type RerankCreateParams as RerankCreateParams,
+  };
+
+  export {
+    Generate as Generate,
+    type GenerateCreateResponse as GenerateCreateResponse,
+    type GenerateCreateParams as GenerateCreateParams,
   };
 }
 
