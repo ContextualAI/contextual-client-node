@@ -27,7 +27,7 @@ const client = new ContextualAI({
 });
 
 async function main() {
-  const createAgentOutput = await client.agents.create({ name: 'xxx' });
+  const createAgentOutput = await client.agents.create({ name: 'Example' });
 
   console.log(createAgentOutput.id);
 }
@@ -48,7 +48,7 @@ const client = new ContextualAI({
 });
 
 async function main() {
-  const params: ContextualAI.AgentCreateParams = { name: 'xxx' };
+  const params: ContextualAI.AgentCreateParams = { name: 'Example' };
   const createAgentOutput: ContextualAI.CreateAgentOutput = await client.agents.create(params);
 }
 
@@ -66,7 +66,7 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const createAgentOutput = await client.agents.create({ name: 'xxx' }).catch(async (err) => {
+  const createAgentOutput = await client.agents.create({ name: 'Example' }).catch(async (err) => {
     if (err instanceof ContextualAI.APIError) {
       console.log(err.status); // 400
       console.log(err.name); // BadRequestError
@@ -109,7 +109,7 @@ const client = new ContextualAI({
 });
 
 // Or, configure per-request:
-await client.agents.create({ name: 'xxx' }, {
+await client.agents.create({ name: 'Example' }, {
   maxRetries: 5,
 });
 ```
@@ -126,7 +126,7 @@ const client = new ContextualAI({
 });
 
 // Override per-request:
-await client.agents.create({ name: 'xxx' }, {
+await client.agents.create({ name: 'Example' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -178,11 +178,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const client = new ContextualAI();
 
-const response = await client.agents.create({ name: 'xxx' }).asResponse();
+const response = await client.agents.create({ name: 'Example' }).asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: createAgentOutput, response: raw } = await client.agents.create({ name: 'xxx' }).withResponse();
+const { data: createAgentOutput, response: raw } = await client.agents
+  .create({ name: 'Example' })
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
 console.log(createAgentOutput.id);
 ```
@@ -289,7 +291,7 @@ const client = new ContextualAI({
 
 // Override per-request:
 await client.agents.create(
-  { name: 'xxx' },
+  { name: 'Example' },
   {
     httpAgent: new http.Agent({ keepAlive: false }),
   },
