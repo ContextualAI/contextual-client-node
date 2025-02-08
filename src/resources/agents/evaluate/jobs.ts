@@ -120,6 +120,36 @@ export namespace ListEvaluationJobsResponse {
      * Email of the user who launched the evaluation round
      */
     user_email: string;
+
+    /**
+     * Timestamp indicating when the evaluation round finished processing
+     */
+    finished_at?: string;
+
+    /**
+     * Number of predictions that failed during the evaluation round
+     */
+    num_failed_predictions?: number;
+
+    /**
+     * Total number of predictions made during the evaluation round
+     */
+    num_predictions?: number;
+
+    /**
+     * Number of predictions that were successful during the evaluation round
+     */
+    num_successful_predictions?: number;
+
+    /**
+     * Timestamp indicating when the evaluation round started processing
+     */
+    processing_started_at?: string;
+
+    /**
+     * Score of the evaluation round
+     */
+    summary_results?: unknown;
   }
 }
 
