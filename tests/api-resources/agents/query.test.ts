@@ -25,6 +25,7 @@ describe('resource query', () => {
   test('create: required and optional params', async () => {
     const response = await client.agents.query.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       messages: [{ content: 'content', role: 'user' }],
+      include_retrieval_content_text: true,
       retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       llm_model_id: 'llm_model_id',
