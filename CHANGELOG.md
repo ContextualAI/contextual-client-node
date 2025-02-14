@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 (2025-02-14)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#20](https://github.com/ContextualAI/contextual-client-node/issues/20)) ([ca5487d](https://github.com/ContextualAI/contextual-client-node/commit/ca5487db83e2aea688b31413e9c594ff3f463f63))
+
+
+### Bug Fixes
+
+* **client:** fix export map for index exports ([#22](https://github.com/ContextualAI/contextual-client-node/issues/22)) ([9775826](https://github.com/ContextualAI/contextual-client-node/commit/977582624e283aac91c128e9b0f004e2e40f3562))
+
 ## 0.2.0 (2025-02-08)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.1.0...v0.2.0)
