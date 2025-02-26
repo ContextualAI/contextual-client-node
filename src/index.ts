@@ -12,12 +12,27 @@ import {
   DocumentsPageResponse,
   type PageParams,
   PageResponse,
+  type UsersPageParams,
+  UsersPageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
 import { Generate, GenerateCreateParams, GenerateCreateResponse } from './resources/generate';
 import { LMUnit, LMUnitCreateParams, LMUnitCreateResponse } from './resources/lmunit';
 import { Rerank, RerankCreateParams, RerankCreateResponse } from './resources/rerank';
+import {
+  InviteUsersResponse,
+  ListUsersResponse,
+  ListUsersResponseUsersUsersPage,
+  NewUser,
+  UserDeactivateParams,
+  UserDeactivateResponse,
+  UserInviteParams,
+  UserListParams,
+  UserUpdateParams,
+  UserUpdateResponse,
+  Users,
+} from './resources/users';
 import {
   Agent as AgentsAPIAgent,
   AgentCreateParams,
@@ -158,6 +173,7 @@ export class ContextualAI extends Core.APIClient {
 
   datastores: API.Datastores = new API.Datastores(this);
   agents: API.Agents = new API.Agents(this);
+  users: API.Users = new API.Users(this);
   lmUnit: API.LMUnit = new API.LMUnit(this);
   rerank: API.Rerank = new API.Rerank(this);
   generate: API.Generate = new API.Generate(this);
@@ -206,6 +222,8 @@ ContextualAI.Datastores = Datastores;
 ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Agents = Agents;
 ContextualAI.AgentsPage = AgentsPage;
+ContextualAI.Users = Users;
+ContextualAI.ListUsersResponseUsersUsersPage = ListUsersResponseUsersUsersPage;
 ContextualAI.LMUnit = LMUnit;
 ContextualAI.Rerank = Rerank;
 ContextualAI.Generate = Generate;
@@ -223,6 +241,9 @@ export declare namespace ContextualAI {
     type DocumentsPageParams as DocumentsPageParams,
     type DocumentsPageResponse as DocumentsPageResponse,
   };
+
+  export import UsersPage = Pagination.UsersPage;
+  export { type UsersPageParams as UsersPageParams, type UsersPageResponse as UsersPageResponse };
 
   export import Page = Pagination.Page;
   export { type PageParams as PageParams, type PageResponse as PageResponse };
@@ -251,6 +272,20 @@ export declare namespace ContextualAI {
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+  };
+
+  export {
+    Users as Users,
+    type InviteUsersResponse as InviteUsersResponse,
+    type ListUsersResponse as ListUsersResponse,
+    type NewUser as NewUser,
+    type UserUpdateResponse as UserUpdateResponse,
+    type UserDeactivateResponse as UserDeactivateResponse,
+    ListUsersResponseUsersUsersPage as ListUsersResponseUsersUsersPage,
+    type UserUpdateParams as UserUpdateParams,
+    type UserListParams as UserListParams,
+    type UserDeactivateParams as UserDeactivateParams,
+    type UserInviteParams as UserInviteParams,
   };
 
   export {

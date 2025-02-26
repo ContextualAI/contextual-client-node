@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import { APIResource } from '../../../resource';
+import { isRequestOptions } from '../../../core';
 import * as Core from '../../../core';
 import * as JobsAPI from './jobs';
 import { JobDeleteResponse, Jobs, ListTuneJobsResponse, TuneJobMetadata } from './jobs';
@@ -15,23 +16,43 @@ export class Tune extends APIResource {
    * Create a tuning job for the specified `Agent` to specialize it to your specific
    * domain or use case.
    *
-   * This API initiates an asynchronous tuning task using the provided
-   * `training_file` and an optional `test_file`. If no `test_file` is provided, the
-   * tuning job will hold out a portion of the `training_file` as the test set.
+   * This API initiates an asynchronous tuning task. You can provide the required
+   * data through one of two ways:
    *
-   * Returns a tune job `id` which can be used to check on the status of your tuning
-   * task through the `GET /tune/jobs/{job_id}/metadata` endpoint.
+   * - Provide a `training_file` and an optional `test_file`. If no `test_file` is
+   *   provided, a portion of the `training_file` will be held out as the test set.
+   *   For easy reusability, the `training_file` is automatically saved as a `Tuning`
+   *   `Dataset`, and the `test_file` as an `Evaluation` `Dataset`. You can manage
+   *   them via the `/datasets/tune` and `/datasets/evaluation` endpoints.
+   *
+   * - Provide a `Tuning` `Dataset` and an optional `Evaluation` `Dataset`. You can
+   *   create a `Tuning` `Dataset` and `Evaluation` `Dataset` using the
+   *   `/datasets/tune` and `/datasets/evaluation` endpoints respectively.
+   *
+   * The API returns a tune job `id` which can be used to check on the status of your
+   * tuning task through the `GET /tune/jobs/{job_id}/metadata` endpoint.
    *
    * After the tuning job is complete, the metadata associated with the tune job will
    * include evaluation results and a model ID. You can then deploy the tuned model
    * to the agent by editing its config with the tuned model ID and the "Edit Agent"
-   * API (i.e. the `PUT /agents/{agent_id}` API).
+   * API (i.e. the `PUT /agents/{agent_id}` API). To deactivate the tuned model, you
+   * will need to edit the Agent's config again and set the `llm_model_id` field to
+   * "default". For an end-to-end walkthrough, see the `Tune & Evaluation Guide`.
    */
   create(
     agentId: string,
-    body: TuneCreateParams,
+    body?: TuneCreateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<CreateTuneResponse>;
+  create(agentId: string, options?: Core.RequestOptions): Core.APIPromise<CreateTuneResponse>;
+  create(
+    agentId: string,
+    body: TuneCreateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
   ): Core.APIPromise<CreateTuneResponse> {
+    if (isRequestOptions(body)) {
+      return this.create(agentId, {}, body);
+    }
     return this._client.post(
       `/agents/${agentId}/tune`,
       Core.multipartFormRequestOptions({ body, ...options }),
@@ -40,7 +61,7 @@ export class Tune extends APIResource {
 }
 
 /**
- * Response to POST /agents/{agent_id}/tune request
+ * Response to POST /applications/{application_id}/tune request
  */
 export interface CreateTuneResponse {
   /**
@@ -50,6 +71,24 @@ export interface CreateTuneResponse {
 }
 
 export interface TuneCreateParams {
+  /**
+   * Optional. `Dataset` to use for testing model checkpoints, created through the
+   * `/datasets/evaluate` API.
+   */
+  test_dataset_name?: string | null;
+
+  /**
+   * Optional. Local path to the test data file. The test file should follow the same
+   * format as the training data file.
+   */
+  test_file?: Core.Uploadable | null;
+
+  /**
+   * `Dataset` to use for training, created through the `/datasets/tune` API. Either
+   * `train_dataset_name` or `training_file` must be provided, but not both.
+   */
+  train_dataset_name?: string | null;
+
   /**
    * Local path to the training data file.
    *
@@ -62,7 +101,9 @@ export interface TuneCreateParams {
    *
    * - `reference` (`str`): The gold-standard answer to the prompt.
    *
-   * - `guideline` (`str`): Guidelines for model output.
+   * - `guideline` (`str`): Guidelines for model output. If you do not have special
+   *   guidelines for the model's output, you can use the `System Prompt` defined in
+   *   your Agent configuration as the `guideline`.
    *
    * - `prompt` (`str`): Question for the model to respond to.
    *
@@ -84,19 +125,7 @@ export interface TuneCreateParams {
    * ]
    * ```
    */
-  training_file: Core.Uploadable;
-
-  /**
-   * ID of an existing model to tune. Defaults to the agent's default model if not
-   * specified.
-   */
-  model_id?: string;
-
-  /**
-   * Optional. Local path to the test data file. The test file should follow the same
-   * format as the training data file.
-   */
-  test_file?: Core.Uploadable;
+  training_file?: Core.Uploadable | null;
 }
 
 Tune.Jobs = Jobs;

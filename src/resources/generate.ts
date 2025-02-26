@@ -9,7 +9,8 @@ export class Generate extends APIResource {
    * engineered specifically to prioritize faithfulness to in-context retrievals over
    * parametric knowledge to reduce hallucinations in Retrieval-Augmented Generation.
    *
-   * The total request cannot exceed 6,100 tokens.
+   * The total request cannot exceed 32,000 tokens. Email glm-feedback@contextual.ai
+   * with any feedback or questions.
    */
   create(body: GenerateCreateParams, options?: Core.RequestOptions): Core.APIPromise<GenerateCreateResponse> {
     return this._client.post('/generate', { body, ...options });
@@ -44,6 +45,15 @@ export interface GenerateCreateParams {
   model: string;
 
   /**
+   * Flag to indicate whether the model should avoid providing additional commentary
+   * in responses. Commentary is conversational in nature and does not contain
+   * verifiable claims; therefore, commentary is not strictly grounded in available
+   * context. However, commentary may provide useful context which improves the
+   * helpfulness of responses.
+   */
+  avoid_commentary?: boolean;
+
+  /**
    * Instructions that the model follows when generating responses. Note that we do
    * not guarantee that the model follows these instructions exactly.
    */
@@ -64,7 +74,7 @@ export namespace GenerateCreateParams {
     /**
      * Role of the sender
      */
-    role: 'user' | 'system' | 'assistant';
+    role: 'user' | 'system' | 'assistant' | 'knowledge';
   }
 }
 

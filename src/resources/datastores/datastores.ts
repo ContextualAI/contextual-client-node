@@ -10,6 +10,7 @@ import {
   DocumentListParams,
   DocumentMetadata,
   DocumentMetadataDocumentsPage,
+  DocumentSetMetadataParams,
   Documents,
   IngestionResponse,
   ListDocumentsResponse,
@@ -186,5 +187,6 @@ export declare namespace Datastores {
     DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
     type DocumentIngestParams as DocumentIngestParams,
+    type DocumentSetMetadataParams as DocumentSetMetadataParams,
   };
 }

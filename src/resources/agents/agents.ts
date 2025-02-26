@@ -123,6 +123,11 @@ export interface AgentMetadata {
   name: string;
 
   /**
+   * The following advanced parameters are experimental and subject to change.
+   */
+  agent_configs?: AgentMetadata.AgentConfigs;
+
+  /**
    * Description of the agent
    */
   description?: string;
@@ -147,6 +152,119 @@ export interface AgentMetadata {
    * do not guarantee that the system will follow these instructions exactly.
    */
   system_prompt?: string;
+}
+
+export namespace AgentMetadata {
+  /**
+   * The following advanced parameters are experimental and subject to change.
+   */
+  export interface AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
+
+    /**
+     * Parameters that affect response generation
+     */
+    generate_response_config?: AgentConfigs.GenerateResponseConfig;
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    global_config?: AgentConfigs.GlobalConfig;
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    retrieval_config?: AgentConfigs.RetrievalConfig;
+  }
+
+  export namespace AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    export interface FilterAndRerankConfig {
+      /**
+       * The number of highest ranked chunks after reranking to be used
+       */
+      top_k_reranked_chunks?: number;
+    }
+
+    /**
+     * Parameters that affect response generation
+     */
+    export interface GenerateResponseConfig {
+      /**
+       * This parameter adjusts how the model treats repeated tokens during text
+       * generation.
+       */
+      frequency_penalty?: number;
+
+      /**
+       * The maximum number of tokens the model can generate in a response.
+       */
+      max_new_tokens?: number;
+
+      /**
+       * This parameter controls the randomness of how the model selects the next tokens
+       * during text generation.
+       */
+      seed?: number;
+
+      /**
+       * The sampling temperature, which affects the randomness in the response.
+       */
+      temperature?: number;
+
+      /**
+       * A parameter for nucleus sampling, an alternative to `temperature` which also
+       * affects the randomness of the response.
+       */
+      top_p?: number;
+    }
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    export interface GlobalConfig {
+      /**
+       * Enables filtering of retrieved chunks with a separate LLM
+       */
+      enable_filter?: boolean;
+
+      /**
+       * Enables multi-turn conversations. This feature is currently experimental and
+       * will be improved.
+       */
+      enable_multi_turn?: boolean;
+
+      /**
+       * Enables reranking of retrieved chunks
+       */
+      enable_rerank?: boolean;
+    }
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    export interface RetrievalConfig {
+      /**
+       * The weight of lexical search during retrieval
+       */
+      lexical_alpha?: number;
+
+      /**
+       * The weight of semantic search during retrieval
+       */
+      semantic_alpha?: number;
+
+      /**
+       * The maximum number of retrieved chunks from the datastore.
+       */
+      top_k_retrieved_chunks?: number;
+    }
+  }
 }
 
 /**
@@ -195,8 +313,12 @@ export interface AgentCreateParams {
   name: string;
 
   /**
-   * The IDs of the datastore associated with the agent. Leave empty to automatically
-   * create a new datastore.
+   * The following advanced parameters are experimental and subject to change.
+   */
+  agent_configs?: AgentCreateParams.AgentConfigs;
+
+  /**
+   * The IDs of the datastore to associate with this agent.
    */
   datastore_ids?: Array<string>;
 
@@ -220,7 +342,125 @@ export interface AgentCreateParams {
   system_prompt?: string;
 }
 
+export namespace AgentCreateParams {
+  /**
+   * The following advanced parameters are experimental and subject to change.
+   */
+  export interface AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
+
+    /**
+     * Parameters that affect response generation
+     */
+    generate_response_config?: AgentConfigs.GenerateResponseConfig;
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    global_config?: AgentConfigs.GlobalConfig;
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    retrieval_config?: AgentConfigs.RetrievalConfig;
+  }
+
+  export namespace AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    export interface FilterAndRerankConfig {
+      /**
+       * The number of highest ranked chunks after reranking to be used
+       */
+      top_k_reranked_chunks?: number;
+    }
+
+    /**
+     * Parameters that affect response generation
+     */
+    export interface GenerateResponseConfig {
+      /**
+       * This parameter adjusts how the model treats repeated tokens during text
+       * generation.
+       */
+      frequency_penalty?: number;
+
+      /**
+       * The maximum number of tokens the model can generate in a response.
+       */
+      max_new_tokens?: number;
+
+      /**
+       * This parameter controls the randomness of how the model selects the next tokens
+       * during text generation.
+       */
+      seed?: number;
+
+      /**
+       * The sampling temperature, which affects the randomness in the response.
+       */
+      temperature?: number;
+
+      /**
+       * A parameter for nucleus sampling, an alternative to `temperature` which also
+       * affects the randomness of the response.
+       */
+      top_p?: number;
+    }
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    export interface GlobalConfig {
+      /**
+       * Enables filtering of retrieved chunks with a separate LLM
+       */
+      enable_filter?: boolean;
+
+      /**
+       * Enables multi-turn conversations. This feature is currently experimental and
+       * will be improved.
+       */
+      enable_multi_turn?: boolean;
+
+      /**
+       * Enables reranking of retrieved chunks
+       */
+      enable_rerank?: boolean;
+    }
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    export interface RetrievalConfig {
+      /**
+       * The weight of lexical search during retrieval
+       */
+      lexical_alpha?: number;
+
+      /**
+       * The weight of semantic search during retrieval
+       */
+      semantic_alpha?: number;
+
+      /**
+       * The maximum number of retrieved chunks from the datastore.
+       */
+      top_k_retrieved_chunks?: number;
+    }
+  }
+}
+
 export interface AgentUpdateParams {
+  /**
+   * The following advanced parameters are experimental and subject to change.
+   */
+  agent_configs?: AgentUpdateParams.AgentConfigs;
+
   /**
    * IDs of the datastore to associate with the agent.
    */
@@ -246,6 +486,119 @@ export interface AgentUpdateParams {
    * do not guarantee that the system will follow these instructions exactly.
    */
   system_prompt?: string;
+}
+
+export namespace AgentUpdateParams {
+  /**
+   * The following advanced parameters are experimental and subject to change.
+   */
+  export interface AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
+
+    /**
+     * Parameters that affect response generation
+     */
+    generate_response_config?: AgentConfigs.GenerateResponseConfig;
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    global_config?: AgentConfigs.GlobalConfig;
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    retrieval_config?: AgentConfigs.RetrievalConfig;
+  }
+
+  export namespace AgentConfigs {
+    /**
+     * Parameters that affect filtering and reranking of retrieved knowledge
+     */
+    export interface FilterAndRerankConfig {
+      /**
+       * The number of highest ranked chunks after reranking to be used
+       */
+      top_k_reranked_chunks?: number;
+    }
+
+    /**
+     * Parameters that affect response generation
+     */
+    export interface GenerateResponseConfig {
+      /**
+       * This parameter adjusts how the model treats repeated tokens during text
+       * generation.
+       */
+      frequency_penalty?: number;
+
+      /**
+       * The maximum number of tokens the model can generate in a response.
+       */
+      max_new_tokens?: number;
+
+      /**
+       * This parameter controls the randomness of how the model selects the next tokens
+       * during text generation.
+       */
+      seed?: number;
+
+      /**
+       * The sampling temperature, which affects the randomness in the response.
+       */
+      temperature?: number;
+
+      /**
+       * A parameter for nucleus sampling, an alternative to `temperature` which also
+       * affects the randomness of the response.
+       */
+      top_p?: number;
+    }
+
+    /**
+     * Parameters that affect the agent's overall RAG workflow
+     */
+    export interface GlobalConfig {
+      /**
+       * Enables filtering of retrieved chunks with a separate LLM
+       */
+      enable_filter?: boolean;
+
+      /**
+       * Enables multi-turn conversations. This feature is currently experimental and
+       * will be improved.
+       */
+      enable_multi_turn?: boolean;
+
+      /**
+       * Enables reranking of retrieved chunks
+       */
+      enable_rerank?: boolean;
+    }
+
+    /**
+     * Parameters that affect how the agent retrieves from datastore(s)
+     */
+    export interface RetrievalConfig {
+      /**
+       * The weight of lexical search during retrieval
+       */
+      lexical_alpha?: number;
+
+      /**
+       * The weight of semantic search during retrieval
+       */
+      semantic_alpha?: number;
+
+      /**
+       * The maximum number of retrieved chunks from the datastore.
+       */
+      top_k_retrieved_chunks?: number;
+    }
+  }
 }
 
 export interface AgentListParams extends PageParams {}

@@ -26,4 +26,17 @@ export {
 } from './datastores/datastores';
 export { Generate, type GenerateCreateResponse, type GenerateCreateParams } from './generate';
 export { LMUnit, type LMUnitCreateResponse, type LMUnitCreateParams } from './lmunit';
+export {
+  ListUsersResponseUsersUsersPage,
+  Users,
+  type InviteUsersResponse,
+  type ListUsersResponse,
+  type NewUser,
+  type UserUpdateResponse,
+  type UserDeactivateResponse,
+  type UserUpdateParams,
+  type UserListParams,
+  type UserDeactivateParams,
+  type UserInviteParams,
+} from './users';
 export { Rerank, type RerankCreateResponse, type RerankCreateParams } from './rerank';

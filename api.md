@@ -30,6 +30,7 @@ Methods:
 - <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
 - <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">ingest</a>(datastoreId, { ...params }) -> IngestionResponse</code>
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">metadata</a>(datastoreId, documentId) -> DocumentMetadata</code>
+- <code title="post /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">setMetadata</a>(datastoreId, documentId, { ...params }) -> DocumentMetadata</code>
 
 # Agents
 
@@ -98,6 +99,21 @@ Types:
 - <code><a href="./src/resources/agents/datasets/datasets.ts">DatasetMetadata</a></code>
 - <code><a href="./src/resources/agents/datasets/datasets.ts">ListDatasetsResponse</a></code>
 
+### Tune
+
+Types:
+
+- <code><a href="./src/resources/agents/datasets/tune.ts">TuneDeleteResponse</a></code>
+
+Methods:
+
+- <code title="post /agents/{agent_id}/datasets/tune">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">create</a>(agentId, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">retrieve</a>(agentId, datasetName, { ...params }) -> Response</code>
+- <code title="put /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">update</a>(agentId, datasetName, { ...params }) -> CreateDatasetResponse</code>
+- <code title="get /agents/{agent_id}/datasets/tune">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">list</a>(agentId, { ...params }) -> ListDatasetsResponse</code>
+- <code title="delete /agents/{agent_id}/datasets/tune/{dataset_name}">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">delete</a>(agentId, datasetName) -> unknown</code>
+- <code title="get /agents/{agent_id}/datasets/tune/{dataset_name}/metadata">client.agents.datasets.tune.<a href="./src/resources/agents/datasets/tune.ts">metadata</a>(agentId, datasetName, { ...params }) -> DatasetMetadata</code>
+
 ### Evaluate
 
 Types:
@@ -146,6 +162,23 @@ Types:
 Methods:
 
 - <code title="get /agents/{agent_id}/tune/models">client.agents.tune.models.<a href="./src/resources/agents/tune/models.ts">list</a>(agentId) -> ListTuneModelsResponse</code>
+
+# Users
+
+Types:
+
+- <code><a href="./src/resources/users.ts">InviteUsersResponse</a></code>
+- <code><a href="./src/resources/users.ts">ListUsersResponse</a></code>
+- <code><a href="./src/resources/users.ts">NewUser</a></code>
+- <code><a href="./src/resources/users.ts">UserUpdateResponse</a></code>
+- <code><a href="./src/resources/users.ts">UserDeactivateResponse</a></code>
+
+Methods:
+
+- <code title="put /users">client.users.<a href="./src/resources/users.ts">update</a>({ ...params }) -> unknown</code>
+- <code title="get /users">client.users.<a href="./src/resources/users.ts">list</a>({ ...params }) -> ListUsersResponseUsersUsersPage</code>
+- <code title="delete /users">client.users.<a href="./src/resources/users.ts">deactivate</a>({ ...params }) -> unknown</code>
+- <code title="post /users">client.users.<a href="./src/resources/users.ts">invite</a>({ ...params }) -> InviteUsersResponse</code>
 
 # LMUnit
 
