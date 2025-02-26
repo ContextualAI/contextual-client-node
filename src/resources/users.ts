@@ -3,6 +3,7 @@
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
 import * as Core from '../core';
+import { UsersPage, type UsersPageParams } from '../pagination';
 
 export class Users extends APIResource {
   /**
@@ -17,16 +18,21 @@ export class Users extends APIResource {
   /**
    * Retrieve a list of `users`.
    */
-  list(query?: UserListParams, options?: Core.RequestOptions): Core.APIPromise<ListUsersResponse>;
-  list(options?: Core.RequestOptions): Core.APIPromise<ListUsersResponse>;
+  list(
+    query?: UserListParams,
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<ListUsersResponseUsersUsersPage, ListUsersResponse.User>;
+  list(
+    options?: Core.RequestOptions,
+  ): Core.PagePromise<ListUsersResponseUsersUsersPage, ListUsersResponse.User>;
   list(
     query: UserListParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<ListUsersResponse> {
+  ): Core.PagePromise<ListUsersResponseUsersUsersPage, ListUsersResponse.User> {
     if (isRequestOptions(query)) {
       return this.list({}, query);
     }
-    return this._client.get('/users', { query, ...options });
+    return this._client.getAPIList('/users', ListUsersResponseUsersUsersPage, { query, ...options });
   }
 
   /**
@@ -45,6 +51,8 @@ export class Users extends APIResource {
     return this._client.post('/users', { body, ...options });
   }
 }
+
+export class ListUsersResponseUsersUsersPage extends UsersPage<ListUsersResponse.User> {}
 
 export interface InviteUsersResponse {
   /**
@@ -225,21 +233,11 @@ export namespace UserUpdateParams {
   }
 }
 
-export interface UserListParams {
-  /**
-   * Cursor for the beginning of the current page
-   */
-  cursor?: string;
-
+export interface UserListParams extends UsersPageParams {
   /**
    * When set to true, return deactivated users instead.
    */
   deactivated?: boolean;
-
-  /**
-   * Number of users to return
-   */
-  limit?: number;
 
   /**
    * Query to filter users by email
@@ -266,6 +264,8 @@ export interface UserInviteParams {
   tenant_short_name: string;
 }
 
+Users.ListUsersResponseUsersUsersPage = ListUsersResponseUsersUsersPage;
+
 export declare namespace Users {
   export {
     type InviteUsersResponse as InviteUsersResponse,
@@ -273,6 +273,7 @@ export declare namespace Users {
     type NewUser as NewUser,
     type UserUpdateResponse as UserUpdateResponse,
     type UserDeactivateResponse as UserDeactivateResponse,
+    ListUsersResponseUsersUsersPage as ListUsersResponseUsersUsersPage,
     type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
     type UserDeactivateParams as UserDeactivateParams,

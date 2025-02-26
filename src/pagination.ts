@@ -116,6 +116,63 @@ export class DocumentsPage<Item> extends AbstractPage<Item> implements Documents
   }
 }
 
+export interface UsersPageResponse<Item> {
+  users: Array<Item>;
+
+  next_cursor: string;
+}
+
+export interface UsersPageParams {
+  cursor?: string;
+
+  limit?: number;
+}
+
+export class UsersPage<Item> extends AbstractPage<Item> implements UsersPageResponse<Item> {
+  users: Array<Item>;
+
+  next_cursor: string;
+
+  constructor(
+    client: APIClient,
+    response: Response,
+    body: UsersPageResponse<Item>,
+    options: FinalRequestOptions,
+  ) {
+    super(client, response, body, options);
+
+    this.users = body.users || [];
+    this.next_cursor = body.next_cursor || '';
+  }
+
+  getPaginatedItems(): Item[] {
+    return this.users ?? [];
+  }
+
+  // @deprecated Please use `nextPageInfo()` instead
+  nextPageParams(): Partial<UsersPageParams> | null {
+    const info = this.nextPageInfo();
+    if (!info) return null;
+    if ('params' in info) return info.params;
+    const params = Object.fromEntries(info.url.searchParams);
+    if (!Object.keys(params).length) return null;
+    return params;
+  }
+
+  nextPageInfo(): PageInfo | null {
+    const cursor = this.next_cursor;
+    if (!cursor) {
+      return null;
+    }
+
+    return {
+      params: {
+        cursor: cursor,
+      },
+    };
+  }
+}
+
 export interface PageResponse<Item> {
   agents: Array<Item>;
 

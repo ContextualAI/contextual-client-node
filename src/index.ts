@@ -12,6 +12,8 @@ import {
   DocumentsPageResponse,
   type PageParams,
   PageResponse,
+  type UsersPageParams,
+  UsersPageResponse,
 } from './pagination';
 import * as Uploads from './uploads';
 import * as API from './resources/index';
@@ -21,6 +23,7 @@ import { Rerank, RerankCreateParams, RerankCreateResponse } from './resources/re
 import {
   InviteUsersResponse,
   ListUsersResponse,
+  ListUsersResponseUsersUsersPage,
   NewUser,
   UserDeactivateParams,
   UserDeactivateResponse,
@@ -220,6 +223,7 @@ ContextualAI.DatastoresDatastoresPage = DatastoresDatastoresPage;
 ContextualAI.Agents = Agents;
 ContextualAI.AgentsPage = AgentsPage;
 ContextualAI.Users = Users;
+ContextualAI.ListUsersResponseUsersUsersPage = ListUsersResponseUsersUsersPage;
 ContextualAI.LMUnit = LMUnit;
 ContextualAI.Rerank = Rerank;
 ContextualAI.Generate = Generate;
@@ -237,6 +241,9 @@ export declare namespace ContextualAI {
     type DocumentsPageParams as DocumentsPageParams,
     type DocumentsPageResponse as DocumentsPageResponse,
   };
+
+  export import UsersPage = Pagination.UsersPage;
+  export { type UsersPageParams as UsersPageParams, type UsersPageResponse as UsersPageResponse };
 
   export import Page = Pagination.Page;
   export { type PageParams as PageParams, type PageResponse as PageResponse };
@@ -274,6 +281,7 @@ export declare namespace ContextualAI {
     type NewUser as NewUser,
     type UserUpdateResponse as UserUpdateResponse,
     type UserDeactivateResponse as UserDeactivateResponse,
+    ListUsersResponseUsersUsersPage as ListUsersResponseUsersUsersPage,
     type UserUpdateParams as UserUpdateParams,
     type UserListParams as UserListParams,
     type UserDeactivateParams as UserDeactivateParams,
