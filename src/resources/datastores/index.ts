@@ -20,4 +20,5 @@ export {
   type DocumentDeleteResponse,
   type DocumentListParams,
   type DocumentIngestParams,
+  type DocumentSetMetadataParams,
 } from './documents';

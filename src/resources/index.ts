@@ -27,3 +27,15 @@ export {
 export { Generate, type GenerateCreateResponse, type GenerateCreateParams } from './generate';
 export { LMUnit, type LMUnitCreateResponse, type LMUnitCreateParams } from './lmunit';
 export { Rerank, type RerankCreateResponse, type RerankCreateParams } from './rerank';
+export {
+  Users,
+  type InviteUsersResponse,
+  type ListUsersResponse,
+  type NewUser,
+  type UserUpdateResponse,
+  type UserDeactivateResponse,
+  type UserUpdateParams,
+  type UserListParams,
+  type UserDeactivateParams,
+  type UserInviteParams,
+} from './users';
