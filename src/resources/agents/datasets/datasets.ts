@@ -11,8 +11,19 @@ import {
   EvaluateRetrieveParams,
   EvaluateUpdateParams,
 } from './evaluate';
+import * as TuneAPI from './tune';
+import {
+  Tune,
+  TuneCreateParams,
+  TuneDeleteResponse,
+  TuneListParams,
+  TuneMetadataParams,
+  TuneRetrieveParams,
+  TuneUpdateParams,
+} from './tune';
 
 export class Datasets extends APIResource {
+  tune: TuneAPI.Tune = new TuneAPI.Tune(this._client);
   evaluate: EvaluateAPI.Evaluate = new EvaluateAPI.Evaluate(this._client);
 }
 
@@ -125,6 +136,7 @@ export namespace ListDatasetsResponse {
   }
 }
 
+Datasets.Tune = Tune;
 Datasets.Evaluate = Evaluate;
 
 export declare namespace Datasets {
@@ -132,6 +144,16 @@ export declare namespace Datasets {
     type CreateDatasetResponse as CreateDatasetResponse,
     type DatasetMetadata as DatasetMetadata,
     type ListDatasetsResponse as ListDatasetsResponse,
+  };
+
+  export {
+    Tune as Tune,
+    type TuneDeleteResponse as TuneDeleteResponse,
+    type TuneCreateParams as TuneCreateParams,
+    type TuneRetrieveParams as TuneRetrieveParams,
+    type TuneUpdateParams as TuneUpdateParams,
+    type TuneListParams as TuneListParams,
+    type TuneMetadataParams as TuneMetadataParams,
   };
 
   export {

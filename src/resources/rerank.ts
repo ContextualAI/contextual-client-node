@@ -8,7 +8,7 @@ export class Rerank extends APIResource {
    * Rank a list of documents according to their relevance to a query.
    *
    * The total request cannot exceed 400,000 tokens. The combined length of any
-   * document and the query must not exceed 4,000 tokens.
+   * document, instruction and the query must not exceed 4,000 tokens.
    */
   create(body: RerankCreateParams, options?: Core.RequestOptions): Core.APIPromise<RerankCreateResponse> {
     return this._client.post('/rerank', { body, ...options });
@@ -63,6 +63,17 @@ export interface RerankCreateParams {
    * The string against which documents will be ranked for relevance
    */
   query: string;
+
+  /**
+   * The instruction to be used for the reranker
+   */
+  instruction?: string;
+
+  /**
+   * Metadata for documents being passed to the reranker. Must be the same length as
+   * the documents list.
+   */
+  metadata?: Array<string>;
 
   /**
    * The number of top-ranked results to return
