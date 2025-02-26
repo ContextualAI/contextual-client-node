@@ -10,7 +10,7 @@ const client = new ContextualAI({
 
 describe('resource rerank', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.rerank.create({ documents: ['string'], model: 'model', query: 'x' });
+    const responsePromise = client.rerank.create({ documents: ['string'], model: 'model', query: 'query' });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,7 +24,9 @@ describe('resource rerank', () => {
     const response = await client.rerank.create({
       documents: ['string'],
       model: 'model',
-      query: 'x',
+      query: 'query',
+      instruction: 'instruction',
+      metadata: ['string'],
       top_n: 0,
     });
   });

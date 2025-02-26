@@ -79,6 +79,23 @@ export class Documents extends APIResource {
   ): Core.APIPromise<DocumentMetadata> {
     return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/metadata`, options);
   }
+
+  /**
+   * Post details of a given document that will enrich the chunk and be added to the
+   * context or just for filtering. If JUst for filtering, start with "\_" in the
+   * key.
+   */
+  setMetadata(
+    datastoreId: string,
+    documentId: string,
+    body: DocumentSetMetadataParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentMetadata> {
+    return this._client.post(`/datastores/${datastoreId}/documents/${documentId}/metadata`, {
+      body,
+      ...options,
+    });
+  }
 }
 
 export class DocumentMetadataDocumentsPage extends DocumentsPage<DocumentMetadata> {}
@@ -93,6 +110,11 @@ export interface DocumentMetadata {
   id: string;
 
   /**
+   * Timestamp of when the document was created in ISO format.
+   */
+  created_at: string;
+
+  /**
    * User specified name of the document
    */
   name: string;
@@ -100,7 +122,14 @@ export interface DocumentMetadata {
   /**
    * Status of this document's ingestion job
    */
-  status: string;
+  status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
+
+  custom_metadata?: Record<string, boolean | number | string>;
+
+  /**
+   * Timestamp of when the document was modified in ISO format.
+   */
+  updated_at?: string;
 }
 
 /**
@@ -160,6 +189,19 @@ export interface DocumentIngestParams {
    * File to ingest
    */
   file: Core.Uploadable;
+
+  /**
+   * Metadata in `JSON` format. Metadata should be passed in a nested dictionary
+   * structure of `str` metadata type to `Dict` mapping `str` metadata keys to `str`,
+   * `bool`, `float` or `int` values. Currently, `custom_metadata` is the only
+   * supported metadata type.Example `metadata` dictionary: {"metadata":
+   * {"custom_metadata": {"customKey1": "value3", "\_filterKey": "filterValue3"}}
+   */
+  metadata?: string;
+}
+
+export interface DocumentSetMetadataParams {
+  custom_metadata?: Record<string, boolean | number | string>;
 }
 
 Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
@@ -173,5 +215,6 @@ export declare namespace Documents {
     DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
     type DocumentIngestParams as DocumentIngestParams,
+    type DocumentSetMetadataParams as DocumentSetMetadataParams,
   };
 }

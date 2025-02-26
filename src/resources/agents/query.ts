@@ -130,7 +130,7 @@ export namespace QueryResponse {
     /**
      * Format of the content, such as `pdf` or `html`
      */
-    format: 'pdf' | 'html';
+    format: 'pdf' | 'html' | 'htm';
 
     /**
      * Source type of the content. Will be `file` for any docs ingested through
@@ -192,7 +192,7 @@ export namespace QueryResponse {
     /**
      * Role of the sender
      */
-    role: 'user' | 'system' | 'assistant';
+    role: 'user' | 'system' | 'assistant' | 'knowledge';
   }
 }
 
@@ -219,6 +219,11 @@ export namespace RetrievalInfoResponse {
      * Height of the image.
      */
     height: number;
+
+    /**
+     * Page number of the content.
+     */
+    page: number;
 
     /**
      * Image of the page on which the content occurs.
@@ -281,9 +286,10 @@ export interface QueryCreateParams {
   messages: Array<QueryCreateParams.Message>;
 
   /**
-   * Query param: Ignored if `retrievals_only` is True. Set to `true` to include the
-   * text of the retrieved contents in the response. If `false`, only metadata about
-   * the retrieved contents will be included, not content text. Content text and
+   * Query param: Set to `true` to include the text of the retrieved contents in the
+   * response. If `false`, only metadata about the retrieved contents will be
+   * included, not content text. This parameter is ignored if `retrievals_only` is
+   * `true`, in which case `content_text` will always be returned. Content text and
    * other metadata can also be fetched separately using the
    * `/agents/{agent_id}/query/{message_id}/retrieval/info` endpoint.
    */
@@ -328,7 +334,7 @@ export namespace QueryCreateParams {
     /**
      * Role of the sender
      */
-    role: 'user' | 'system' | 'assistant';
+    role: 'user' | 'system' | 'assistant' | 'knowledge';
   }
 }
 

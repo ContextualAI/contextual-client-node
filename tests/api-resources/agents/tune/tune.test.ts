@@ -9,10 +9,8 @@ const client = new ContextualAI({
 });
 
 describe('resource tune', () => {
-  test('create: only required params', async () => {
-    const responsePromise = client.agents.tune.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      training_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
-    });
+  test('create', async () => {
+    const responsePromise = client.agents.tune.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -22,11 +20,26 @@ describe('resource tune', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('create: required and optional params', async () => {
-    const response = await client.agents.tune.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      training_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
-      model_id: 'model_id',
-      test_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
-    });
+  test('create: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.agents.tune.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
+  });
+
+  test('create: request options and params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.agents.tune.create(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        {
+          test_dataset_name: 'test_dataset_name',
+          test_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+          train_dataset_name: 'train_dataset_name',
+          training_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+        },
+        { path: '/_stainless_unknown_path' },
+      ),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 });

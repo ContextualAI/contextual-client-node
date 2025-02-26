@@ -29,6 +29,7 @@ describe('resource generate', () => {
       knowledge: ['string'],
       messages: [{ content: 'content', role: 'user' }],
       model: 'model',
+      avoid_commentary: true,
       system_prompt: 'system_prompt',
     });
   });

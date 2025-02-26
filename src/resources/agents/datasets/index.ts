@@ -15,3 +15,12 @@ export {
   type EvaluateListParams,
   type EvaluateMetadataParams,
 } from './evaluate';
+export {
+  Tune,
+  type TuneDeleteResponse,
+  type TuneCreateParams,
+  type TuneRetrieveParams,
+  type TuneUpdateParams,
+  type TuneListParams,
+  type TuneMetadataParams,
+} from './tune';

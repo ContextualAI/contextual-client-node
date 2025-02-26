@@ -80,6 +80,11 @@ export namespace EvaluationJobMetadata {
     num_predictions?: number;
 
     /**
+     * Number of predictions that were processed during the evaluation job
+     */
+    num_processed_predictions?: number;
+
+    /**
      * Number of predictions that were successful during the evaluation job
      */
     num_successful_predictions?: number;
@@ -145,6 +150,11 @@ export namespace ListEvaluationJobsResponse {
      * Timestamp indicating when the evaluation round started processing
      */
     processing_started_at?: string;
+
+    /**
+     * Name of the dataset with the evaluation results
+     */
+    results_dataset_name?: string;
 
     /**
      * Score of the evaluation round

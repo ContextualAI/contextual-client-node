@@ -5,7 +5,7 @@ import * as Core from '../../../core';
 
 export class Models extends APIResource {
   /**
-   * Retrieves a list of tuned models associated with the specified agent.
+   * Retrieves a list of tuned models associated with the specified Agent.
    */
   list(agentId: string, options?: Core.RequestOptions): Core.APIPromise<ListTuneModelsResponse> {
     return this._client.get(`/agents/${agentId}/tune/models`, options);
@@ -17,14 +17,14 @@ export class Models extends APIResource {
  */
 export interface ListTuneModelsResponse {
   /**
-   * List of registered models for the application
+   * List of registered models for the agent
    */
   models: Array<ListTuneModelsResponse.Model>;
 
   /**
-   * Total number of models associated with the application
+   * Total number of models associated with the agent
    */
-  total: number;
+  total_count: number;
 }
 
 export namespace ListTuneModelsResponse {
@@ -32,6 +32,11 @@ export namespace ListTuneModelsResponse {
    * Response model to list individual registered model
    */
   export interface Model {
+    /**
+     * ID of the associated agent
+     */
+    application_id: string;
+
     /**
      * Timestamp indicating when the model was created
      */
@@ -46,6 +51,11 @@ export namespace ListTuneModelsResponse {
      * ID of the registered model
      */
     model_id: string;
+
+    /**
+     * State of the model
+     */
+    state: 'active' | 'inactive' | 'pending';
   }
 }
 
