@@ -176,7 +176,7 @@ Types:
 Methods:
 
 - <code title="put /users">client.users.<a href="./src/resources/users.ts">update</a>({ ...params }) -> unknown</code>
-- <code title="get /users">client.users.<a href="./src/resources/users.ts">list</a>({ ...params }) -> ListUsersResponse</code>
+- <code title="get /users">client.users.<a href="./src/resources/users.ts">list</a>({ ...params }) -> ListUsersResponseUsersUsersPage</code>
 - <code title="delete /users">client.users.<a href="./src/resources/users.ts">deactivate</a>({ ...params }) -> unknown</code>
 - <code title="post /users">client.users.<a href="./src/resources/users.ts">invite</a>({ ...params }) -> InviteUsersResponse</code>
 
