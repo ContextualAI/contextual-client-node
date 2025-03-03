@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 (2025-03-03)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#31](https://github.com/ContextualAI/contextual-client-node/issues/31)) ([4ba5a46](https://github.com/ContextualAI/contextual-client-node/commit/4ba5a465a8201253d49b85cc8befd22f8ac721de))
+
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#28](https://github.com/ContextualAI/contextual-client-node/issues/28)) ([ffbd533](https://github.com/ContextualAI/contextual-client-node/commit/ffbd5334f8d85c61dbce453e2fe86f0d4260621c))
+
 ## 0.3.0 (2025-02-26)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.2.0...v0.3.0)
