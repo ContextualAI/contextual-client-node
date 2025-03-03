@@ -322,8 +322,7 @@ export interface QueryCreateParams {
 
 export namespace QueryCreateParams {
   /**
-   * Message object for a message sent or received in a /query and /generate
-   * conversation
+   * Message object for a message sent or received in a conversation
    */
   export interface Message {
     /**

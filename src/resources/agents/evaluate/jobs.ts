@@ -142,6 +142,11 @@ export namespace ListEvaluationJobsResponse {
     num_predictions?: number;
 
     /**
+     * Number of predictions that have been processed during the evaluation round
+     */
+    num_processed_predictions?: number;
+
+    /**
      * Number of predictions that were successful during the evaluation round
      */
     num_successful_predictions?: number;

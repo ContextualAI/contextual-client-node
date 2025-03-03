@@ -54,16 +54,33 @@ export interface GenerateCreateParams {
   avoid_commentary?: boolean;
 
   /**
+   * The maximum number of tokens that the model can generate in the response.
+   */
+  max_new_tokens?: number;
+
+  /**
    * Instructions that the model follows when generating responses. Note that we do
    * not guarantee that the model follows these instructions exactly.
    */
   system_prompt?: string;
+
+  /**
+   * The sampling temperature, which affects the randomness in the response. Note
+   * that higher temperature values can reduce groundedness
+   */
+  temperature?: number;
+
+  /**
+   * A parameter for nucleus sampling, an alternative to temperature which also
+   * affects the randomness of the response. Note that higher top_p values can reduce
+   * groundedness
+   */
+  top_p?: number;
 }
 
 export namespace GenerateCreateParams {
   /**
-   * Message object for a message sent or received in a /query and /generate
-   * conversation
+   * Message object for a message received in the /generate request
    */
   export interface Message {
     /**
@@ -74,7 +91,7 @@ export namespace GenerateCreateParams {
     /**
      * Role of the sender
      */
-    role: 'user' | 'system' | 'assistant' | 'knowledge';
+    role: 'user' | 'assistant';
   }
 }
 
