@@ -30,7 +30,10 @@ describe('resource generate', () => {
       messages: [{ content: 'content', role: 'user' }],
       model: 'model',
       avoid_commentary: true,
+      max_new_tokens: 1,
       system_prompt: 'system_prompt',
+      temperature: 0,
+      top_p: 1,
     });
   });
 });
