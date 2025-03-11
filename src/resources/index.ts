@@ -40,3 +40,4 @@ export {
   type UserInviteParams,
 } from './users';
 export { Rerank, type RerankCreateResponse, type RerankCreateParams } from './rerank';
+export { type CompositeMetadataFilter } from './top-level';
