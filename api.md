@@ -19,6 +19,7 @@ Methods:
 
 Types:
 
+- <code><a href="./src/resources/datastores/documents.ts">CompositeMetadataFilter</a></code>
 - <code><a href="./src/resources/datastores/documents.ts">DocumentMetadata</a></code>
 - <code><a href="./src/resources/datastores/documents.ts">IngestionResponse</a></code>
 - <code><a href="./src/resources/datastores/documents.ts">ListDocumentsResponse</a></code>

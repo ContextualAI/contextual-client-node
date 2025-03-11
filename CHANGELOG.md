@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.0 (2025-03-11)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* add SKIP_BREW env var to ./scripts/bootstrap ([#35](https://github.com/ContextualAI/contextual-client-node/issues/35)) ([bb0faca](https://github.com/ContextualAI/contextual-client-node/commit/bb0faca1da1cc716197e02d3a5e9b6614f2204b0))
+* **api:** update via SDK Studio ([#37](https://github.com/ContextualAI/contextual-client-node/issues/37)) ([1cc7907](https://github.com/ContextualAI/contextual-client-node/commit/1cc7907b119cb40734c3da6040feb6b999e70191))
+* **api:** update via SDK Studio ([#38](https://github.com/ContextualAI/contextual-client-node/issues/38)) ([b23a2e2](https://github.com/ContextualAI/contextual-client-node/commit/b23a2e2fa6bfcf37b61754eeb134d165c61e8d9d))
+* **client:** accept RFC6838 JSON content types ([#36](https://github.com/ContextualAI/contextual-client-node/issues/36)) ([5178d1d](https://github.com/ContextualAI/contextual-client-node/commit/5178d1ddbc4c67f035113faafcc292c0dc05f014))
+
+
+### Chores
+
+* **internal:** codegen related update ([#33](https://github.com/ContextualAI/contextual-client-node/issues/33)) ([7608b02](https://github.com/ContextualAI/contextual-client-node/commit/7608b02fa3f51ef345da11be72b90fba5018ed68))
+
 ## 0.4.0 (2025-03-03)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.3.0...v0.4.0)

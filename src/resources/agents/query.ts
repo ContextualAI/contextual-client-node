@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as DocumentsAPI from '../datastores/documents';
 
 export class Query extends APIResource {
   /**
@@ -97,6 +98,11 @@ export interface QueryResponse {
   attributions?: Array<QueryResponse.Attribution>;
 
   /**
+   * Groundedness scores for the response
+   */
+  groundedness_scores?: Array<QueryResponse.GroundednessScore>;
+
+  /**
    * Response to the query request
    */
   message?: QueryResponse.Message;
@@ -130,7 +136,7 @@ export namespace QueryResponse {
     /**
      * Format of the content, such as `pdf` or `html`
      */
-    format: 'pdf' | 'html' | 'htm';
+    format: 'pdf' | 'html' | 'htm' | 'mhtml' | 'doc' | 'docx' | 'ppt' | 'pptx';
 
     /**
      * Source type of the content. Will be `file` for any docs ingested through
@@ -176,6 +182,26 @@ export namespace QueryResponse {
 
     /**
      * Start index of the attributed text in the generated message
+     */
+    start_idx: number;
+  }
+
+  /**
+   * Groundedness scores in a generated message`.
+   */
+  export interface GroundednessScore {
+    /**
+     * End index of the span in the generated message
+     */
+    end_idx: number;
+
+    /**
+     * Groundedness score for the span
+     */
+    score: number;
+
+    /**
+     * Start index of the span in the generated message
      */
     start_idx: number;
   }
@@ -309,6 +335,44 @@ export interface QueryCreateParams {
   conversation_id?: string;
 
   /**
+   * Body param: Defines an Optional custom metadata filter, which can be a list of
+   * filters or nested filters. The expected input is a nested JSON object that can
+   * represent a single filter or a composite (logical) combination of filters.
+   *
+   * Unnested Example:
+   *
+   * ```json
+   * {
+   *   "operator": "AND",
+   *   "filters": [{ "field": "status", "operator": "equals", "value": "active" }]
+   * }
+   * ```
+   *
+   * Nested example:
+   *
+   * ```json
+   * {
+   *   "operator": "AND",
+   *   "filters": [
+   *     { "field": "status", "operator": "equals", "value": "active" },
+   *     {
+   *       "operator": "OR",
+   *       "filters": [
+   *         {
+   *           "field": "category",
+   *           "operator": "containsany",
+   *           "value": ["policy", "HR"]
+   *         },
+   *         { "field": "tags", "operator": "exists" }
+   *       ]
+   *     }
+   *   ]
+   * }
+   * ```
+   */
+  documents_filters?: QueryCreateParams.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
+
+  /**
    * Body param: Model ID of the specific fine-tuned or aligned LLM model to use.
    * Defaults to base model if not specified.
    */
@@ -334,6 +398,43 @@ export namespace QueryCreateParams {
      * Role of the sender
      */
     role: 'user' | 'system' | 'assistant' | 'knowledge';
+  }
+
+  /**
+   * Defines a custom metadata filter. The expected input is a dict which can have
+   * different operators, fields and values. For example:
+   *
+   *     {"field": "title", "operator": "startswith", "value": "hr-"}
+   *
+   * For document_id and date_created the query is built using direct query without
+   * nesting.
+   */
+  export interface BaseMetadataFilter {
+    /**
+     * Field name to search for in the metadata
+     */
+    field: string;
+
+    /**
+     * Operator to be used for the filter.
+     */
+    operator:
+      | 'equals'
+      | 'containsany'
+      | 'exists'
+      | 'startswith'
+      | 'gt'
+      | 'gte'
+      | 'lt'
+      | 'lte'
+      | 'notequals'
+      | 'between';
+
+    /**
+     * The value to be searched for in the field. In case of exists operator, it is not
+     * needed.
+     */
+    value?: string | number | boolean | Array<string | number | boolean> | null;
   }
 }
 
@@ -363,6 +464,11 @@ export interface QueryFeedbackParams {
 
 export interface QueryMetricsParams {
   /**
+   * Filter messages by conversation ids.
+   */
+  conversation_ids?: Array<string>;
+
+  /**
    * Filters messages that are created after the specified timestamp.
    */
   created_after?: string;
@@ -381,6 +487,11 @@ export interface QueryMetricsParams {
    * Offset for pagination.
    */
   offset?: number;
+
+  /**
+   * Filter messages by users.
+   */
+  user_emails?: Array<string>;
 }
 
 export interface QueryRetrievalInfoParams {

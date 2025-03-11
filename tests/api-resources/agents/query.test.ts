@@ -28,6 +28,7 @@ describe('resource query', () => {
       include_retrieval_content_text: true,
       retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      documents_filters: { field: 'field', operator: 'equals', value: 'string' },
       llm_model_id: 'llm_model_id',
       stream: true,
     });
@@ -82,10 +83,12 @@ describe('resource query', () => {
       client.agents.query.metrics(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
+          conversation_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
           created_after: '2019-12-27T18:11:19.117Z',
           created_before: '2019-12-27T18:11:19.117Z',
           limit: 1000,
           offset: 0,
+          user_emails: ['string'],
         },
         { path: '/_stainless_unknown_path' },
       ),

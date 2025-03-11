@@ -5,6 +5,7 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as DocumentsAPI from './documents';
 import {
+  CompositeMetadataFilter,
   DocumentDeleteResponse,
   DocumentIngestParams,
   DocumentListParams,
@@ -31,6 +32,11 @@ export class Datastores extends APIResource {
    * relevant data. This flexible many-to-many relationship allows `Agents` to draw
    * from multiple sources of information. This linkage of `Datastore` to `Agent` is
    * done through the `Create Agent` or `Edit Agent` APIs.
+   *
+   * > Note that self-serve users are currently required to create datastores through
+   * > our UI. Otherwise, they will receive the following message: "This endpoint is
+   * > disabled as you need to go through checkout. Please use the UI to make this
+   * > request."
    */
   create(
     body: DatastoreCreateParams,
@@ -180,6 +186,7 @@ export declare namespace Datastores {
 
   export {
     Documents as Documents,
+    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,

@@ -41,6 +41,11 @@ export class Agents extends APIResource {
    * If no `datastore_id` is provided in the configuration, this API automatically
    * creates an empty `Datastore` and configures the `Agent` to use the newly created
    * `Datastore`.
+   *
+   * > Note that self-serve users are currently required to create agents through our
+   * > UI. Otherwise, they will receive the following message: "This endpoint is
+   * > disabled as you need to go through checkout. Please use the UI to make this
+   * > request."
    */
   create(body: AgentCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
     return this._client.post('/agents', { body, ...options });
@@ -133,6 +138,12 @@ export interface AgentMetadata {
   description?: string;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks. This prompt is applied per chunk.
+   */
+  filter_prompt?: string;
+
+  /**
    * The model ID to use for generation. Tuned models can only be used for the agents
    * on which they were tuned. If no model is specified, the default model is used.
    * Set to `default` to switch from a tuned model to the default model.
@@ -195,6 +206,11 @@ export namespace AgentMetadata {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.
@@ -328,6 +344,12 @@ export interface AgentCreateParams {
   description?: string;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks.
+   */
+  filter_prompt?: string;
+
+  /**
    * These queries will show up as suggestions in the Contextual UI when users load
    * the agent. We recommend including common queries that users will ask, as well as
    * complex queries so users understand the types of complex queries the system can
@@ -383,6 +405,11 @@ export namespace AgentCreateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.
@@ -467,6 +494,12 @@ export interface AgentUpdateParams {
   datastore_ids?: Array<string>;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks.
+   */
+  filter_prompt?: string;
+
+  /**
    * The model ID to use for generation. Tuned models can only be used for the agents
    * on which they were tuned. If no model is specified, the default model is used.
    * Set to `default` to switch from a tuned model to the default model.
@@ -529,6 +562,11 @@ export namespace AgentUpdateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.

@@ -53,7 +53,7 @@ export class DatastoresPage<Item> extends AbstractPage<Item> implements Datastor
 
     return {
       params: {
-        cursor: cursor,
+        cursor,
       },
     };
   }
@@ -110,7 +110,7 @@ export class DocumentsPage<Item> extends AbstractPage<Item> implements Documents
 
     return {
       params: {
-        cursor: cursor,
+        cursor,
       },
     };
   }
@@ -167,7 +167,7 @@ export class UsersPage<Item> extends AbstractPage<Item> implements UsersPageResp
 
     return {
       params: {
-        cursor: cursor,
+        cursor,
       },
     };
   }
@@ -219,7 +219,7 @@ export class Page<Item> extends AbstractPage<Item> implements PageResponse<Item>
 
     return {
       params: {
-        cursor: cursor,
+        cursor,
       },
     };
   }
