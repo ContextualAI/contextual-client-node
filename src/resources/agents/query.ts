@@ -3,7 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as TopLevelAPI from '../top-level';
+import * as DocumentsAPI from '../datastores/documents';
 
 export class Query extends APIResource {
   /**
@@ -370,7 +370,7 @@ export interface QueryCreateParams {
    * }
    * ```
    */
-  documents_filters?: QueryCreateParams.BaseMetadataFilter | TopLevelAPI.CompositeMetadataFilter;
+  documents_filters?: QueryCreateParams.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
 
   /**
    * Body param: Model ID of the specific fine-tuned or aligned LLM model to use.

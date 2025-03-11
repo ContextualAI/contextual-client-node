@@ -103,6 +103,61 @@ export class Documents extends APIResource {
 export class DocumentMetadataDocumentsPage extends DocumentsPage<DocumentMetadata> {}
 
 /**
+ * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
+ * a list of filters or nested filters.
+ */
+export interface CompositeMetadataFilter {
+  /**
+   * Filters added to the query for filtering docs
+   */
+  filters: Array<CompositeMetadataFilter.BaseMetadataFilter | CompositeMetadataFilter>;
+
+  /**
+   * Composite operator to be used to combine filters
+   */
+  operator?: 'AND' | 'OR' | 'AND_NOT' | null;
+}
+
+export namespace CompositeMetadataFilter {
+  /**
+   * Defines a custom metadata filter. The expected input is a dict which can have
+   * different operators, fields and values. For example:
+   *
+   *     {"field": "title", "operator": "startswith", "value": "hr-"}
+   *
+   * For document_id and date_created the query is built using direct query without
+   * nesting.
+   */
+  export interface BaseMetadataFilter {
+    /**
+     * Field name to search for in the metadata
+     */
+    field: string;
+
+    /**
+     * Operator to be used for the filter.
+     */
+    operator:
+      | 'equals'
+      | 'containsany'
+      | 'exists'
+      | 'startswith'
+      | 'gt'
+      | 'gte'
+      | 'lt'
+      | 'lte'
+      | 'notequals'
+      | 'between';
+
+    /**
+     * The value to be searched for in the field. In case of exists operator, it is not
+     * needed.
+     */
+    value?: string | number | boolean | Array<string | number | boolean> | null;
+  }
+}
+
+/**
  * Document description
  */
 export interface DocumentMetadata {
@@ -224,6 +279,7 @@ Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
 
 export declare namespace Documents {
   export {
+    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,

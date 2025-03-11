@@ -20,7 +20,6 @@ import * as API from './resources/index';
 import { Generate, GenerateCreateParams, GenerateCreateResponse } from './resources/generate';
 import { LMUnit, LMUnitCreateParams, LMUnitCreateResponse } from './resources/lmunit';
 import { Rerank, RerankCreateParams, RerankCreateResponse } from './resources/rerank';
-import { CompositeMetadataFilter } from './resources/top-level';
 import {
   InviteUsersResponse,
   ListUsersResponse,
@@ -248,8 +247,6 @@ export declare namespace ContextualAI {
 
   export import Page = Pagination.Page;
   export { type PageParams as PageParams, type PageResponse as PageResponse };
-
-  export { type CompositeMetadataFilter as CompositeMetadataFilter };
 
   export {
     Datastores as Datastores,
