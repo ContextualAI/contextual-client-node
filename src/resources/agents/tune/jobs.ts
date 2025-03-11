@@ -66,7 +66,7 @@ export interface TuneJobMetadata {
   /**
    * Metadata about the model evaluation, including status and results if completed.
    */
-  evaluation_metadata?: unknown | null;
+  evaluation_metadata?: Array<unknown>;
 
   /**
    * ID of the tuned model. Omitted if the tuning job failed or is still in progress.
