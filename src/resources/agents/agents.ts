@@ -133,6 +133,12 @@ export interface AgentMetadata {
   description?: string;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks. This prompt is applied per chunk.
+   */
+  filter_prompt?: string;
+
+  /**
    * The model ID to use for generation. Tuned models can only be used for the agents
    * on which they were tuned. If no model is specified, the default model is used.
    * Set to `default` to switch from a tuned model to the default model.
@@ -195,6 +201,11 @@ export namespace AgentMetadata {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.
@@ -328,6 +339,12 @@ export interface AgentCreateParams {
   description?: string;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks.
+   */
+  filter_prompt?: string;
+
+  /**
    * These queries will show up as suggestions in the Contextual UI when users load
    * the agent. We recommend including common queries that users will ask, as well as
    * complex queries so users understand the types of complex queries the system can
@@ -383,6 +400,11 @@ export namespace AgentCreateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.
@@ -467,6 +489,12 @@ export interface AgentUpdateParams {
   datastore_ids?: Array<string>;
 
   /**
+   * The prompt to an LLM which determines whether retrieved chunks are relevant to a
+   * given query and filters out irrelevant chunks.
+   */
+  filter_prompt?: string;
+
+  /**
    * The model ID to use for generation. Tuned models can only be used for the agents
    * on which they were tuned. If no model is specified, the default model is used.
    * Set to `default` to switch from a tuned model to the default model.
@@ -529,6 +557,11 @@ export namespace AgentUpdateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * This parameter controls generation of groundedness scores.
+       */
+      calculate_groundedness?: boolean;
+
       /**
        * This parameter adjusts how the model treats repeated tokens during text
        * generation.

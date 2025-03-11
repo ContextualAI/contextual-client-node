@@ -1,3 +1,9 @@
+# ContextualAI
+
+Types:
+
+- <code><a href="./src/resources/top-level.ts">CompositeMetadataFilter</a></code>
+
 # Datastores
 
 Types:

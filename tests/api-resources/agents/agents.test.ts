@@ -26,6 +26,7 @@ describe('resource agents', () => {
       agent_configs: {
         filter_and_rerank_config: { top_k_reranked_chunks: 0 },
         generate_response_config: {
+          calculate_groundedness: true,
           frequency_penalty: 0,
           max_new_tokens: 0,
           seed: 0,
@@ -37,6 +38,7 @@ describe('resource agents', () => {
       },
       datastore_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       description: 'xxx',
+      filter_prompt: 'filter_prompt',
       suggested_queries: ['string'],
       system_prompt: 'system_prompt',
     });
