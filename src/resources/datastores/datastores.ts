@@ -5,6 +5,7 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as DocumentsAPI from './documents';
 import {
+  CompositeMetadataFilter,
   DocumentDeleteResponse,
   DocumentIngestParams,
   DocumentListParams,
@@ -185,6 +186,7 @@ export declare namespace Datastores {
 
   export {
     Documents as Documents,
+    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,

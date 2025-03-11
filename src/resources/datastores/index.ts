@@ -14,6 +14,7 @@ export {
 export {
   DocumentMetadataDocumentsPage,
   Documents,
+  type CompositeMetadataFilter,
   type DocumentMetadata,
   type IngestionResponse,
   type ListDocumentsResponse,
