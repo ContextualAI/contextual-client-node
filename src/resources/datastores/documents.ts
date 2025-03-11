@@ -158,11 +158,11 @@ export namespace CompositeMetadataFilter {
       | (string & {})
       | number
       | boolean
-      | Array<unknown>
-      | Array<unknown>
-      | Array<unknown>
-      | Array<unknown>
-      | Array<unknown>;
+      | Array<string>
+      | Array<string>
+      | Array<number>
+      | Array<number>
+      | Array<boolean>;
   }
 }
 
