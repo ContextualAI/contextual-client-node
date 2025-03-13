@@ -153,16 +153,7 @@ export namespace CompositeMetadataFilter {
      * The value to be searched for in the field. In case of exists operator, it is not
      * needed.
      */
-    value?:
-      | string
-      | (string & {})
-      | number
-      | boolean
-      | Array<string>
-      | Array<string>
-      | Array<number>
-      | Array<number>
-      | Array<boolean>;
+    value?: string | number | boolean | Array<string | number | boolean> | null;
   }
 }
 
