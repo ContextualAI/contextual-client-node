@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.6.0 (2025-03-14)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#40](https://github.com/ContextualAI/contextual-client-node/issues/40)) ([67be5c7](https://github.com/ContextualAI/contextual-client-node/commit/67be5c7f62052e4d8d4ca960acf5d741f626103e))
+* **api:** update via SDK Studio ([#42](https://github.com/ContextualAI/contextual-client-node/issues/42)) ([a20be25](https://github.com/ContextualAI/contextual-client-node/commit/a20be255eccdd3d73b8b82215ed1bb4f5ca2e010))
+* **api:** update via SDK Studio ([#43](https://github.com/ContextualAI/contextual-client-node/issues/43)) ([14c74c1](https://github.com/ContextualAI/contextual-client-node/commit/14c74c15ebcef0871e7325453eb1ed02d12a7306))
+* **api:** update via SDK Studio ([#44](https://github.com/ContextualAI/contextual-client-node/issues/44)) ([94cf64d](https://github.com/ContextualAI/contextual-client-node/commit/94cf64d933f96e05b70757122a22871109190014))
+* **api:** update via SDK Studio ([#45](https://github.com/ContextualAI/contextual-client-node/issues/45)) ([6f38963](https://github.com/ContextualAI/contextual-client-node/commit/6f3896383295cdfbdec9a65a5a470abf3379410c))
+
+
+### Bug Fixes
+
+* **exports:** ensure resource imports don't require /index ([#47](https://github.com/ContextualAI/contextual-client-node/issues/47)) ([e530478](https://github.com/ContextualAI/contextual-client-node/commit/e530478fe8da3337643d66f4eb6cb98fb715cc16))
+
+
+### Chores
+
+* **internal:** remove extra empty newlines ([#46](https://github.com/ContextualAI/contextual-client-node/issues/46)) ([bf1f16c](https://github.com/ContextualAI/contextual-client-node/commit/bf1f16c174c4d6caf5d120cdfe4da281a2398a8a))
+
 ## 0.5.0 (2025-03-11)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.4.0...v0.5.0)

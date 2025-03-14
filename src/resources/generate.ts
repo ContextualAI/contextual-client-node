@@ -44,7 +44,8 @@ export interface GenerateCreateParams {
   messages: Array<GenerateCreateParams.Message>;
 
   /**
-   * The version of the Contextual's GLM to use. Currently, we just have "v1".
+   * The version of the Contextual's GLM to use. Currently, we just have
+   * "ctxl-rerank-en-v1-instruct".
    */
   model: string;
 

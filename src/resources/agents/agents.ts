@@ -41,11 +41,6 @@ export class Agents extends APIResource {
    * If no `datastore_id` is provided in the configuration, this API automatically
    * creates an empty `Datastore` and configures the `Agent` to use the newly created
    * `Datastore`.
-   *
-   * > Note that self-serve users are currently required to create agents through our
-   * > UI. Otherwise, they will receive the following message: "This endpoint is
-   * > disabled as you need to go through checkout. Please use the UI to make this
-   * > request."
    */
   create(body: AgentCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
     return this._client.post('/agents', { body, ...options });
