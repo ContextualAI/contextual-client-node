@@ -32,6 +32,11 @@ export class Datastores extends APIResource {
    * relevant data. This flexible many-to-many relationship allows `Agents` to draw
    * from multiple sources of information. This linkage of `Datastore` to `Agent` is
    * done through the `Create Agent` or `Edit Agent` APIs.
+   *
+   * > Note that self-serve users are currently required to create datastores through
+   * > our UI. Otherwise, they will receive the following message: "This endpoint is
+   * > disabled as you need to go through checkout. Please use the UI to make this
+   * > request."
    */
   create(
     body: DatastoreCreateParams,
@@ -80,6 +85,14 @@ export class Datastores extends APIResource {
   metadata(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreMetadata> {
     return this._client.get(`/datastores/${datastoreId}/metadata`, options);
   }
+
+  /**
+   * Reset the give `Datastore`. This operation is irreversible and it deletes all
+   * the documents associated with the datastore.
+   */
+  reset(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.put(`/datastores/${datastoreId}/reset`, options);
+  }
 }
 
 export class DatastoresDatastoresPage extends DatastoresPage<Datastore> {}
@@ -126,6 +139,23 @@ export interface DatastoreMetadata {
    * Name of the datastore
    */
   name: string;
+
+  /**
+   * Datastore usage
+   */
+  datastore_usages?: DatastoreMetadata.DatastoreUsages;
+}
+
+export namespace DatastoreMetadata {
+  /**
+   * Datastore usage
+   */
+  export interface DatastoreUsages {
+    /**
+     * Actual size of the datastore in GB
+     */
+    size_gb: number;
+  }
 }
 
 export interface ListDatastoresResponse {
@@ -147,6 +177,8 @@ export interface ListDatastoresResponse {
 }
 
 export type DatastoreDeleteResponse = unknown;
+
+export type DatastoreResetResponse = unknown;
 
 export interface DatastoreCreateParams {
   /**
@@ -174,6 +206,7 @@ export declare namespace Datastores {
     type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
+    type DatastoreResetResponse as DatastoreResetResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,

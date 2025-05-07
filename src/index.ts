@@ -19,6 +19,16 @@ import * as Uploads from './uploads';
 import * as API from './resources/index';
 import { Generate, GenerateCreateParams, GenerateCreateResponse } from './resources/generate';
 import { LMUnit, LMUnitCreateParams, LMUnitCreateResponse } from './resources/lmunit';
+import {
+  Parse,
+  ParseCreateParams,
+  ParseCreateResponse,
+  ParseJobResultsParams,
+  ParseJobResultsResponse,
+  ParseJobStatusResponse,
+  ParseJobsParams,
+  ParseJobsResponse,
+} from './resources/parse';
 import { Rerank, RerankCreateParams, RerankCreateResponse } from './resources/rerank';
 import {
   InviteUsersResponse,
@@ -39,6 +49,8 @@ import {
   AgentDeleteResponse,
   AgentListParams,
   AgentMetadata,
+  AgentMetadataResponse,
+  AgentResetResponse,
   AgentUpdateParams,
   AgentUpdateResponse,
   Agents,
@@ -53,6 +65,7 @@ import {
   DatastoreDeleteResponse,
   DatastoreListParams,
   DatastoreMetadata,
+  DatastoreResetResponse,
   Datastores,
   DatastoresDatastoresPage,
   ListDatastoresResponse,
@@ -177,6 +190,7 @@ export class ContextualAI extends Core.APIClient {
   lmUnit: API.LMUnit = new API.LMUnit(this);
   rerank: API.Rerank = new API.Rerank(this);
   generate: API.Generate = new API.Generate(this);
+  parse: API.Parse = new API.Parse(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -227,6 +241,7 @@ ContextualAI.ListUsersResponseUsersUsersPage = ListUsersResponseUsersUsersPage;
 ContextualAI.LMUnit = LMUnit;
 ContextualAI.Rerank = Rerank;
 ContextualAI.Generate = Generate;
+ContextualAI.Parse = Parse;
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -255,6 +270,7 @@ export declare namespace ContextualAI {
     type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
+    type DatastoreResetResponse as DatastoreResetResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
     type DatastoreListParams as DatastoreListParams,
@@ -268,6 +284,8 @@ export declare namespace ContextualAI {
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
+    type AgentMetadataResponse as AgentMetadataResponse,
+    type AgentResetResponse as AgentResetResponse,
     AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
@@ -304,6 +322,17 @@ export declare namespace ContextualAI {
     Generate as Generate,
     type GenerateCreateResponse as GenerateCreateResponse,
     type GenerateCreateParams as GenerateCreateParams,
+  };
+
+  export {
+    Parse as Parse,
+    type ParseCreateResponse as ParseCreateResponse,
+    type ParseJobResultsResponse as ParseJobResultsResponse,
+    type ParseJobStatusResponse as ParseJobStatusResponse,
+    type ParseJobsResponse as ParseJobsResponse,
+    type ParseCreateParams as ParseCreateParams,
+    type ParseJobResultsParams as ParseJobResultsParams,
+    type ParseJobsParams as ParseJobsParams,
   };
 }
 

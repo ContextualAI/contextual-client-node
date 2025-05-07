@@ -93,43 +93,37 @@ export namespace ListUsersResponse {
     email: string;
 
     /**
+     * The effective roles of the user.
+     */
+    effective_roles?: Array<
+      | 'VISITOR'
+      | 'AGENT_USER'
+      | 'CUSTOMER_INTERNAL_USER'
+      | 'CONTEXTUAL_STAFF_USER'
+      | 'CONTEXTUAL_EXTERNAL_STAFF_USER'
+      | 'CONTEXTUAL_INTERNAL_STAFF_USER'
+      | 'TENANT_ADMIN'
+      | 'SUPER_ADMIN'
+    >;
+
+    /**
      * Flag indicating if the user is a tenant admin
      */
     is_tenant_admin?: boolean;
 
     /**
-     * Per agent level roles for the user. If a user is granted any role under `roles`,
-     * then the user has that role for all the agents. Only the roles that need to be
-     * updated should be part of this.
-     */
-    per_agent_roles?: Array<User.PerAgentRole>;
-
-    /**
      * The user level roles of the user.
      */
-    roles?: Array<'AGENT_USER'>;
-  }
-
-  export namespace User {
-    /**
-     * The schema used to capture agent level roles
-     */
-    export interface PerAgentRole {
-      /**
-       * ID of the agent on which to grant/revoke the role.
-       */
-      agent_id: string;
-
-      /**
-       * When set to true, the roles will be granted o/w revoked.
-       */
-      grant: boolean;
-
-      /**
-       * The roles that are granted/revoked
-       */
-      roles: Array<'AGENT_USER'>;
-    }
+    roles?: Array<
+      | 'VISITOR'
+      | 'AGENT_USER'
+      | 'CUSTOMER_INTERNAL_USER'
+      | 'CONTEXTUAL_STAFF_USER'
+      | 'CONTEXTUAL_EXTERNAL_STAFF_USER'
+      | 'CONTEXTUAL_INTERNAL_STAFF_USER'
+      | 'TENANT_ADMIN'
+      | 'SUPER_ADMIN'
+    >;
   }
 }
 
@@ -149,38 +143,18 @@ export interface NewUser {
   is_tenant_admin?: boolean;
 
   /**
-   * Per agent level roles for the user. If a user is granted any role under `roles`,
-   * then the user has that role for all the agents. Only the roles that need to be
-   * updated should be part of this.
-   */
-  per_agent_roles?: Array<NewUser.PerAgentRole>;
-
-  /**
    * The user level roles of the user.
    */
-  roles?: Array<'AGENT_USER'>;
-}
-
-export namespace NewUser {
-  /**
-   * The schema used to capture agent level roles
-   */
-  export interface PerAgentRole {
-    /**
-     * ID of the agent on which to grant/revoke the role.
-     */
-    agent_id: string;
-
-    /**
-     * When set to true, the roles will be granted o/w revoked.
-     */
-    grant: boolean;
-
-    /**
-     * The roles that are granted/revoked
-     */
-    roles: Array<'AGENT_USER'>;
-  }
+  roles?: Array<
+    | 'VISITOR'
+    | 'AGENT_USER'
+    | 'CUSTOMER_INTERNAL_USER'
+    | 'CONTEXTUAL_STAFF_USER'
+    | 'CONTEXTUAL_EXTERNAL_STAFF_USER'
+    | 'CONTEXTUAL_INTERNAL_STAFF_USER'
+    | 'TENANT_ADMIN'
+    | 'SUPER_ADMIN'
+  >;
 }
 
 export type UserUpdateResponse = unknown;
@@ -199,38 +173,18 @@ export interface UserUpdateParams {
   is_tenant_admin?: boolean;
 
   /**
-   * Per agent level roles for the user. If a user is granted any role under `roles`,
-   * then the user has that role for all the agents. Only the roles that need to be
-   * updated should be part of this.
-   */
-  per_agent_roles?: Array<UserUpdateParams.PerAgentRole>;
-
-  /**
    * The user level roles of the user.
    */
-  roles?: Array<'AGENT_USER'>;
-}
-
-export namespace UserUpdateParams {
-  /**
-   * The schema used to capture agent level roles
-   */
-  export interface PerAgentRole {
-    /**
-     * ID of the agent on which to grant/revoke the role.
-     */
-    agent_id: string;
-
-    /**
-     * When set to true, the roles will be granted o/w revoked.
-     */
-    grant: boolean;
-
-    /**
-     * The roles that are granted/revoked
-     */
-    roles: Array<'AGENT_USER'>;
-  }
+  roles?: Array<
+    | 'VISITOR'
+    | 'AGENT_USER'
+    | 'CUSTOMER_INTERNAL_USER'
+    | 'CONTEXTUAL_STAFF_USER'
+    | 'CONTEXTUAL_EXTERNAL_STAFF_USER'
+    | 'CONTEXTUAL_INTERNAL_STAFF_USER'
+    | 'TENANT_ADMIN'
+    | 'SUPER_ADMIN'
+  >;
 }
 
 export interface UserListParams extends UsersPageParams {

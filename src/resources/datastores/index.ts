@@ -8,6 +8,7 @@ export {
   type DatastoreMetadata,
   type ListDatastoresResponse,
   type DatastoreDeleteResponse,
+  type DatastoreResetResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores';

@@ -73,6 +73,17 @@ export interface EvaluateCreateParams {
    * ID of the model to evaluate. Uses the default model if not specified.
    */
   llm_model_id?: string;
+
+  /**
+   * User notes for the evaluation job.
+   */
+  notes?: string;
+
+  /**
+   * Override the configuration for the query. This will override the configuration
+   * for the agent during evaluation.
+   */
+  override_configuration?: string;
 }
 
 Evaluate.Jobs = Jobs;

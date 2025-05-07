@@ -9,6 +9,8 @@ export {
   type ListAgentsResponse,
   type AgentUpdateResponse,
   type AgentDeleteResponse,
+  type AgentMetadataResponse,
+  type AgentResetResponse,
   type AgentCreateParams,
   type AgentUpdateParams,
   type AgentListParams,
