@@ -41,6 +41,11 @@ export class Agents extends APIResource {
    * If no `datastore_id` is provided in the configuration, this API automatically
    * creates an empty `Datastore` and configures the `Agent` to use the newly created
    * `Datastore`.
+   *
+   * > Note that self-serve users are currently required to create agents through our
+   * > UI. Otherwise, they will receive the following message: "This endpoint is
+   * > disabled as you need to go through checkout. Please use the UI to make this
+   * > request."
    */
   create(body: AgentCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
     return this._client.post('/agents', { body, ...options });
@@ -84,8 +89,15 @@ export class Agents extends APIResource {
   /**
    * Get metadata and configuration of a given `Agent`.
    */
-  metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadata> {
+  metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadataResponse> {
     return this._client.get(`/agents/${agentId}/metadata`, options);
+  }
+
+  /**
+   * Reset a given `Agent` to default configuration.
+   */
+  reset(agentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+    return this._client.put(`/agents/${agentId}/reset`, options);
   }
 }
 
@@ -128,6 +140,11 @@ export interface AgentMetadata {
   agent_configs?: AgentMetadata.AgentConfigs;
 
   /**
+   * Total API request counts for the agent.
+   */
+  agent_usages?: AgentMetadata.AgentUsages | null;
+
+  /**
    * Description of the agent
    */
   description?: string;
@@ -144,6 +161,12 @@ export interface AgentMetadata {
    * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
+
+  /**
+   * Instructions on how the agent should respond when there are no relevant
+   * retrievals that can be used to answer a query.
+   */
+  no_retrieval_system_prompt?: string;
 
   /**
    * These queries will show up as suggestions in the Contextual UI when users load
@@ -192,6 +215,25 @@ export namespace AgentMetadata {
      */
     export interface FilterAndRerankConfig {
       /**
+       * Instructions that the reranker references when ranking retrievals. Note that we
+       * do not guarantee that the reranker will follow these instructions exactly.
+       * Examples: "Prioritize internal sales documents over market analysis reports.
+       * More recent documents should be weighted higher. Enterprise portal content
+       * supersedes distributor communications." and "Emphasize forecasts from top-tier
+       * investment banks. Recent analysis should take precedence. Disregard aggregator
+       * sites and favor detailed research notes over news summaries."
+       */
+      rerank_instructions?: string;
+
+      /**
+       * If the reranker relevance score associated with a chunk is below this threshold,
+       * then the chunk will be filtered out and not used for generation. Scores are
+       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
+       * to disable the reranker score filtering.
+       */
+      reranker_score_filter_threshold?: number;
+
+      /**
        * The number of highest ranked chunks after reranking to be used
        */
       top_k_reranked_chunks?: number;
@@ -201,6 +243,15 @@ export namespace AgentMetadata {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * Flag to indicate whether the model should avoid providing additional commentary
+       * in responses. Commentary is conversational in nature and does not contain
+       * verifiable claims; therefore, commentary is not strictly grounded in available
+       * context. However, commentary may provide useful context which improves the
+       * helpfulness of responses.
+       */
+      avoid_commentary?: boolean;
+
       /**
        * This parameter controls generation of groundedness scores.
        */
@@ -254,6 +305,12 @@ export namespace AgentMetadata {
        * Enables reranking of retrieved chunks
        */
       enable_rerank?: boolean;
+
+      /**
+       * Enables checking if retrieval is needed for the query. This feature is currently
+       * experimental and will be improved.
+       */
+      should_check_retrieval_need?: boolean;
     }
 
     /**
@@ -261,12 +318,14 @@ export namespace AgentMetadata {
      */
     export interface RetrievalConfig {
       /**
-       * The weight of lexical search during retrieval
+       * The weight of lexical search during retrieval. Must sum to 1 with
+       * semantic_alpha.
        */
       lexical_alpha?: number;
 
       /**
-       * The weight of semantic search during retrieval
+       * The weight of semantic search during retrieval. Must sum to 1 with
+       * lexical_alpha.
        */
       semantic_alpha?: number;
 
@@ -275,6 +334,26 @@ export namespace AgentMetadata {
        */
       top_k_retrieved_chunks?: number;
     }
+  }
+
+  /**
+   * Total API request counts for the agent.
+   */
+  export interface AgentUsages {
+    /**
+     * eval request count
+     */
+    eval: number;
+
+    /**
+     * query request count
+     */
+    query: number;
+
+    /**
+     * tune request count
+     */
+    tune: number;
   }
 }
 
@@ -317,6 +396,67 @@ export type AgentUpdateResponse = unknown;
 
 export type AgentDeleteResponse = unknown;
 
+/**
+ * Response to GET Agent request
+ */
+export type AgentMetadataResponse = AgentMetadata | AgentMetadataResponse.GetTwilightAgentResponse;
+
+export namespace AgentMetadataResponse {
+  /**
+   * Response to GET Agent request
+   */
+  export interface GetTwilightAgentResponse {
+    /**
+     * The IDs of the datastore(s) associated with the agent
+     */
+    datastore_ids: Array<string>;
+
+    /**
+     * Name of the agent
+     */
+    name: string;
+
+    /**
+     * The following advanced parameters are experimental and subject to change.
+     */
+    agent_configs?: unknown;
+
+    /**
+     * Total API request counts for the agent.
+     */
+    agent_usages?: GetTwilightAgentResponse.AgentUsages | null;
+
+    /**
+     * Description of the agent
+     */
+    description?: string;
+  }
+
+  export namespace GetTwilightAgentResponse {
+    /**
+     * Total API request counts for the agent.
+     */
+    export interface AgentUsages {
+      /**
+       * eval request count
+       */
+      eval: number;
+
+      /**
+       * query request count
+       */
+      query: number;
+
+      /**
+       * tune request count
+       */
+      tune: number;
+    }
+  }
+}
+
+export type AgentResetResponse = unknown;
+
 export interface AgentCreateParams {
   /**
    * Name of the agent
@@ -343,6 +483,12 @@ export interface AgentCreateParams {
    * given query and filters out irrelevant chunks.
    */
   filter_prompt?: string;
+
+  /**
+   * Instructions on how the agent should respond when there are no relevant
+   * retrievals that can be used to answer a query.
+   */
+  no_retrieval_system_prompt?: string;
 
   /**
    * These queries will show up as suggestions in the Contextual UI when users load
@@ -391,6 +537,25 @@ export namespace AgentCreateParams {
      */
     export interface FilterAndRerankConfig {
       /**
+       * Instructions that the reranker references when ranking retrievals. Note that we
+       * do not guarantee that the reranker will follow these instructions exactly.
+       * Examples: "Prioritize internal sales documents over market analysis reports.
+       * More recent documents should be weighted higher. Enterprise portal content
+       * supersedes distributor communications." and "Emphasize forecasts from top-tier
+       * investment banks. Recent analysis should take precedence. Disregard aggregator
+       * sites and favor detailed research notes over news summaries."
+       */
+      rerank_instructions?: string;
+
+      /**
+       * If the reranker relevance score associated with a chunk is below this threshold,
+       * then the chunk will be filtered out and not used for generation. Scores are
+       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
+       * to disable the reranker score filtering.
+       */
+      reranker_score_filter_threshold?: number;
+
+      /**
        * The number of highest ranked chunks after reranking to be used
        */
       top_k_reranked_chunks?: number;
@@ -400,6 +565,15 @@ export namespace AgentCreateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * Flag to indicate whether the model should avoid providing additional commentary
+       * in responses. Commentary is conversational in nature and does not contain
+       * verifiable claims; therefore, commentary is not strictly grounded in available
+       * context. However, commentary may provide useful context which improves the
+       * helpfulness of responses.
+       */
+      avoid_commentary?: boolean;
+
       /**
        * This parameter controls generation of groundedness scores.
        */
@@ -453,6 +627,12 @@ export namespace AgentCreateParams {
        * Enables reranking of retrieved chunks
        */
       enable_rerank?: boolean;
+
+      /**
+       * Enables checking if retrieval is needed for the query. This feature is currently
+       * experimental and will be improved.
+       */
+      should_check_retrieval_need?: boolean;
     }
 
     /**
@@ -460,12 +640,14 @@ export namespace AgentCreateParams {
      */
     export interface RetrievalConfig {
       /**
-       * The weight of lexical search during retrieval
+       * The weight of lexical search during retrieval. Must sum to 1 with
+       * semantic_alpha.
        */
       lexical_alpha?: number;
 
       /**
-       * The weight of semantic search during retrieval
+       * The weight of semantic search during retrieval. Must sum to 1 with
+       * lexical_alpha.
        */
       semantic_alpha?: number;
 
@@ -500,6 +682,12 @@ export interface AgentUpdateParams {
    * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
+
+  /**
+   * Instructions on how the agent should respond when there are no relevant
+   * retrievals that can be used to answer a query.
+   */
+  no_retrieval_system_prompt?: string;
 
   /**
    * These queries will show up as suggestions in the Contextual UI when users load
@@ -548,6 +736,25 @@ export namespace AgentUpdateParams {
      */
     export interface FilterAndRerankConfig {
       /**
+       * Instructions that the reranker references when ranking retrievals. Note that we
+       * do not guarantee that the reranker will follow these instructions exactly.
+       * Examples: "Prioritize internal sales documents over market analysis reports.
+       * More recent documents should be weighted higher. Enterprise portal content
+       * supersedes distributor communications." and "Emphasize forecasts from top-tier
+       * investment banks. Recent analysis should take precedence. Disregard aggregator
+       * sites and favor detailed research notes over news summaries."
+       */
+      rerank_instructions?: string;
+
+      /**
+       * If the reranker relevance score associated with a chunk is below this threshold,
+       * then the chunk will be filtered out and not used for generation. Scores are
+       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
+       * to disable the reranker score filtering.
+       */
+      reranker_score_filter_threshold?: number;
+
+      /**
        * The number of highest ranked chunks after reranking to be used
        */
       top_k_reranked_chunks?: number;
@@ -557,6 +764,15 @@ export namespace AgentUpdateParams {
      * Parameters that affect response generation
      */
     export interface GenerateResponseConfig {
+      /**
+       * Flag to indicate whether the model should avoid providing additional commentary
+       * in responses. Commentary is conversational in nature and does not contain
+       * verifiable claims; therefore, commentary is not strictly grounded in available
+       * context. However, commentary may provide useful context which improves the
+       * helpfulness of responses.
+       */
+      avoid_commentary?: boolean;
+
       /**
        * This parameter controls generation of groundedness scores.
        */
@@ -610,6 +826,12 @@ export namespace AgentUpdateParams {
        * Enables reranking of retrieved chunks
        */
       enable_rerank?: boolean;
+
+      /**
+       * Enables checking if retrieval is needed for the query. This feature is currently
+       * experimental and will be improved.
+       */
+      should_check_retrieval_need?: boolean;
     }
 
     /**
@@ -617,12 +839,14 @@ export namespace AgentUpdateParams {
      */
     export interface RetrievalConfig {
       /**
-       * The weight of lexical search during retrieval
+       * The weight of lexical search during retrieval. Must sum to 1 with
+       * semantic_alpha.
        */
       lexical_alpha?: number;
 
       /**
-       * The weight of semantic search during retrieval
+       * The weight of semantic search during retrieval. Must sum to 1 with
+       * lexical_alpha.
        */
       semantic_alpha?: number;
 
@@ -650,6 +874,8 @@ export declare namespace Agents {
     type ListAgentsResponse as ListAgentsResponse,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
+    type AgentMetadataResponse as AgentMetadataResponse,
+    type AgentResetResponse as AgentResetResponse,
     AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,

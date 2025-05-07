@@ -33,6 +33,15 @@ describe('resource tune', () => {
       client.agents.tune.create(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
+          'hyperparams[learning_rate]': 2,
+          'hyperparams[lora_alpha]': 8,
+          'hyperparams[lora_dropout]': 0,
+          'hyperparams[lora_rank]': 8,
+          'hyperparams[num_epochs]': 1,
+          'hyperparams[warmup_ratio]': 0,
+          metadata_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+          sdp_only: true,
+          synth_data: true,
           test_dataset_name: 'test_dataset_name',
           test_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
           train_dataset_name: 'train_dataset_name',

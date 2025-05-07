@@ -5,12 +5,21 @@ import * as Core from '../core';
 
 export class Rerank extends APIResource {
   /**
-   * Rank a list of documents according to their relevance to a query.
+   * Rank a list of documents according to their relevance to a query primarily and
+   * your custom instructions secondarily. We evaluated the model on instructions for
+   * recency, document type, source, and metadata, and it can generalize to other
+   * instructions as well.
    *
-   * The total request cannot exceed 400,000 tokens. The combined length of any
-   * document, instruction and the query must not exceed 4,000 tokens. Email
-   * [rerank-feedback@contextual.ai](mailto:rerank-feedback@contextual.ai) with any
-   * feedback or questions.
+   * The total request cannot exceed 400,000 tokens. The combined length of the
+   * query, instruction and any document with its metadata must not exceed 8,000
+   * tokens.
+   *
+   * See our
+   * [blog post](https://contextual.ai/blog/introducing-instruction-following-reranker/)
+   * and
+   * [code examples](https://colab.research.google.com/github/ContextualAI/examples/blob/main/03-standalone-api/03-rerank/rerank.ipynb).
+   * Email [rerank-feedback@contextual.ai](mailto:rerank-feedback@contextual.ai) with
+   * any feedback or questions.
    */
   create(body: RerankCreateParams, options?: Core.RequestOptions): Core.APIPromise<RerankCreateResponse> {
     return this._client.post('/rerank', { body, ...options });
@@ -52,12 +61,14 @@ export namespace RerankCreateResponse {
 
 export interface RerankCreateParams {
   /**
-   * The texts to be reranked according to their relevance to the query
+   * The texts to be reranked according to their relevance to the query and the
+   * optional instruction
    */
   documents: Array<string>;
 
   /**
-   * The version of the reranker to use. Currently, we just have "v1".
+   * The version of the reranker to use. Currently, we just have
+   * "ctxl-rerank-en-v1-instruct".
    */
   model: string;
 
@@ -67,19 +78,20 @@ export interface RerankCreateParams {
   query: string;
 
   /**
-   * Instructions that the reranker references when ranking retrievals. Note that we
-   * do not guarantee that the reranker will follow these instructions exactly.
-   * Examples: "Prioritize internal sales documents over market analysis reports.
-   * More recent documents should be weighted higher. Enterprise portal content
-   * supersedes distributor communications." and "Emphasize forecasts from top-tier
-   * investment banks. Recent analysis should take precedence. Disregard aggregator
-   * sites and favor detailed research notes over news summaries."
+   * Instructions that the reranker references when ranking documents, after
+   * considering relevance. We evaluated the model on instructions for recency,
+   * document type, source, and metadata, and it can generalize to other instructions
+   * as well. For instructions related to recency and timeframe, specify the
+   * timeframe (e.g., instead of saying "this year") because the reranker doesn't
+   * know the current date. Example: "Prioritize internal sales documents over market
+   * analysis reports. More recent documents should be weighted higher. Enterprise
+   * portal content supersedes distributor communications."
    */
   instruction?: string;
 
   /**
    * Metadata for documents being passed to the reranker. Must be the same length as
-   * the documents list.
+   * the documents list. If a document does not have metadata, add an empty string.
    */
   metadata?: Array<string>;
 

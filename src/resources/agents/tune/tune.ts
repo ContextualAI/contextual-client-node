@@ -72,6 +72,57 @@ export interface CreateTuneResponse {
 
 export interface TuneCreateParams {
   /**
+   * Controls how quickly the model adapts to the training data. Must be greater than
+   * 0 and less than or equal to 0.1.
+   */
+  'hyperparams[learning_rate]'?: number;
+
+  /**
+   * Scaling factor that controls the magnitude of LoRA updates. Higher values lead
+   * to stronger adaptation effects. The effective learning strength is determined by
+   * the ratio of lora_alpha/lora_rank. Must be one of: 8, 16, 32, 64 or 128
+   */
+  'hyperparams[lora_alpha]'?: 8 | 16 | 32 | 64 | 128;
+
+  /**
+   * LoRA dropout randomly disables connections during training to prevent
+   * overfitting and improve generalization when fine-tuning language models with
+   * Low-Rank Adaptation. Must be between 0 and 1 (exclusive).
+   */
+  'hyperparams[lora_dropout]'?: number;
+
+  /**
+   * Controls the capacity of the LoRA adapters. Must be one of: 8, 16, 32, or 64.
+   */
+  'hyperparams[lora_rank]'?: 8 | 16 | 32 | 64;
+
+  /**
+   * Number of complete passes through the training dataset.
+   */
+  'hyperparams[num_epochs]'?: number;
+
+  /**
+   * Fraction of training steps used for learning rate warmup. Must be between 0 and
+   * 1 (exclusive).
+   */
+  'hyperparams[warmup_ratio]'?: number;
+
+  /**
+   * Optional. Metadata file to use for synthetic data pipeline.
+   */
+  metadata_file?: Core.Uploadable;
+
+  /**
+   * Runs the SDP pipeline only if set to True.
+   */
+  sdp_only?: boolean;
+
+  /**
+   * Optional. Whether to generate synthetic data for training
+   */
+  synth_data?: boolean;
+
+  /**
    * Optional. `Dataset` to use for testing model checkpoints, created through the
    * `/datasets/evaluate` API.
    */

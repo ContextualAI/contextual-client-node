@@ -161,6 +161,11 @@ export namespace QueryResponse {
     page?: number;
 
     /**
+     * Score of the retrieval, if applicable
+     */
+    score?: number;
+
+    /**
      * URL of the source content, if applicable
      */
     url?: string;
@@ -226,11 +231,13 @@ export interface RetrievalInfoResponse {
   /**
    * List of content metadatas.
    */
-  content_metadatas?: Array<RetrievalInfoResponse.ContentMetadata>;
+  content_metadatas?: Array<
+    RetrievalInfoResponse.UnstructuredContentMetadata | RetrievalInfoResponse.StructuredContentMetadata
+  >;
 }
 
 export namespace RetrievalInfoResponse {
-  export interface ContentMetadata {
+  export interface UnstructuredContentMetadata {
     /**
      * Id of the content.
      */
@@ -280,6 +287,22 @@ export namespace RetrievalInfoResponse {
      * Y coordinate of the bottom right corner on the bounding box.
      */
     y1: number;
+
+    content_type?: 'unstructured';
+  }
+
+  export interface StructuredContentMetadata {
+    /**
+     * Id of the content.
+     */
+    content_id: string;
+
+    /**
+     * Text of the content.
+     */
+    content_text: unknown;
+
+    content_type?: 'structured';
   }
 }
 
@@ -382,6 +405,11 @@ export interface QueryCreateParams {
    * Body param: Set to `true` to receive a streamed response
    */
   stream?: boolean;
+
+  /**
+   * Body param: Custom output structure format.
+   */
+  structured_output?: QueryCreateParams.StructuredOutput;
 }
 
 export namespace QueryCreateParams {
@@ -435,6 +463,21 @@ export namespace QueryCreateParams {
      * needed.
      */
     value?: string | number | boolean | Array<string | number | boolean> | null;
+  }
+
+  /**
+   * Custom output structure format.
+   */
+  export interface StructuredOutput {
+    /**
+     * The output json structure.
+     */
+    json_schema: unknown;
+
+    /**
+     * Type of the structured output. The default is JSON
+     */
+    type?: 'JSON';
   }
 }
 

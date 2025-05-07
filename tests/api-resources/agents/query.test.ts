@@ -28,9 +28,13 @@ describe('resource query', () => {
       include_retrieval_content_text: true,
       retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      documents_filters: { field: 'field', operator: 'equals', value: 'string' },
+      documents_filters: {
+        filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+        operator: 'AND',
+      },
       llm_model_id: 'llm_model_id',
       stream: true,
+      structured_output: { json_schema: {}, type: 'JSON' },
     });
   });
 

@@ -228,7 +228,19 @@ export interface DocumentListParams extends DocumentsPageParams {
    * Filters documents whose ingestion job status matches (one of) the provided
    * status(es).
    */
-  ingestion_job_status?: Array<'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled'>;
+  ingestion_job_status?: Array<
+    | 'pending'
+    | 'processing'
+    | 'retrying'
+    | 'completed'
+    | 'failed'
+    | 'cancelled'
+    | 'failed_to_provision'
+    | 'generating_data'
+    | 'training_in_progress'
+    | 'failed_to_generate_data'
+    | 'provisioning'
+  >;
 
   /**
    * Filters documents uploaded at or after specified timestamp.
@@ -258,13 +270,11 @@ export interface DocumentIngestParams {
    * **Example Metadata JSON:**
    *
    * ```json
-   * {
-   *   "metadata": {
+   * metadata = {
    *     "custom_metadata": {
-   *       "customKey1": "value3",
-   *       "_filterKey": "filterValue3"
-   *     }
-   *   }
+   *         "field1": "value1",
+   *         "field2": "value2"
+   *      }
    * }
    * ```
    */
