@@ -121,6 +121,31 @@ export interface Agent {
 }
 
 /**
+ * Response to configs for different components
+ */
+export interface AgentConfigs {
+  /**
+   * Parameters that affect filtering and reranking of retrieved knowledge
+   */
+  filter_and_rerank_config?: FilterAndRerankConfig;
+
+  /**
+   * Parameters that affect response generation
+   */
+  generate_response_config?: GenerateResponseConfig;
+
+  /**
+   * Parameters that affect the agent's overall RAG workflow
+   */
+  global_config?: GlobalConfig;
+
+  /**
+   * Parameters that affect how the agent retrieves from datastore(s)
+   */
+  retrieval_config?: RetrievalConfig;
+}
+
+/**
  * Response to GET Agent request
  */
 export interface AgentMetadata {
@@ -137,7 +162,7 @@ export interface AgentMetadata {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentMetadata.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * Total API request counts for the agent.
@@ -185,158 +210,6 @@ export interface AgentMetadata {
 
 export namespace AgentMetadata {
   /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentConfigs.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentConfigs.GlobalConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentConfigs.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    /**
-     * Parameters that affect response generation
-     */
-    export interface GenerateResponseConfig {
-      /**
-       * Flag to indicate whether the model should avoid providing additional commentary
-       * in responses. Commentary is conversational in nature and does not contain
-       * verifiable claims; therefore, commentary is not strictly grounded in available
-       * context. However, commentary may provide useful context which improves the
-       * helpfulness of responses.
-       */
-      avoid_commentary?: boolean;
-
-      /**
-       * This parameter controls generation of groundedness scores.
-       */
-      calculate_groundedness?: boolean;
-
-      /**
-       * This parameter adjusts how the model treats repeated tokens during text
-       * generation.
-       */
-      frequency_penalty?: number;
-
-      /**
-       * The maximum number of tokens the model can generate in a response.
-       */
-      max_new_tokens?: number;
-
-      /**
-       * This parameter controls the randomness of how the model selects the next tokens
-       * during text generation.
-       */
-      seed?: number;
-
-      /**
-       * The sampling temperature, which affects the randomness in the response.
-       */
-      temperature?: number;
-
-      /**
-       * A parameter for nucleus sampling, an alternative to `temperature` which also
-       * affects the randomness of the response.
-       */
-      top_p?: number;
-    }
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    export interface GlobalConfig {
-      /**
-       * Enables filtering of retrieved chunks with a separate LLM
-       */
-      enable_filter?: boolean;
-
-      /**
-       * Enables multi-turn conversations. This feature is currently experimental and
-       * will be improved.
-       */
-      enable_multi_turn?: boolean;
-
-      /**
-       * Enables reranking of retrieved chunks
-       */
-      enable_rerank?: boolean;
-
-      /**
-       * Enables checking if retrieval is needed for the query. This feature is currently
-       * experimental and will be improved.
-       */
-      should_check_retrieval_need?: boolean;
-    }
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    export interface RetrievalConfig {
-      /**
-       * The weight of lexical search during retrieval. Must sum to 1 with
-       * semantic_alpha.
-       */
-      lexical_alpha?: number;
-
-      /**
-       * The weight of semantic search during retrieval. Must sum to 1 with
-       * lexical_alpha.
-       */
-      semantic_alpha?: number;
-
-      /**
-       * The maximum number of retrieved chunks from the datastore.
-       */
-      top_k_retrieved_chunks?: number;
-    }
-  }
-
-  /**
    * Total API request counts for the agent.
    */
   export interface AgentUsages {
@@ -374,6 +247,109 @@ export interface CreateAgentOutput {
   datastore_ids: Array<string>;
 }
 
+/**
+ * Captures Filter and Rerank configurations for an Agent
+ */
+export interface FilterAndRerankConfig {
+  /**
+   * Instructions that the reranker references when ranking retrievals. Note that we
+   * do not guarantee that the reranker will follow these instructions exactly.
+   * Examples: "Prioritize internal sales documents over market analysis reports.
+   * More recent documents should be weighted higher. Enterprise portal content
+   * supersedes distributor communications." and "Emphasize forecasts from top-tier
+   * investment banks. Recent analysis should take precedence. Disregard aggregator
+   * sites and favor detailed research notes over news summaries."
+   */
+  rerank_instructions?: string;
+
+  /**
+   * If the reranker relevance score associated with a chunk is below this threshold,
+   * then the chunk will be filtered out and not used for generation. Scores are
+   * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
+   * to disable the reranker score filtering.
+   */
+  reranker_score_filter_threshold?: number;
+
+  /**
+   * The number of highest ranked chunks after reranking to be used
+   */
+  top_k_reranked_chunks?: number;
+}
+
+/**
+ * Captures advance LLM configurations for an Agent
+ */
+export interface GenerateResponseConfig {
+  /**
+   * Flag to indicate whether the model should avoid providing additional commentary
+   * in responses. Commentary is conversational in nature and does not contain
+   * verifiable claims; therefore, commentary is not strictly grounded in available
+   * context. However, commentary may provide useful context which improves the
+   * helpfulness of responses.
+   */
+  avoid_commentary?: boolean;
+
+  /**
+   * This parameter controls generation of groundedness scores.
+   */
+  calculate_groundedness?: boolean;
+
+  /**
+   * This parameter adjusts how the model treats repeated tokens during text
+   * generation.
+   */
+  frequency_penalty?: number;
+
+  /**
+   * The maximum number of tokens the model can generate in a response.
+   */
+  max_new_tokens?: number;
+
+  /**
+   * This parameter controls the randomness of how the model selects the next tokens
+   * during text generation.
+   */
+  seed?: number;
+
+  /**
+   * The sampling temperature, which affects the randomness in the response.
+   */
+  temperature?: number;
+
+  /**
+   * A parameter for nucleus sampling, an alternative to `temperature` which also
+   * affects the randomness of the response.
+   */
+  top_p?: number;
+}
+
+/**
+ * Captures global configs
+ */
+export interface GlobalConfig {
+  /**
+   * Enables filtering of retrieved chunks with a separate LLM
+   */
+  enable_filter?: boolean;
+
+  /**
+   * Enables multi-turn conversations. This feature is currently experimental and
+   * will be improved.
+   */
+  enable_multi_turn?: boolean;
+
+  /**
+   * Enables reranking of retrieved chunks
+   */
+  enable_rerank?: boolean;
+
+  /**
+   * Enables checking if retrieval is needed for the query. This feature is currently
+   * experimental and will be improved.
+   */
+  should_check_retrieval_need?: boolean;
+}
+
 export interface ListAgentsResponse {
   /**
    * Total number of available agents
@@ -390,6 +366,28 @@ export interface ListAgentsResponse {
    * retrieve.
    */
   next_cursor?: string;
+}
+
+/**
+ * Captures Retrieval configurations for an Agent
+ */
+export interface RetrievalConfig {
+  /**
+   * The weight of lexical search during retrieval. Must sum to 1 with
+   * semantic_alpha.
+   */
+  lexical_alpha?: number;
+
+  /**
+   * The weight of semantic search during retrieval. Must sum to 1 with
+   * lexical_alpha.
+   */
+  semantic_alpha?: number;
+
+  /**
+   * The maximum number of retrieved chunks from the datastore.
+   */
+  top_k_retrieved_chunks?: number;
 }
 
 export type AgentUpdateResponse = unknown;
@@ -466,7 +464,7 @@ export interface AgentCreateParams {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentCreateParams.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * The IDs of the datastore to associate with this agent.
@@ -505,165 +503,11 @@ export interface AgentCreateParams {
   system_prompt?: string;
 }
 
-export namespace AgentCreateParams {
-  /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentConfigs.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentConfigs.GlobalConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentConfigs.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    /**
-     * Parameters that affect response generation
-     */
-    export interface GenerateResponseConfig {
-      /**
-       * Flag to indicate whether the model should avoid providing additional commentary
-       * in responses. Commentary is conversational in nature and does not contain
-       * verifiable claims; therefore, commentary is not strictly grounded in available
-       * context. However, commentary may provide useful context which improves the
-       * helpfulness of responses.
-       */
-      avoid_commentary?: boolean;
-
-      /**
-       * This parameter controls generation of groundedness scores.
-       */
-      calculate_groundedness?: boolean;
-
-      /**
-       * This parameter adjusts how the model treats repeated tokens during text
-       * generation.
-       */
-      frequency_penalty?: number;
-
-      /**
-       * The maximum number of tokens the model can generate in a response.
-       */
-      max_new_tokens?: number;
-
-      /**
-       * This parameter controls the randomness of how the model selects the next tokens
-       * during text generation.
-       */
-      seed?: number;
-
-      /**
-       * The sampling temperature, which affects the randomness in the response.
-       */
-      temperature?: number;
-
-      /**
-       * A parameter for nucleus sampling, an alternative to `temperature` which also
-       * affects the randomness of the response.
-       */
-      top_p?: number;
-    }
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    export interface GlobalConfig {
-      /**
-       * Enables filtering of retrieved chunks with a separate LLM
-       */
-      enable_filter?: boolean;
-
-      /**
-       * Enables multi-turn conversations. This feature is currently experimental and
-       * will be improved.
-       */
-      enable_multi_turn?: boolean;
-
-      /**
-       * Enables reranking of retrieved chunks
-       */
-      enable_rerank?: boolean;
-
-      /**
-       * Enables checking if retrieval is needed for the query. This feature is currently
-       * experimental and will be improved.
-       */
-      should_check_retrieval_need?: boolean;
-    }
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    export interface RetrievalConfig {
-      /**
-       * The weight of lexical search during retrieval. Must sum to 1 with
-       * semantic_alpha.
-       */
-      lexical_alpha?: number;
-
-      /**
-       * The weight of semantic search during retrieval. Must sum to 1 with
-       * lexical_alpha.
-       */
-      semantic_alpha?: number;
-
-      /**
-       * The maximum number of retrieved chunks from the datastore.
-       */
-      top_k_retrieved_chunks?: number;
-    }
-  }
-}
-
 export interface AgentUpdateParams {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentUpdateParams.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * IDs of the datastore to associate with the agent.
@@ -704,160 +548,6 @@ export interface AgentUpdateParams {
   system_prompt?: string;
 }
 
-export namespace AgentUpdateParams {
-  /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentConfigs.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentConfigs.GlobalConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentConfigs.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    /**
-     * Parameters that affect response generation
-     */
-    export interface GenerateResponseConfig {
-      /**
-       * Flag to indicate whether the model should avoid providing additional commentary
-       * in responses. Commentary is conversational in nature and does not contain
-       * verifiable claims; therefore, commentary is not strictly grounded in available
-       * context. However, commentary may provide useful context which improves the
-       * helpfulness of responses.
-       */
-      avoid_commentary?: boolean;
-
-      /**
-       * This parameter controls generation of groundedness scores.
-       */
-      calculate_groundedness?: boolean;
-
-      /**
-       * This parameter adjusts how the model treats repeated tokens during text
-       * generation.
-       */
-      frequency_penalty?: number;
-
-      /**
-       * The maximum number of tokens the model can generate in a response.
-       */
-      max_new_tokens?: number;
-
-      /**
-       * This parameter controls the randomness of how the model selects the next tokens
-       * during text generation.
-       */
-      seed?: number;
-
-      /**
-       * The sampling temperature, which affects the randomness in the response.
-       */
-      temperature?: number;
-
-      /**
-       * A parameter for nucleus sampling, an alternative to `temperature` which also
-       * affects the randomness of the response.
-       */
-      top_p?: number;
-    }
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    export interface GlobalConfig {
-      /**
-       * Enables filtering of retrieved chunks with a separate LLM
-       */
-      enable_filter?: boolean;
-
-      /**
-       * Enables multi-turn conversations. This feature is currently experimental and
-       * will be improved.
-       */
-      enable_multi_turn?: boolean;
-
-      /**
-       * Enables reranking of retrieved chunks
-       */
-      enable_rerank?: boolean;
-
-      /**
-       * Enables checking if retrieval is needed for the query. This feature is currently
-       * experimental and will be improved.
-       */
-      should_check_retrieval_need?: boolean;
-    }
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    export interface RetrievalConfig {
-      /**
-       * The weight of lexical search during retrieval. Must sum to 1 with
-       * semantic_alpha.
-       */
-      lexical_alpha?: number;
-
-      /**
-       * The weight of semantic search during retrieval. Must sum to 1 with
-       * lexical_alpha.
-       */
-      semantic_alpha?: number;
-
-      /**
-       * The maximum number of retrieved chunks from the datastore.
-       */
-      top_k_retrieved_chunks?: number;
-    }
-  }
-}
-
 export interface AgentListParams extends PageParams {}
 
 Agents.AgentsPage = AgentsPage;
@@ -869,9 +559,14 @@ Agents.Tune = Tune;
 export declare namespace Agents {
   export {
     type Agent as Agent,
+    type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
     type CreateAgentOutput as CreateAgentOutput,
+    type FilterAndRerankConfig as FilterAndRerankConfig,
+    type GenerateResponseConfig as GenerateResponseConfig,
+    type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
+    type RetrievalConfig as RetrievalConfig,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
     type AgentMetadataResponse as AgentMetadataResponse,
