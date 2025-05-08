@@ -26,10 +26,10 @@ describe('resource parse', () => {
     const response = await client.parse.create({
       raw_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
       enable_document_hierarchy: true,
-      enable_split_tables: false,
+      enable_split_tables: true,
       figure_caption_mode: 'concise',
-      max_split_table_cells: 100,
-      page_range: '0,1,2,5,6',
+      max_split_table_cells: 0,
+      page_range: 'page_range',
       parse_mode: 'standard',
     });
   });
