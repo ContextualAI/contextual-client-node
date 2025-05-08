@@ -40,9 +40,14 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/agents/agents.ts">Agent</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentConfigs</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentMetadata</a></code>
 - <code><a href="./src/resources/agents/agents.ts">CreateAgentOutput</a></code>
+- <code><a href="./src/resources/agents/agents.ts">FilterAndRerankConfig</a></code>
+- <code><a href="./src/resources/agents/agents.ts">GenerateResponseConfig</a></code>
+- <code><a href="./src/resources/agents/agents.ts">GlobalConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">ListAgentsResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">RetrievalConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentUpdateResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentDeleteResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentMetadataResponse</a></code>
