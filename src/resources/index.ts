@@ -4,11 +4,18 @@ export {
   AgentsPage,
   Agents,
   type Agent,
+  type AgentConfigs,
   type AgentMetadata,
   type CreateAgentOutput,
+  type FilterAndRerankConfig,
+  type GenerateResponseConfig,
+  type GlobalConfig,
   type ListAgentsResponse,
+  type RetrievalConfig,
   type AgentUpdateResponse,
   type AgentDeleteResponse,
+  type AgentMetadataResponse,
+  type AgentResetResponse,
   type AgentCreateParams,
   type AgentUpdateParams,
   type AgentListParams,
@@ -21,6 +28,7 @@ export {
   type DatastoreMetadata,
   type ListDatastoresResponse,
   type DatastoreDeleteResponse,
+  type DatastoreResetResponse,
   type DatastoreCreateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
@@ -39,4 +47,14 @@ export {
   type UserDeactivateParams,
   type UserInviteParams,
 } from './users';
+export {
+  Parse,
+  type ParseCreateResponse,
+  type ParseJobResultsResponse,
+  type ParseJobStatusResponse,
+  type ParseJobsResponse,
+  type ParseCreateParams,
+  type ParseJobResultsParams,
+  type ParseJobsParams,
+} from './parse';
 export { Rerank, type RerankCreateResponse, type RerankCreateParams } from './rerank';

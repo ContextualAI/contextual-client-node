@@ -7,6 +7,7 @@ Types:
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreMetadata</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">ListDatastoresResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreDeleteResponse</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">DatastoreResetResponse</a></code>
 
 Methods:
 
@@ -14,6 +15,7 @@ Methods:
 - <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoresDatastoresPage</code>
 - <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
 - <code title="get /datastores/{datastore_id}/metadata">client.datastores.<a href="./src/resources/datastores/datastores.ts">metadata</a>(datastoreId) -> DatastoreMetadata</code>
+- <code title="put /datastores/{datastore_id}/reset">client.datastores.<a href="./src/resources/datastores/datastores.ts">reset</a>(datastoreId) -> unknown</code>
 
 ## Documents
 
@@ -38,11 +40,18 @@ Methods:
 Types:
 
 - <code><a href="./src/resources/agents/agents.ts">Agent</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentConfigs</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentMetadata</a></code>
 - <code><a href="./src/resources/agents/agents.ts">CreateAgentOutput</a></code>
+- <code><a href="./src/resources/agents/agents.ts">FilterAndRerankConfig</a></code>
+- <code><a href="./src/resources/agents/agents.ts">GenerateResponseConfig</a></code>
+- <code><a href="./src/resources/agents/agents.ts">GlobalConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">ListAgentsResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">RetrievalConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentUpdateResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentDeleteResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentMetadataResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentResetResponse</a></code>
 
 Methods:
 
@@ -50,7 +59,8 @@ Methods:
 - <code title="put /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">update</a>(agentId, { ...params }) -> unknown</code>
 - <code title="get /agents">client.agents.<a href="./src/resources/agents/agents.ts">list</a>({ ...params }) -> AgentsPage</code>
 - <code title="delete /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">delete</a>(agentId) -> unknown</code>
-- <code title="get /agents/{agent_id}/metadata">client.agents.<a href="./src/resources/agents/agents.ts">metadata</a>(agentId) -> AgentMetadata</code>
+- <code title="get /agents/{agent_id}/metadata">client.agents.<a href="./src/resources/agents/agents.ts">metadata</a>(agentId) -> AgentMetadataResponse</code>
+- <code title="put /agents/{agent_id}/reset">client.agents.<a href="./src/resources/agents/agents.ts">reset</a>(agentId) -> unknown</code>
 
 ## Query
 
@@ -210,3 +220,19 @@ Types:
 Methods:
 
 - <code title="post /generate">client.generate.<a href="./src/resources/generate.ts">create</a>({ ...params }) -> GenerateCreateResponse</code>
+
+# Parse
+
+Types:
+
+- <code><a href="./src/resources/parse.ts">ParseCreateResponse</a></code>
+- <code><a href="./src/resources/parse.ts">ParseJobResultsResponse</a></code>
+- <code><a href="./src/resources/parse.ts">ParseJobStatusResponse</a></code>
+- <code><a href="./src/resources/parse.ts">ParseJobsResponse</a></code>
+
+Methods:
+
+- <code title="post /parse">client.parse.<a href="./src/resources/parse.ts">create</a>({ ...params }) -> ParseCreateResponse</code>
+- <code title="get /parse/jobs/{job_id}/results">client.parse.<a href="./src/resources/parse.ts">jobResults</a>(jobId, { ...params }) -> ParseJobResultsResponse</code>
+- <code title="get /parse/jobs/{job_id}/status">client.parse.<a href="./src/resources/parse.ts">jobStatus</a>(jobId) -> ParseJobStatusResponse</code>
+- <code title="get /parse/jobs">client.parse.<a href="./src/resources/parse.ts">jobs</a>({ ...params }) -> ParseJobsResponse</code>

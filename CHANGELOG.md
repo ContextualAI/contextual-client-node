@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.6.0 (2025-05-08)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **api:** update via SDK Studio ([d6ff47c](https://github.com/ContextualAI/contextual-client-node/commit/d6ff47c58dd8b0cb4f142951d0e3043b8487bcdd))
+* **api:** update via SDK Studio ([fd67b96](https://github.com/ContextualAI/contextual-client-node/commit/fd67b96723a0234588545d4b45dfbb939c8de7bf))
+* **api:** update via SDK Studio ([c6635f9](https://github.com/ContextualAI/contextual-client-node/commit/c6635f95de77157c6fa97545bd9b6a215ae56bab))
+* **api:** update via SDK Studio ([#40](https://github.com/ContextualAI/contextual-client-node/issues/40)) ([67be5c7](https://github.com/ContextualAI/contextual-client-node/commit/67be5c7f62052e4d8d4ca960acf5d741f626103e))
+* **api:** update via SDK Studio ([#42](https://github.com/ContextualAI/contextual-client-node/issues/42)) ([a20be25](https://github.com/ContextualAI/contextual-client-node/commit/a20be255eccdd3d73b8b82215ed1bb4f5ca2e010))
+* **api:** update via SDK Studio ([#43](https://github.com/ContextualAI/contextual-client-node/issues/43)) ([14c74c1](https://github.com/ContextualAI/contextual-client-node/commit/14c74c15ebcef0871e7325453eb1ed02d12a7306))
+* **api:** update via SDK Studio ([#44](https://github.com/ContextualAI/contextual-client-node/issues/44)) ([94cf64d](https://github.com/ContextualAI/contextual-client-node/commit/94cf64d933f96e05b70757122a22871109190014))
+* **api:** update via SDK Studio ([#45](https://github.com/ContextualAI/contextual-client-node/issues/45)) ([6f38963](https://github.com/ContextualAI/contextual-client-node/commit/6f3896383295cdfbdec9a65a5a470abf3379410c))
+
+
+### Bug Fixes
+
+* **api:** improve type resolution when importing as a package ([#54](https://github.com/ContextualAI/contextual-client-node/issues/54)) ([bd2f8ab](https://github.com/ContextualAI/contextual-client-node/commit/bd2f8ab3d2cc796201c530c5e85e4485ac337506))
+* avoid type error in certain environments ([#50](https://github.com/ContextualAI/contextual-client-node/issues/50)) ([91cd06a](https://github.com/ContextualAI/contextual-client-node/commit/91cd06af830f4ef13bda0cea76908afaeb03ec19))
+* **client:** send `X-Stainless-Timeout` in seconds ([#52](https://github.com/ContextualAI/contextual-client-node/issues/52)) ([94fba4c](https://github.com/ContextualAI/contextual-client-node/commit/94fba4c76050b7471c7dbb50391cd8196278cac2))
+* **exports:** ensure resource imports don't require /index ([#47](https://github.com/ContextualAI/contextual-client-node/issues/47)) ([e530478](https://github.com/ContextualAI/contextual-client-node/commit/e530478fe8da3337643d66f4eb6cb98fb715cc16))
+* **internal:** work around https://github.com/vercel/next.js/issues/76881 ([#51](https://github.com/ContextualAI/contextual-client-node/issues/51)) ([7f0bfdd](https://github.com/ContextualAI/contextual-client-node/commit/7f0bfddede9817da316a849511cfa112191c8bef))
+* **mcp:** remove unused tools.ts ([#55](https://github.com/ContextualAI/contextual-client-node/issues/55)) ([119ec6f](https://github.com/ContextualAI/contextual-client-node/commit/119ec6fb6eff339fa9dd08481d527ca46674485f))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([b6b2a07](https://github.com/ContextualAI/contextual-client-node/commit/b6b2a07f2bd01f34336c5a4964efe4a07a004f68))
+* **ci:** bump node version for release workflows ([5d04e11](https://github.com/ContextualAI/contextual-client-node/commit/5d04e11485d0379d5ff7db1dedb7f25c26db4498))
+* **ci:** only use depot for staging repos ([873ba2f](https://github.com/ContextualAI/contextual-client-node/commit/873ba2f355fca96db4bcbcad1ef92e0597fa9bd3))
+* **client:** minor internal fixes ([321469a](https://github.com/ContextualAI/contextual-client-node/commit/321469aec2485d12c95fdf34308ed61714d3cdfd))
+* **exports:** cleaner resource index imports ([#48](https://github.com/ContextualAI/contextual-client-node/issues/48)) ([b204f8a](https://github.com/ContextualAI/contextual-client-node/commit/b204f8a909d95f11e4cf795d68a96b7eaf362c67))
+* **exports:** stop using path fallbacks ([#49](https://github.com/ContextualAI/contextual-client-node/issues/49)) ([b0bed50](https://github.com/ContextualAI/contextual-client-node/commit/b0bed50ab202f8b80636db662c063a9094c3de16))
+* **internal:** add aliases for Record and Array ([#53](https://github.com/ContextualAI/contextual-client-node/issues/53)) ([3fcab5f](https://github.com/ContextualAI/contextual-client-node/commit/3fcab5f1e451d41b1c3c3f399fe170c3fccb895a))
+* **internal:** codegen related update ([f3cadb2](https://github.com/ContextualAI/contextual-client-node/commit/f3cadb2de612e13ed00fb7971af8d4676b11db33))
+* **internal:** reduce CI branch coverage ([82a1e3f](https://github.com/ContextualAI/contextual-client-node/commit/82a1e3f2cd28208a6de65145a62614a16b25c5da))
+* **internal:** remove extra empty newlines ([#46](https://github.com/ContextualAI/contextual-client-node/issues/46)) ([bf1f16c](https://github.com/ContextualAI/contextual-client-node/commit/bf1f16c174c4d6caf5d120cdfe4da281a2398a8a))
+* **internal:** upload builds and expand CI branch coverage ([ba02a4a](https://github.com/ContextualAI/contextual-client-node/commit/ba02a4a584975a100a61610e0cb819a7f345f01f))
+
+
+### Documentation
+
+* **readme:** fix typo ([3ab3596](https://github.com/ContextualAI/contextual-client-node/commit/3ab3596376577889a370fc1b2c9a98b1e71b3bce))
+
 ## 0.5.0 (2025-03-11)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.4.0...v0.5.0)

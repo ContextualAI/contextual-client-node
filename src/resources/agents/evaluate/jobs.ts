@@ -60,7 +60,18 @@ export interface EvaluationJobMetadata {
   /**
    * Status of the evaluation round
    */
-  status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
+  status:
+    | 'pending'
+    | 'processing'
+    | 'retrying'
+    | 'completed'
+    | 'failed'
+    | 'cancelled'
+    | 'failed_to_provision'
+    | 'generating_data'
+    | 'training_in_progress'
+    | 'failed_to_generate_data'
+    | 'provisioning';
 }
 
 export namespace EvaluationJobMetadata {
@@ -119,7 +130,18 @@ export namespace ListEvaluationJobsResponse {
     /**
      * Status of the evaluation round
      */
-    status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
+    status:
+      | 'pending'
+      | 'processing'
+      | 'retrying'
+      | 'completed'
+      | 'failed'
+      | 'cancelled'
+      | 'failed_to_provision'
+      | 'generating_data'
+      | 'training_in_progress'
+      | 'failed_to_generate_data'
+      | 'provisioning';
 
     /**
      * Email of the user who launched the evaluation round
@@ -130,6 +152,11 @@ export namespace ListEvaluationJobsResponse {
      * Timestamp indicating when the evaluation round finished processing
      */
     finished_at?: string;
+
+    /**
+     * User notes for the evaluation job
+     */
+    notes?: string;
 
     /**
      * Number of predictions that failed during the evaluation round

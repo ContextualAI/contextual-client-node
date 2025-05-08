@@ -10,9 +10,11 @@ export class Generate extends APIResource {
    * parametric knowledge to reduce hallucinations in Retrieval-Augmented Generation
    * and agentic use cases.
    *
-   * The total request cannot exceed 32,000 tokens. See more details and code
-   * examples in our
-   * [our blog post](https://contextual.ai/blog/introducing-grounded-language-model/).
+   * The total request cannot exceed 32,000 tokens.
+   *
+   * See our
+   * [blog post](https://contextual.ai/blog/introducing-grounded-language-model/) and
+   * [code examples](https://colab.research.google.com/github/ContextualAI/examples/blob/main/03-standalone-api/02-generate/generate.ipynb).
    * Email [glm-feedback@contextual.ai](mailto:glm-feedback@contextual.ai) with any
    * feedback or questions.
    */
