@@ -33,7 +33,7 @@ describe('resource tune', () => {
       client.agents.tune.create(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
-          'hyperparams[learning_rate]': 1,
+          'hyperparams[learning_rate]': 0.05,
           'hyperparams[lora_alpha]': 8,
           'hyperparams[lora_dropout]': 0,
           'hyperparams[lora_rank]': 8,

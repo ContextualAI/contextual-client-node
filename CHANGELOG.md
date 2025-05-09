@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.1 (2025-05-09)
+
+Full Changelog: [v0.6.0...v0.6.1](https://github.com/ContextualAI/contextual-client-node/compare/v0.6.0...v0.6.1)
+
+### Bug Fixes
+
+* **tests:** correct number examples ([56e8f9d](https://github.com/ContextualAI/contextual-client-node/commit/56e8f9d78074216bd5a4ab1b124e309eedce2e4e))
+
 ## 0.6.0 (2025-05-08)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.5.0...v0.6.0)
