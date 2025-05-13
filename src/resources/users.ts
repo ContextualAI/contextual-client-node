@@ -81,8 +81,7 @@ export interface ListUsersResponse {
 
 export namespace ListUsersResponse {
   /**
-   * The schema used for listing existing (activated / deactivated) users. Need to
-   * keep in sync with `frontend/src/types/admin.ts`.
+   * The schema used for listing existing (activated / deactivated) users.
    */
   export interface User {
     id: string;
@@ -128,8 +127,7 @@ export namespace ListUsersResponse {
 }
 
 /**
- * The schema used for creating new users or updating existing users. Need to keep
- * in sync with `frontend/src/types/admin.ts`.
+ * The schema used for creating new users or updating existing users.
  */
 export interface NewUser {
   /**
