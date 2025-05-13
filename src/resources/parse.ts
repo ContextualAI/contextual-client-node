@@ -6,9 +6,12 @@ import * as Core from '../core';
 
 export class Parse extends APIResource {
   /**
-   * Parse a file into a structured Markdown representation. The file size must be
-   * less than 100MB and the number of pages must be less than 400.
+   * Parse a file into a structured Markdown and/or JSON. Files must be less than
+   * 100MB and 400 pages. We use LibreOffice to convert DOC(X) and PPT(X) files to
+   * PDF, which may affect page count.
    *
+   * See our [blog post](https://contextual.ai/blog/document-parser-for-rag) and
+   * [code examples](https://github.com/ContextualAI/examples/blob/main/03-standalone-api/04-parse/parse.ipynb).
    * Email [parse-feedback@contextual.ai](mailto:parse-feedback@contextual.ai) with
    * any feedback or questions.
    */
@@ -93,6 +96,11 @@ export interface ParseJobResultsResponse {
   status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
 
   /**
+   * Document-level metadata parsed from the document
+   */
+  document_metadata?: ParseJobResultsResponse.DocumentMetadata;
+
+  /**
    * The parsed, structured Markdown of the input file. Only present if
    * `markdown-document` was among the requested output types.
    */
@@ -103,15 +111,120 @@ export interface ParseJobResultsResponse {
    * requested) and/or per-page `ParsedBlock`s (if `blocks-per-page` was requested).
    */
   pages?: Array<ParseJobResultsResponse.Page>;
-
-  /**
-   * The table of contents representing the document's heading hierarchy. Only
-   * present if `enable_document_hierarchy` was set to true in the parse request.
-   */
-  table_of_contents?: ParseJobResultsResponse.TableOfContents;
 }
 
 export namespace ParseJobResultsResponse {
+  /**
+   * Document-level metadata parsed from the document
+   */
+  export interface DocumentMetadata {
+    /**
+     * Hierarchy of the document, as both heading blocks and a markdown table of
+     * contents
+     */
+    hierarchy?: DocumentMetadata.Hierarchy;
+  }
+
+  export namespace DocumentMetadata {
+    /**
+     * Hierarchy of the document, as both heading blocks and a markdown table of
+     * contents
+     */
+    export interface Hierarchy {
+      /**
+       * Heading blocks which define the hierarchy of the document
+       */
+      blocks?: Array<Hierarchy.Block>;
+
+      /**
+       * Markdown representation of the table of contents for this document
+       */
+      table_of_contents?: string;
+    }
+
+    export namespace Hierarchy {
+      /**
+       * One logical block of content from a parsed page.
+       */
+      export interface Block {
+        /**
+         * Unique ID of the block
+         */
+        id: string;
+
+        /**
+         * The normalized bounding box of the block, as relative percentages of the page
+         * width and height
+         */
+        bounding_box: Block.BoundingBox;
+
+        /**
+         * The Markdown representation of the block
+         */
+        markdown: string;
+
+        /**
+         * The type of the block
+         */
+        type: 'heading' | 'text' | 'table' | 'figure';
+
+        /**
+         * The confidence level of this block categorized as 'low', 'medium', or 'high'.
+         * Only available for blocks of type 'table' currently.
+         */
+        confidence_level?: 'low' | 'medium' | 'high';
+
+        /**
+         * The level of the block in the document hierarchy, starting at 0 for the
+         * root-level title block. Only present if `enable_document_hierarchy` was set to
+         * true in the request.
+         */
+        hierarchy_level?: number;
+
+        /**
+         * The page (0-indexed) that this block belongs to. Only set for heading blocks
+         * that are returned in the table of contents.
+         */
+        page_index?: number;
+
+        /**
+         * The IDs of the parent in the document hierarchy, sorted from root-level to
+         * bottom. For root-level heading blocks, this will be an empty list. Only present
+         * if `enable_document_hierarchy` was set to true in the request.
+         */
+        parent_ids?: Array<string>;
+      }
+
+      export namespace Block {
+        /**
+         * The normalized bounding box of the block, as relative percentages of the page
+         * width and height
+         */
+        export interface BoundingBox {
+          /**
+           * The x-coordinate of the top-left corner of the bounding box
+           */
+          x0: number;
+
+          /**
+           * The x-coordinate of the bottom-right corner of the bounding box
+           */
+          x1: number;
+
+          /**
+           * The y-coordinate of the top-left corner of the bounding box
+           */
+          y0: number;
+
+          /**
+           * The y-coordinate of the bottom-right corner of the bounding box
+           */
+          y1: number;
+        }
+      }
+    }
+  }
+
   /**
    * Per-page parse results.
    */
@@ -135,105 +248,6 @@ export namespace ParseJobResultsResponse {
   }
 
   export namespace Page {
-    /**
-     * One logical block of content from a parsed page.
-     */
-    export interface Block {
-      /**
-       * Unique ID of the block
-       */
-      id: string;
-
-      /**
-       * The normalized bounding box of the block, as relative percentages of the page
-       * width and height
-       */
-      bounding_box: Block.BoundingBox;
-
-      /**
-       * The Markdown representation of the block
-       */
-      markdown: string;
-
-      /**
-       * The type of the block
-       */
-      type: 'heading' | 'text' | 'table' | 'figure';
-
-      /**
-       * The confidence level of this block categorized as 'low', 'medium', or 'high'.
-       * Only available for blocks of type 'table' currently.
-       */
-      confidence_level?: 'low' | 'medium' | 'high';
-
-      /**
-       * The level of the block in the document hierarchy, starting at 0 for the
-       * root-level title block. Only present if `enable_document_hierarchy` was set to
-       * true in the request.
-       */
-      hierarchy_level?: number;
-
-      /**
-       * The page (0-indexed) that this block belongs to. Only set for heading blocks
-       * that are returned in the table of contents.
-       */
-      page_index?: number;
-
-      /**
-       * The IDs of the parent in the document hierarchy, sorted from root-level to
-       * bottom. For root-level heading blocks, this will be an empty list. Only present
-       * if `enable_document_hierarchy` was set to true in the request.
-       */
-      parent_ids?: Array<string>;
-    }
-
-    export namespace Block {
-      /**
-       * The normalized bounding box of the block, as relative percentages of the page
-       * width and height
-       */
-      export interface BoundingBox {
-        /**
-         * The x-coordinate of the top-left corner of the bounding box
-         */
-        x0: number;
-
-        /**
-         * The x-coordinate of the bottom-right corner of the bounding box
-         */
-        x1: number;
-
-        /**
-         * The y-coordinate of the top-left corner of the bounding box
-         */
-        y0: number;
-
-        /**
-         * The y-coordinate of the bottom-right corner of the bounding box
-         */
-        y1: number;
-      }
-    }
-  }
-
-  /**
-   * The table of contents representing the document's heading hierarchy. Only
-   * present if `enable_document_hierarchy` was set to true in the parse request.
-   */
-  export interface TableOfContents {
-    /**
-     * Heading blocks that define the hierarchy of the document
-     */
-    blocks?: Array<TableOfContents.Block>;
-
-    /**
-     * Markdown representation of the table of contents that can be pre-pended to the
-     * markdown document.
-     */
-    markdown?: string;
-  }
-
-  export namespace TableOfContents {
     /**
      * One logical block of content from a parsed page.
      */
@@ -372,43 +386,43 @@ export interface ParseCreateParams {
   raw_file: Core.Uploadable;
 
   /**
-   * Controls parsing heading levels (e.g. H1, H2, H3) at higher quality. Adds a
-   * table of contents to the output with the structure of the entire parsed
-   * document. Not permitted in 'basic' parsing_mode, or if page_range is not
-   * continuous and/or does not start from page zero.
+   * Adds a table of contents to the output with the structure of the entire parsed
+   * document. This feature is in beta. Controls parsing heading levels (e.g. H1, H2,
+   * H3) at higher quality. Not permitted in `basic` parsing_mode, or if page_range
+   * is not continuous and/or does not start from page zero.
    */
   enable_document_hierarchy?: boolean;
 
   /**
    * Controls whether tables are split into multiple tables by row with the headers
    * propagated. Use for improving LLM comprehension of very large tables. Not
-   * permitted in 'basic' parsing_mode.
+   * permitted in `basic` parsing_mode.
    */
   enable_split_tables?: boolean;
 
   /**
-   * Controls how thorough figure captions are. 'concise' is short and minimizes
-   * chances of hallucinations. 'detailed' is more thorough and can include
-   * commentary. Not permitted in 'basic' parsing_mode.
+   * Controls how thorough figure captions are. `concise` is short and minimizes
+   * chances of hallucinations. `detailed` is more thorough and can include
+   * commentary; this mode is in beta. Not permitted in `basic` parsing_mode.
    */
   figure_caption_mode?: 'concise' | 'detailed';
 
   /**
    * Threshold number of table cells beyond which large tables are split if
-   * `enable_split_tables` is True. Not permitted in 'basic' parsing_mode.
+   * `enable_split_tables` is True. Not permitted in `basic` parsing_mode.
    */
   max_split_table_cells?: number;
 
   /**
    * Optional string representing page range to be parsed. Format: comma-separated
-   * indexes (0-based) e.g. '0,1,2,5,6' or ranges (inclusive of both ends) e.g.
-   * '0-2,5,6'
+   * indexes (0-based, e.g. `0,1,2,5,6`), or ranges inclusive of both ends (e.g.
+   * `0-2,5,6`)
    */
   page_range?: string;
 
   /**
-   * The settings to use for parsing. 'basic' is for simple, text-only documents.
-   * 'standard' is for complex documents with images, complex hierarchy, and/or no
+   * The settings to use for parsing. `basic` is for simple, text-only documents.
+   * `standard` is for complex documents with images, complex hierarchy, and/or no
    * natively encoded textual data (e.g. for scanned documents).
    */
   parse_mode?: 'basic' | 'standard';
@@ -417,11 +431,11 @@ export interface ParseCreateParams {
 export interface ParseJobResultsParams {
   /**
    * The desired output format(s) of the parsed file. Must be `markdown-document`,
-   * `markdown-per-page`, and/or `blocks-per-page`. `markdown-document` parses the
-   * whole document into a single concatenated markdown output. `markdown-per-page`
-   * provides markdown output per page. `blocks-per-page` provides a structured JSON
+   * `markdown-per-page`, and/or `blocks-per-page`. Specify multiple values to get
+   * multiple formats in the response. `markdown-document` parses the whole document
+   * into a single concatenated markdown output. `markdown-per-page` provides
+   * markdown output per page. `blocks-per-page` provides a structured JSON
    * representation of the content blocks on each page, sorted by reading order.
-   * Specify multiple values to get multiple formats in the response.
    */
   output_types?: Array<'markdown-document' | 'markdown-per-page' | 'blocks-per-page'>;
 }
