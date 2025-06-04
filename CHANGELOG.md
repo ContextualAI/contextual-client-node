@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.1 (2025-06-04)
+
+Full Changelog: [v0.7.0...v0.7.1](https://github.com/ContextualAI/contextual-client-node/compare/v0.7.0...v0.7.1)
+
+### Chores
+
+* **docs:** grammar improvements ([92210b2](https://github.com/ContextualAI/contextual-client-node/commit/92210b2f9cbfd930dfb7fcc8c6464a8d0c89bda7))
+* **docs:** use top-level-await in example snippets ([39783f4](https://github.com/ContextualAI/contextual-client-node/commit/39783f455c8d9d669d42a0671b239b51a196f743))
+* improve publish-npm script --latest tag logic ([bf8c320](https://github.com/ContextualAI/contextual-client-node/commit/bf8c320845e3781558b5c89c2d0dfda127138d13))
+
 ## 0.7.0 (2025-05-13)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.6.0...v0.7.0)
