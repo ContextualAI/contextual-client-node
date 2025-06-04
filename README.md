@@ -26,13 +26,9 @@ const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const createAgentOutput = await client.agents.create({ name: 'Example' });
+const createAgentOutput = await client.agents.create({ name: 'Example' });
 
-  console.log(createAgentOutput.id);
-}
-
-main();
+console.log(createAgentOutput.id);
 ```
 
 ### Request & Response types
@@ -47,12 +43,8 @@ const client = new ContextualAI({
   apiKey: process.env['CONTEXTUAL_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const params: ContextualAI.AgentCreateParams = { name: 'Example' };
-  const createAgentOutput: ContextualAI.CreateAgentOutput = await client.agents.create(params);
-}
-
-main();
+const params: ContextualAI.AgentCreateParams = { name: 'Example' };
+const createAgentOutput: ContextualAI.CreateAgentOutput = await client.agents.create(params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -105,19 +97,15 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const createAgentOutput = await client.agents.create({ name: 'Example' }).catch(async (err) => {
-    if (err instanceof ContextualAI.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const createAgentOutput = await client.agents.create({ name: 'Example' }).catch(async (err) => {
+  if (err instanceof ContextualAI.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
 Error codes are as follows:
