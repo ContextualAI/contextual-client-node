@@ -178,6 +178,7 @@ export class ContextualAI extends Core.APIClient {
 
     super({
       baseURL: options.baseURL!,
+      baseURLOverridden: baseURL ? baseURL !== 'https://api.contextual.ai/v1' : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -196,6 +197,13 @@ export class ContextualAI extends Core.APIClient {
   rerank: API.Rerank = new API.Rerank(this);
   generate: API.Generate = new API.Generate(this);
   parse: API.Parse = new API.Parse(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== 'https://api.contextual.ai/v1';
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
