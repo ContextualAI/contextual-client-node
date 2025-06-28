@@ -59,7 +59,7 @@ export interface InviteUsersResponse {
    * Details of the errors occurred while inviting users, where keys are the emails
    * and values are the error messages
    */
-  error_details: Record<string, string>;
+  error_details: { [key: string]: string };
 
   /**
    * List of emails of the invited users

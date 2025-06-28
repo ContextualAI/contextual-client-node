@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.8.0 (2025-06-28)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **client:** add support for endpoint-specific base URLs ([4375198](https://github.com/ContextualAI/contextual-client-node/commit/4375198ddd324eadac0053fbf0e9284f0686f6a5))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([2339044](https://github.com/ContextualAI/contextual-client-node/commit/2339044a28b8491311eb984fbe0f5b2497e57b32))
+* publish script — handle NPM errors correctly ([9855ea4](https://github.com/ContextualAI/contextual-client-node/commit/9855ea41c55355a17d1a6282bc8d158b72da2f63))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([23d5fa7](https://github.com/ContextualAI/contextual-client-node/commit/23d5fa79636f991e3d4ff7a454ee973bb1fc2691))
+* **ci:** only run for pushes and fork pull requests ([da8f41a](https://github.com/ContextualAI/contextual-client-node/commit/da8f41a626313a61f8eec1ccb52834021ec5c134))
+* **docs:** grammar improvements ([92210b2](https://github.com/ContextualAI/contextual-client-node/commit/92210b2f9cbfd930dfb7fcc8c6464a8d0c89bda7))
+* **docs:** use top-level-await in example snippets ([39783f4](https://github.com/ContextualAI/contextual-client-node/commit/39783f455c8d9d669d42a0671b239b51a196f743))
+* improve publish-npm script --latest tag logic ([bf8c320](https://github.com/ContextualAI/contextual-client-node/commit/bf8c320845e3781558b5c89c2d0dfda127138d13))
+* **internal:** make base APIResource abstract ([122895d](https://github.com/ContextualAI/contextual-client-node/commit/122895d96bcc6de97dc918dca7b62d8ababb0af5))
+
+
+### Refactors
+
+* **types:** replace Record with mapped types ([b50e9f1](https://github.com/ContextualAI/contextual-client-node/commit/b50e9f1b6306889aff9ee34fb2d29dcad6d8c3f7))
+
 ## 0.7.0 (2025-05-13)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.6.0...v0.7.0)
