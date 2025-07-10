@@ -2,7 +2,7 @@
 
 import type { ContextualAI } from './index';
 
-export class APIResource {
+export abstract class APIResource {
   protected _client: ContextualAI;
 
   constructor(client: ContextualAI) {

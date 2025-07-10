@@ -181,7 +181,7 @@ export interface DocumentMetadata {
    */
   status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
 
-  custom_metadata?: Record<string, boolean | number | string>;
+  custom_metadata?: { [key: string]: boolean | number | string };
 
   /**
    * Timestamp of when the document was modified in ISO format.
@@ -282,7 +282,7 @@ export interface DocumentIngestParams {
 }
 
 export interface DocumentSetMetadataParams {
-  custom_metadata?: Record<string, boolean | number | string>;
+  custom_metadata?: { [key: string]: boolean | number | string };
 }
 
 Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
