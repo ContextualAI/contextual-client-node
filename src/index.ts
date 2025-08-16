@@ -257,6 +257,7 @@ ContextualAI.LMUnit = LMUnit;
 ContextualAI.Rerank = Rerank;
 ContextualAI.Generate = Generate;
 ContextualAI.Parse = Parse;
+
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
