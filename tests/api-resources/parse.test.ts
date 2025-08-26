@@ -26,7 +26,7 @@ describe('resource parse', () => {
     const response = await client.parse.create({
       raw_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
       enable_document_hierarchy: true,
-      enable_split_tables: true,
+      enable_split_tables: false,
       figure_caption_mode: 'concise',
       max_split_table_cells: 0,
       page_range: 'page_range',
@@ -102,7 +102,10 @@ describe('resource parse', () => {
   test('jobs: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      client.parse.jobs({ uploaded_after: '2019-12-27T18:11:19.117Z' }, { path: '/_stainless_unknown_path' }),
+      client.parse.jobs(
+        { cursor: 'cursor', limit: 1, uploaded_after: '2019-12-27T18:11:19.117Z' },
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 });

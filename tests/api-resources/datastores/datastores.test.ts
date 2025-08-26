@@ -21,7 +21,24 @@ describe('resource datastores', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.datastores.create({ name: 'name' });
+    const response = await client.datastores.create({
+      name: 'name',
+      configuration: {
+        chunking: {
+          chunking_mode: 'hierarchy_depth',
+          enable_hierarchy_based_contextualization: true,
+          max_chunk_length_tokens: 512,
+          min_chunk_length_tokens: 128,
+        },
+        html_config: { max_chunk_length_tokens: 512 },
+        parsing: {
+          enable_split_tables: true,
+          figure_caption_mode: 'default',
+          figure_captioning_prompt: 'figure_captioning_prompt',
+          max_split_table_cells: 0,
+        },
+      },
+    });
   });
 
   test('list', async () => {

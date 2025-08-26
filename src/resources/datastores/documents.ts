@@ -103,61 +103,6 @@ export class Documents extends APIResource {
 export class DocumentMetadataDocumentsPage extends DocumentsPage<DocumentMetadata> {}
 
 /**
- * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
- * a list of filters or nested filters.
- */
-export interface CompositeMetadataFilter {
-  /**
-   * Filters added to the query for filtering docs
-   */
-  filters: Array<CompositeMetadataFilter.BaseMetadataFilter | CompositeMetadataFilter>;
-
-  /**
-   * Composite operator to be used to combine filters
-   */
-  operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-}
-
-export namespace CompositeMetadataFilter {
-  /**
-   * Defines a custom metadata filter. The expected input is a dict which can have
-   * different operators, fields and values. For example:
-   *
-   *     {"field": "title", "operator": "startswith", "value": "hr-"}
-   *
-   * For document_id and date_created the query is built using direct query without
-   * nesting.
-   */
-  export interface BaseMetadataFilter {
-    /**
-     * Field name to search for in the metadata
-     */
-    field: string;
-
-    /**
-     * Operator to be used for the filter.
-     */
-    operator:
-      | 'equals'
-      | 'containsany'
-      | 'exists'
-      | 'startswith'
-      | 'gt'
-      | 'gte'
-      | 'lt'
-      | 'lte'
-      | 'notequals'
-      | 'between';
-
-    /**
-     * The value to be searched for in the field. In case of exists operator, it is not
-     * needed.
-     */
-    value?: string | number | boolean | Array<string | number | boolean> | null;
-  }
-}
-
-/**
  * Document description
  */
 export interface DocumentMetadata {
@@ -181,12 +126,72 @@ export interface DocumentMetadata {
    */
   status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
 
+  /**
+   * Custom metadata for the document, provided by the user at ingestion time.Must be
+   * a JSON-serializable dictionary with string keys and simple primitive values
+   * (str, int, float, bool). The total size must not exceed 2 KB.The strings with
+   * date format must stay in date format or be avodied if not in date format.The
+   * 'custom_metadata.url' field is automatically included in returned attributions
+   * during query time, if provided.The default maximum metadata fields that can be
+   * used is 15, contact support if more is needed.
+   */
   custom_metadata?: { [key: string]: boolean | number | string };
+
+  /**
+   * A dictionary mapping metadata field names to the configuration to use for each
+   * field.
+   *
+   *         - If a metadata field is not present in the dictionary, the default configuration will be used.
+   *
+   *         - If the dictionary is not provided, metadata will be added in chunks but will not be retrievable.
+   *
+   *
+   *         Limits: - Maximum characters per metadata field (for prompt or rerank): 400
+   *
+   *         - Maximum number of metadata fields (for prompt or retrieval): 10
+   *
+   *
+   *         Contact support@contextual.ai to request quota increases.
+   */
+  custom_metadata_config?: { [key: string]: DocumentMetadata.CustomMetadataConfig };
+
+  /**
+   * Whether the user has access to this document.
+   */
+  has_access?: boolean;
+
+  /**
+   * Ingestion configuration for the document when the document was ingested. It may
+   * be different from the current datastore configuration.
+   */
+  ingestion_config?: unknown;
 
   /**
    * Timestamp of when the document was modified in ISO format.
    */
   updated_at?: string;
+}
+
+export namespace DocumentMetadata {
+  export interface CustomMetadataConfig {
+    /**
+     * Whether to use in filtering. Defaults to True
+     */
+    filterable?: boolean;
+
+    /**
+     * Whether to add in chunks. Defaults to True. The maximum amount of characters per
+     * metadata field that can be added to the prompt or rerank is 400. The maximum
+     * amount of metadata fields that can be added for prompt or retrieval is 10.
+     * Contact support@contextual.ai to request quota increases.
+     */
+    in_chunks?: boolean;
+
+    /**
+     * Whether to add in response. Defaults to False
+     */
+    returned_in_response?: boolean;
+  }
 }
 
 /**
@@ -225,22 +230,15 @@ export type DocumentDeleteResponse = unknown;
 
 export interface DocumentListParams extends DocumentsPageParams {
   /**
+   * Filters documents with the given prefix.
+   */
+  document_name_prefix?: string;
+
+  /**
    * Filters documents whose ingestion job status matches (one of) the provided
    * status(es).
    */
-  ingestion_job_status?: Array<
-    | 'pending'
-    | 'processing'
-    | 'retrying'
-    | 'completed'
-    | 'failed'
-    | 'cancelled'
-    | 'failed_to_provision'
-    | 'generating_data'
-    | 'training_in_progress'
-    | 'failed_to_generate_data'
-    | 'provisioning'
-  >;
+  ingestion_job_status?: Array<'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled'>;
 
   /**
    * Filters documents uploaded at or after specified timestamp.
@@ -260,21 +258,23 @@ export interface DocumentIngestParams {
   file: Core.Uploadable;
 
   /**
-   * Metadata in `JSON` format. Metadata should be passed as a nested dictionary
-   * structure where:
+   * Metadata request in JSON format. `custom_metadata` is a flat dictionary
+   * containing one or more key-value pairs, where each value must be a primitive
+   * type (`str`, `bool`, `float`, or `int`). The default maximum metadata fields
+   * that can be used is 15, contact support if more is needed.The combined size of
+   * the metadata must not exceed **2 KB** when encoded as JSON.The strings with date
+   * format must stay in date format or be avoided if not in date format.The
+   * `custom_metadata.url` field is automatically included in returned attributions
+   * during query time, if provided.
    *
-   * - The **metadata type** `custom_metadata` is mapped to a dictionary. - The
-   *   **dictionary keys** represent metadata attributes. - The **values** can be of
-   *   type `str`, `bool`, `float`, or `int`.
-   *
-   * **Example Metadata JSON:**
+   * **Example Request Body:**
    *
    * ```json
-   * metadata = {
-   *     "custom_metadata": {
-   *         "field1": "value1",
-   *         "field2": "value2"
-   *      }
+   * {
+   *   "custom_metadata": {
+   *     "topic": "science",
+   *     "difficulty": 3
+   *   }
    * }
    * ```
    */
@@ -282,14 +282,62 @@ export interface DocumentIngestParams {
 }
 
 export interface DocumentSetMetadataParams {
+  /**
+   * Custom metadata for the document, provided by the user at ingestion time.Must be
+   * a JSON-serializable dictionary with string keys and simple primitive values
+   * (str, int, float, bool). The total size must not exceed 2 KB.The strings with
+   * date format must stay in date format or be avodied if not in date format.The
+   * 'custom_metadata.url' field is automatically included in returned attributions
+   * during query time, if provided.The default maximum metadata fields that can be
+   * used is 15, contact support if more is needed.
+   */
   custom_metadata?: { [key: string]: boolean | number | string };
+
+  /**
+   * A dictionary mapping metadata field names to the configuration to use for each
+   * field.
+   *
+   *         - If a metadata field is not present in the dictionary, the default configuration will be used.
+   *
+   *         - If the dictionary is not provided, metadata will be added in chunks but will not be retrievable.
+   *
+   *
+   *         Limits: - Maximum characters per metadata field (for prompt or rerank): 400
+   *
+   *         - Maximum number of metadata fields (for prompt or retrieval): 10
+   *
+   *
+   *         Contact support@contextual.ai to request quota increases.
+   */
+  custom_metadata_config?: { [key: string]: DocumentSetMetadataParams.CustomMetadataConfig };
+}
+
+export namespace DocumentSetMetadataParams {
+  export interface CustomMetadataConfig {
+    /**
+     * Whether to use in filtering. Defaults to True
+     */
+    filterable?: boolean;
+
+    /**
+     * Whether to add in chunks. Defaults to True. The maximum amount of characters per
+     * metadata field that can be added to the prompt or rerank is 400. The maximum
+     * amount of metadata fields that can be added for prompt or retrieval is 10.
+     * Contact support@contextual.ai to request quota increases.
+     */
+    in_chunks?: boolean;
+
+    /**
+     * Whether to add in response. Defaults to False
+     */
+    returned_in_response?: boolean;
+  }
 }
 
 Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
 
 export declare namespace Documents {
   export {
-    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,

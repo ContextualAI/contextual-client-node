@@ -92,6 +92,11 @@ export namespace ListUsersResponse {
     email: string;
 
     /**
+     * The user level roles of the user for agent level roles.
+     */
+    agent_level_roles?: Array<'AGENT_LEVEL_USER'>;
+
+    /**
      * The effective roles of the user.
      */
     effective_roles?: Array<
@@ -103,12 +108,20 @@ export namespace ListUsersResponse {
       | 'CONTEXTUAL_INTERNAL_STAFF_USER'
       | 'TENANT_ADMIN'
       | 'SUPER_ADMIN'
+      | 'SERVICE_ACCOUNT'
     >;
 
     /**
      * Flag indicating if the user is a tenant admin
      */
     is_tenant_admin?: boolean;
+
+    /**
+     * Per agent level roles for the user. If a user is granted any role under
+     * `agent_level_roles`, then the user has that role for all the agents. Only the
+     * roles that need to be updated should be part of this.
+     */
+    per_agent_roles?: Array<User.PerAgentRole>;
 
     /**
      * The user level roles of the user.
@@ -122,7 +135,30 @@ export namespace ListUsersResponse {
       | 'CONTEXTUAL_INTERNAL_STAFF_USER'
       | 'TENANT_ADMIN'
       | 'SUPER_ADMIN'
+      | 'SERVICE_ACCOUNT'
     >;
+  }
+
+  export namespace User {
+    /**
+     * The schema used to capture agent level roles
+     */
+    export interface PerAgentRole {
+      /**
+       * ID of the agent on which to grant/revoke the role.
+       */
+      agent_id: string;
+
+      /**
+       * When set to true, the roles will be granted o/w revoked.
+       */
+      grant: boolean;
+
+      /**
+       * The roles that are granted/revoked
+       */
+      roles: Array<'AGENT_LEVEL_USER'>;
+    }
   }
 }
 
@@ -136,9 +172,21 @@ export interface NewUser {
   email: string;
 
   /**
+   * The user level roles of the user for agent level roles.
+   */
+  agent_level_roles?: Array<'AGENT_LEVEL_USER'>;
+
+  /**
    * Flag indicating if the user is a tenant admin
    */
   is_tenant_admin?: boolean;
+
+  /**
+   * Per agent level roles for the user. If a user is granted any role under
+   * `agent_level_roles`, then the user has that role for all the agents. Only the
+   * roles that need to be updated should be part of this.
+   */
+  per_agent_roles?: Array<NewUser.PerAgentRole>;
 
   /**
    * The user level roles of the user.
@@ -152,7 +200,30 @@ export interface NewUser {
     | 'CONTEXTUAL_INTERNAL_STAFF_USER'
     | 'TENANT_ADMIN'
     | 'SUPER_ADMIN'
+    | 'SERVICE_ACCOUNT'
   >;
+}
+
+export namespace NewUser {
+  /**
+   * The schema used to capture agent level roles
+   */
+  export interface PerAgentRole {
+    /**
+     * ID of the agent on which to grant/revoke the role.
+     */
+    agent_id: string;
+
+    /**
+     * When set to true, the roles will be granted o/w revoked.
+     */
+    grant: boolean;
+
+    /**
+     * The roles that are granted/revoked
+     */
+    roles: Array<'AGENT_LEVEL_USER'>;
+  }
 }
 
 export type UserUpdateResponse = unknown;
@@ -166,9 +237,21 @@ export interface UserUpdateParams {
   email: string;
 
   /**
+   * The user level roles of the user for agent level roles.
+   */
+  agent_level_roles?: Array<'AGENT_LEVEL_USER'>;
+
+  /**
    * Flag indicating if the user is a tenant admin
    */
   is_tenant_admin?: boolean;
+
+  /**
+   * Per agent level roles for the user. If a user is granted any role under
+   * `agent_level_roles`, then the user has that role for all the agents. Only the
+   * roles that need to be updated should be part of this.
+   */
+  per_agent_roles?: Array<UserUpdateParams.PerAgentRole>;
 
   /**
    * The user level roles of the user.
@@ -182,7 +265,30 @@ export interface UserUpdateParams {
     | 'CONTEXTUAL_INTERNAL_STAFF_USER'
     | 'TENANT_ADMIN'
     | 'SUPER_ADMIN'
+    | 'SERVICE_ACCOUNT'
   >;
+}
+
+export namespace UserUpdateParams {
+  /**
+   * The schema used to capture agent level roles
+   */
+  export interface PerAgentRole {
+    /**
+     * ID of the agent on which to grant/revoke the role.
+     */
+    agent_id: string;
+
+    /**
+     * When set to true, the roles will be granted o/w revoked.
+     */
+    grant: boolean;
+
+    /**
+     * The roles that are granted/revoked
+     */
+    roles: Array<'AGENT_LEVEL_USER'>;
+  }
 }
 
 export interface UserListParams extends UsersPageParams {

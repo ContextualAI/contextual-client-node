@@ -45,7 +45,6 @@ import {
 } from './resources/users';
 import {
   Agent as AgentsAPIAgent,
-  AgentConfigs,
   AgentCreateParams,
   AgentDeleteResponse,
   AgentListParams,
@@ -57,7 +56,6 @@ import {
   Agents,
   AgentsPage,
   CreateAgentOutput,
-  FilterAndRerankConfig,
   GenerateResponseConfig,
   GlobalConfig,
   ListAgentsResponse,
@@ -295,10 +293,8 @@ export declare namespace ContextualAI {
   export {
     Agents as Agents,
     type AgentsAPIAgent as Agent,
-    type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
     type CreateAgentOutput as CreateAgentOutput,
-    type FilterAndRerankConfig as FilterAndRerankConfig,
     type GenerateResponseConfig as GenerateResponseConfig,
     type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
