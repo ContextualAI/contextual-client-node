@@ -4,8 +4,10 @@ export {
   AgentsPage,
   Agents,
   type Agent,
+  type AgentConfigs,
   type AgentMetadata,
   type CreateAgentOutput,
+  type FilterAndRerankConfig,
   type GenerateResponseConfig,
   type GlobalConfig,
   type ListAgentsResponse,
@@ -18,8 +20,6 @@ export {
   type AgentUpdateParams,
   type AgentListParams,
 } from './agents';
-export { Datasets } from './datasets/index';
-export { Evaluate } from './evaluate/index';
 export {
   Query,
   type QueryResponse,
@@ -31,4 +31,3 @@ export {
   type QueryMetricsParams,
   type QueryRetrievalInfoParams,
 } from './query';
-export { Tune } from './tune/index';

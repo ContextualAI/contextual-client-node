@@ -3,7 +3,6 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
-import * as AgentsAPI from './agents';
 import * as QueryAPI from './query';
 import {
   Query,
@@ -16,19 +15,11 @@ import {
   QueryRetrievalInfoParams,
   RetrievalInfoResponse,
 } from './query';
-import * as DatasetsAPI from './datasets/datasets';
-import { Datasets } from './datasets/datasets';
-import * as EvaluateAPI from './evaluate/evaluate';
-import { Evaluate } from './evaluate/evaluate';
-import * as TuneAPI from './tune/tune';
-import { Tune } from './tune/tune';
+import * as DocumentsAPI from '../datastores/documents';
 import { Page, type PageParams } from '../../pagination';
 
 export class Agents extends APIResource {
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
-  evaluate: EvaluateAPI.Evaluate = new EvaluateAPI.Evaluate(this._client);
-  datasets: DatasetsAPI.Datasets = new DatasetsAPI.Datasets(this._client);
-  tune: TuneAPI.Tune = new TuneAPI.Tune(this._client);
 
   /**
    * Create a new `Agent` with a specific configuration.
@@ -88,6 +79,14 @@ export class Agents extends APIResource {
   }
 
   /**
+   * Copy an existing agent with all its configurations and datastore associations.
+   * The copied agent will have "[COPY]" appended to its name.
+   */
+  copy(agentId: string, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
+    return this._client.post(`/agents/${agentId}/copy`, options);
+  }
+
+  /**
    * Get metadata and configuration of a given `Agent`.
    */
   metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadataResponse> {
@@ -122,6 +121,63 @@ export interface Agent {
 }
 
 /**
+ * Response to configs for different components
+ */
+export interface AgentConfigs {
+  /**
+   * Parameters that affect filtering and reranking of retrieved knowledge
+   */
+  filter_and_rerank_config?: FilterAndRerankConfig;
+
+  /**
+   * Parameters that affect response generation
+   */
+  generate_response_config?: GenerateResponseConfig;
+
+  /**
+   * Parameters that affect the agent's overall RAG workflow
+   */
+  global_config?: GlobalConfig;
+
+  /**
+   * Parameters that affect the agent's query reformulation
+   */
+  reformulation_config?: AgentConfigs.ReformulationConfig;
+
+  /**
+   * Parameters that affect how the agent retrieves from datastore(s)
+   */
+  retrieval_config?: RetrievalConfig;
+}
+
+export namespace AgentConfigs {
+  /**
+   * Parameters that affect the agent's query reformulation
+   */
+  export interface ReformulationConfig {
+    /**
+     * Whether to enable query decomposition.
+     */
+    enable_query_decomposition?: boolean;
+
+    /**
+     * Whether to enable query expansion.
+     */
+    enable_query_expansion?: boolean;
+
+    /**
+     * The prompt to use for query decomposition.
+     */
+    query_decomposition_prompt?: string;
+
+    /**
+     * The prompt to use for query expansion.
+     */
+    query_expansion_prompt?: string;
+  }
+}
+
+/**
  * Response to GET Agent request
  */
 export interface AgentMetadata {
@@ -143,7 +199,7 @@ export interface AgentMetadata {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentMetadata.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * Total API request counts for the agent.
@@ -196,261 +252,6 @@ export interface AgentMetadata {
 
 export namespace AgentMetadata {
   /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentsAPI.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentsAPI.GlobalConfig;
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    reformulation_config?: AgentConfigs.ReformulationConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentsAPI.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Optional metadata filter which is applied while retrieving from every datastore
-       * linked to this agent.
-       */
-      default_metadata_filters?:
-        | FilterAndRerankConfig.BaseMetadataFilter
-        | FilterAndRerankConfig.CompositeMetadataFilterOutput;
-
-      /**
-       * Defines an optional custom metadata filter per datastore ID. Each entry in the
-       * dictionary should have a datastore UUID as the key, and the value should be a
-       * metadata filter definition. The filter will be applied in addition to filter(s)
-       * specified in `default_metadata_filters` and in the `documents_filters` field in
-       * the `/query` request during retrieval.
-       */
-      per_datastore_metadata_filters?: { [key: string]: FilterAndRerankConfig.PerDatastoreMetadataFilters };
-
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    export namespace FilterAndRerankConfig {
-      /**
-       * Defines a custom metadata filter. The expected input is a dict which can have
-       * different operators, fields and values. For example:
-       *
-       *     {"field": "title", "operator": "startswith", "value": "hr-"}
-       *
-       * For document_id and date_created the query is built using direct query without
-       * nesting.
-       */
-      export interface BaseMetadataFilter {
-        /**
-         * Field name to search for in the metadata
-         */
-        field: string;
-
-        /**
-         * Operator to be used for the filter.
-         */
-        operator:
-          | 'equals'
-          | 'containsany'
-          | 'exists'
-          | 'startswith'
-          | 'gt'
-          | 'gte'
-          | 'lt'
-          | 'lte'
-          | 'notequals'
-          | 'between'
-          | 'wildcard';
-
-        /**
-         * The value to be searched for in the field. In case of exists operator, it is not
-         * needed.
-         */
-        value?: string | number | boolean | Array<string | number | boolean> | null;
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface CompositeMetadataFilterOutput {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<CompositeMetadataFilterOutput.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace CompositeMetadataFilterOutput {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface PerDatastoreMetadataFilters {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<PerDatastoreMetadataFilters.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace PerDatastoreMetadataFilters {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-    }
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    export interface ReformulationConfig {
-      /**
-       * Whether to enable query decomposition.
-       */
-      enable_query_decomposition?: boolean;
-
-      /**
-       * Whether to enable query expansion.
-       */
-      enable_query_expansion?: boolean;
-
-      /**
-       * The prompt to use for query decomposition.
-       */
-      query_decomposition_prompt?: string;
-
-      /**
-       * The prompt to use for query expansion.
-       */
-      query_expansion_prompt?: string;
-    }
-  }
-
-  /**
    * Total API request counts for the agent.
    */
   export interface AgentUsages {
@@ -486,6 +287,50 @@ export interface CreateAgentOutput {
    * automatically created datastore.
    */
   datastore_ids: Array<string>;
+}
+
+/**
+ * Captures Filter and Rerank configurations for an Agent
+ */
+export interface FilterAndRerankConfig {
+  /**
+   * Optional metadata filter which is applied while retrieving from every datastore
+   * linked to this agent.
+   */
+  default_metadata_filters?: DocumentsAPI.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
+
+  /**
+   * Defines an optional custom metadata filter per datastore ID. Each entry in the
+   * dictionary should have a datastore UUID as the key, and the value should be a
+   * metadata filter definition. The filter will be applied in addition to filter(s)
+   * specified in `default_metadata_filters` and in the `documents_filters` field in
+   * the `/query` request during retrieval.
+   */
+  per_datastore_metadata_filters?: { [key: string]: DocumentsAPI.CompositeMetadataFilter };
+
+  /**
+   * Instructions that the reranker references when ranking retrievals. Note that we
+   * do not guarantee that the reranker will follow these instructions exactly.
+   * Examples: "Prioritize internal sales documents over market analysis reports.
+   * More recent documents should be weighted higher. Enterprise portal content
+   * supersedes distributor communications." and "Emphasize forecasts from top-tier
+   * investment banks. Recent analysis should take precedence. Disregard aggregator
+   * sites and favor detailed research notes over news summaries."
+   */
+  rerank_instructions?: string;
+
+  /**
+   * If the reranker relevance score associated with a chunk is below this threshold,
+   * then the chunk will be filtered out and not used for generation. Scores are
+   * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
+   * to disable the reranker score filtering.
+   */
+  reranker_score_filter_threshold?: number;
+
+  /**
+   * The number of highest ranked chunks after reranking to be used
+   */
+  top_k_reranked_chunks?: number;
 }
 
 /**
@@ -678,7 +523,7 @@ export interface AgentCreateParams {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentCreateParams.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * The IDs of the datastore to associate with this agent.
@@ -722,268 +567,11 @@ export interface AgentCreateParams {
   system_prompt?: string;
 }
 
-export namespace AgentCreateParams {
-  /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentsAPI.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentsAPI.GlobalConfig;
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    reformulation_config?: AgentConfigs.ReformulationConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentsAPI.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Optional metadata filter which is applied while retrieving from every datastore
-       * linked to this agent.
-       */
-      default_metadata_filters?:
-        | FilterAndRerankConfig.BaseMetadataFilter
-        | FilterAndRerankConfig.CompositeMetadataFilterInput;
-
-      /**
-       * Defines an optional custom metadata filter per datastore ID. Each entry in the
-       * dictionary should have a datastore UUID as the key, and the value should be a
-       * metadata filter definition. The filter will be applied in addition to filter(s)
-       * specified in `default_metadata_filters` and in the `documents_filters` field in
-       * the `/query` request during retrieval.
-       */
-      per_datastore_metadata_filters?: { [key: string]: FilterAndRerankConfig.PerDatastoreMetadataFilters };
-
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    export namespace FilterAndRerankConfig {
-      /**
-       * Defines a custom metadata filter. The expected input is a dict which can have
-       * different operators, fields and values. For example:
-       *
-       *     {"field": "title", "operator": "startswith", "value": "hr-"}
-       *
-       * For document_id and date_created the query is built using direct query without
-       * nesting.
-       */
-      export interface BaseMetadataFilter {
-        /**
-         * Field name to search for in the metadata
-         */
-        field: string;
-
-        /**
-         * Operator to be used for the filter.
-         */
-        operator:
-          | 'equals'
-          | 'containsany'
-          | 'exists'
-          | 'startswith'
-          | 'gt'
-          | 'gte'
-          | 'lt'
-          | 'lte'
-          | 'notequals'
-          | 'between'
-          | 'wildcard';
-
-        /**
-         * The value to be searched for in the field. In case of exists operator, it is not
-         * needed.
-         */
-        value?: string | number | boolean | Array<string | number | boolean> | null;
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface CompositeMetadataFilterInput {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<CompositeMetadataFilterInput.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace CompositeMetadataFilterInput {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface PerDatastoreMetadataFilters {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<PerDatastoreMetadataFilters.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace PerDatastoreMetadataFilters {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-    }
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    export interface ReformulationConfig {
-      /**
-       * Whether to enable query decomposition.
-       */
-      enable_query_decomposition?: boolean;
-
-      /**
-       * Whether to enable query expansion.
-       */
-      enable_query_expansion?: boolean;
-
-      /**
-       * The prompt to use for query decomposition.
-       */
-      query_decomposition_prompt?: string;
-
-      /**
-       * The prompt to use for query expansion.
-       */
-      query_expansion_prompt?: string;
-    }
-  }
-}
-
 export interface AgentUpdateParams {
   /**
    * The following advanced parameters are experimental and subject to change.
    */
-  agent_configs?: AgentUpdateParams.AgentConfigs;
+  agent_configs?: AgentConfigs;
 
   /**
    * IDs of the datastore to associate with the agent.
@@ -1029,276 +617,18 @@ export interface AgentUpdateParams {
   system_prompt?: string;
 }
 
-export namespace AgentUpdateParams {
-  /**
-   * The following advanced parameters are experimental and subject to change.
-   */
-  export interface AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    filter_and_rerank_config?: AgentConfigs.FilterAndRerankConfig;
-
-    /**
-     * Parameters that affect response generation
-     */
-    generate_response_config?: AgentsAPI.GenerateResponseConfig;
-
-    /**
-     * Parameters that affect the agent's overall RAG workflow
-     */
-    global_config?: AgentsAPI.GlobalConfig;
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    reformulation_config?: AgentConfigs.ReformulationConfig;
-
-    /**
-     * Parameters that affect how the agent retrieves from datastore(s)
-     */
-    retrieval_config?: AgentsAPI.RetrievalConfig;
-  }
-
-  export namespace AgentConfigs {
-    /**
-     * Parameters that affect filtering and reranking of retrieved knowledge
-     */
-    export interface FilterAndRerankConfig {
-      /**
-       * Optional metadata filter which is applied while retrieving from every datastore
-       * linked to this agent.
-       */
-      default_metadata_filters?:
-        | FilterAndRerankConfig.BaseMetadataFilter
-        | FilterAndRerankConfig.CompositeMetadataFilterInput;
-
-      /**
-       * Defines an optional custom metadata filter per datastore ID. Each entry in the
-       * dictionary should have a datastore UUID as the key, and the value should be a
-       * metadata filter definition. The filter will be applied in addition to filter(s)
-       * specified in `default_metadata_filters` and in the `documents_filters` field in
-       * the `/query` request during retrieval.
-       */
-      per_datastore_metadata_filters?: { [key: string]: FilterAndRerankConfig.PerDatastoreMetadataFilters };
-
-      /**
-       * Instructions that the reranker references when ranking retrievals. Note that we
-       * do not guarantee that the reranker will follow these instructions exactly.
-       * Examples: "Prioritize internal sales documents over market analysis reports.
-       * More recent documents should be weighted higher. Enterprise portal content
-       * supersedes distributor communications." and "Emphasize forecasts from top-tier
-       * investment banks. Recent analysis should take precedence. Disregard aggregator
-       * sites and favor detailed research notes over news summaries."
-       */
-      rerank_instructions?: string;
-
-      /**
-       * If the reranker relevance score associated with a chunk is below this threshold,
-       * then the chunk will be filtered out and not used for generation. Scores are
-       * between 0 and 1, with scores closer to 1 being more relevant. Set the value to 0
-       * to disable the reranker score filtering.
-       */
-      reranker_score_filter_threshold?: number;
-
-      /**
-       * The number of highest ranked chunks after reranking to be used
-       */
-      top_k_reranked_chunks?: number;
-    }
-
-    export namespace FilterAndRerankConfig {
-      /**
-       * Defines a custom metadata filter. The expected input is a dict which can have
-       * different operators, fields and values. For example:
-       *
-       *     {"field": "title", "operator": "startswith", "value": "hr-"}
-       *
-       * For document_id and date_created the query is built using direct query without
-       * nesting.
-       */
-      export interface BaseMetadataFilter {
-        /**
-         * Field name to search for in the metadata
-         */
-        field: string;
-
-        /**
-         * Operator to be used for the filter.
-         */
-        operator:
-          | 'equals'
-          | 'containsany'
-          | 'exists'
-          | 'startswith'
-          | 'gt'
-          | 'gte'
-          | 'lt'
-          | 'lte'
-          | 'notequals'
-          | 'between'
-          | 'wildcard';
-
-        /**
-         * The value to be searched for in the field. In case of exists operator, it is not
-         * needed.
-         */
-        value?: string | number | boolean | Array<string | number | boolean> | null;
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface CompositeMetadataFilterInput {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<CompositeMetadataFilterInput.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace CompositeMetadataFilterInput {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-
-      /**
-       * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-       * a list of filters or nested filters.
-       */
-      export interface PerDatastoreMetadataFilters {
-        /**
-         * Filters added to the query for filtering docs
-         */
-        filters: Array<PerDatastoreMetadataFilters.BaseMetadataFilter | unknown>;
-
-        /**
-         * Composite operator to be used to combine filters
-         */
-        operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-      }
-
-      export namespace PerDatastoreMetadataFilters {
-        /**
-         * Defines a custom metadata filter. The expected input is a dict which can have
-         * different operators, fields and values. For example:
-         *
-         *     {"field": "title", "operator": "startswith", "value": "hr-"}
-         *
-         * For document_id and date_created the query is built using direct query without
-         * nesting.
-         */
-        export interface BaseMetadataFilter {
-          /**
-           * Field name to search for in the metadata
-           */
-          field: string;
-
-          /**
-           * Operator to be used for the filter.
-           */
-          operator:
-            | 'equals'
-            | 'containsany'
-            | 'exists'
-            | 'startswith'
-            | 'gt'
-            | 'gte'
-            | 'lt'
-            | 'lte'
-            | 'notequals'
-            | 'between'
-            | 'wildcard';
-
-          /**
-           * The value to be searched for in the field. In case of exists operator, it is not
-           * needed.
-           */
-          value?: string | number | boolean | Array<string | number | boolean> | null;
-        }
-      }
-    }
-
-    /**
-     * Parameters that affect the agent's query reformulation
-     */
-    export interface ReformulationConfig {
-      /**
-       * Whether to enable query decomposition.
-       */
-      enable_query_decomposition?: boolean;
-
-      /**
-       * Whether to enable query expansion.
-       */
-      enable_query_expansion?: boolean;
-
-      /**
-       * The prompt to use for query decomposition.
-       */
-      query_decomposition_prompt?: string;
-
-      /**
-       * The prompt to use for query expansion.
-       */
-      query_expansion_prompt?: string;
-    }
-  }
-}
-
 export interface AgentListParams extends PageParams {}
 
 Agents.AgentsPage = AgentsPage;
 Agents.Query = Query;
-Agents.Evaluate = Evaluate;
-Agents.Datasets = Datasets;
-Agents.Tune = Tune;
 
 export declare namespace Agents {
   export {
     type Agent as Agent,
+    type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
     type CreateAgentOutput as CreateAgentOutput,
+    type FilterAndRerankConfig as FilterAndRerankConfig,
     type GenerateResponseConfig as GenerateResponseConfig,
     type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
@@ -1324,10 +654,4 @@ export declare namespace Agents {
     type QueryMetricsParams as QueryMetricsParams,
     type QueryRetrievalInfoParams as QueryRetrievalInfoParams,
   };
-
-  export { Evaluate as Evaluate };
-
-  export { Datasets as Datasets };
-
-  export { Tune as Tune };
 }

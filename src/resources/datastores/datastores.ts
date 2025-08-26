@@ -5,7 +5,11 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as DocumentsAPI from './documents';
 import {
+  BaseMetadataFilter,
+  CompositeMetadataFilter,
   DocumentDeleteResponse,
+  DocumentGetParseResultParams,
+  DocumentGetParseResultResponse,
   DocumentIngestParams,
   DocumentListParams,
   DocumentMetadata,
@@ -42,6 +46,17 @@ export class Datastores extends APIResource {
     options?: Core.RequestOptions,
   ): Core.APIPromise<CreateDatastoreResponse> {
     return this._client.post('/datastores', { body, ...options });
+  }
+
+  /**
+   * Edit Datastore Configuration
+   */
+  update(
+    datastoreId: string,
+    body: DatastoreUpdateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DatastoreUpdateResponse> {
+    return this._client.put(`/datastores/${datastoreId}`, { body, ...options });
   }
 
   /**
@@ -397,6 +412,13 @@ export interface ListDatastoresResponse {
   next_cursor?: string;
 }
 
+export interface DatastoreUpdateResponse {
+  /**
+   * ID of the datastore
+   */
+  id: string;
+}
+
 export type DatastoreDeleteResponse = unknown;
 
 export type DatastoreResetResponse = unknown;
@@ -515,6 +537,122 @@ export namespace DatastoreCreateParams {
   }
 }
 
+export interface DatastoreUpdateParams {
+  /**
+   * Configuration of the datastore. If not provided, current configuration is
+   * retained.
+   */
+  configuration?: DatastoreUpdateParams.Configuration;
+
+  /**
+   * Name of the datastore
+   */
+  name?: string;
+}
+
+export namespace DatastoreUpdateParams {
+  /**
+   * Configuration of the datastore. If not provided, current configuration is
+   * retained.
+   */
+  export interface Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    chunking?: Configuration.Chunking;
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    html_config?: Configuration.HTMLConfig;
+
+    /**
+     * Configuration for document parsing
+     */
+    parsing?: Configuration.Parsing;
+  }
+
+  export namespace Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    export interface Chunking {
+      /**
+       * Chunking mode to use. Options are: `hierarchy_depth`, `hierarchy_heading`,
+       * `static_length`, `page_level`. `hierarchy_depth` groups chunks of the same
+       * hierarchy level or below, additionally merging or splitting based on length
+       * constraints. `hierarchy_heading` splits chunks at every heading in the document
+       * hierarchy, additionally merging or splitting based on length constraints.
+       * `static_length` creates chunks of a fixed length. `page_level` creates chunks
+       * that cannot run over page boundaries.
+       */
+      chunking_mode?: 'hierarchy_depth' | 'hierarchy_heading' | 'static_length' | 'page_level';
+
+      /**
+       * Whether to enable section-based contextualization for chunking
+       */
+      enable_hierarchy_based_contextualization?: boolean;
+
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+
+      /**
+       * Target minimum length of chunks in tokens. Must be at least 384 tokens less than
+       * `max_chunk_length_tokens`. Chunk length may be shorter than this value in some
+       * edge cases. Ignored if `chunking_mode` is `page_level`.
+       */
+      min_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    export interface HTMLConfig {
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for document parsing
+     */
+    export interface Parsing {
+      /**
+       * Whether to enable table splitting, which splits large tables into smaller tables
+       * with at most `max_split_table_cells` cells each. In each split table, the table
+       * headers are reproduced as the first row(s). This is useful for preserving
+       * context when tables are too large to fit into one chunk.
+       */
+      enable_split_tables?: boolean;
+
+      /**
+       * Mode for figure captioning. Options are `default`, `custom`, or `ignore`. Set to
+       * `ignore` to disable figure captioning. Set to `default` to use the default
+       * figure prompt, which generates a detailed caption for each figure. Set to
+       * `custom` to use a custom prompt.
+       */
+      figure_caption_mode?: 'default' | 'custom' | 'ignore';
+
+      /**
+       * Prompt to use for generating image captions. Must be non-empty if
+       * `figure_caption_mode` is `custom`. Otherwise, must be null.
+       */
+      figure_captioning_prompt?: string;
+
+      /**
+       * Maximum number of cells for split tables. Ignored if `enable_split_tables` is
+       * False.
+       */
+      max_split_table_cells?: number;
+    }
+  }
+}
+
 export interface DatastoreListParams extends DatastoresPageParams {
   /**
    * ID of the agent used to filter datastores. If provided, only datastores linked
@@ -533,21 +671,27 @@ export declare namespace Datastores {
     type Datastore as Datastore,
     type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
+    type DatastoreUpdateResponse as DatastoreUpdateResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     type DatastoreResetResponse as DatastoreResetResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
+    type DatastoreUpdateParams as DatastoreUpdateParams,
     type DatastoreListParams as DatastoreListParams,
   };
 
   export {
     Documents as Documents,
+    type BaseMetadataFilter as BaseMetadataFilter,
+    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
+    type DocumentGetParseResultResponse as DocumentGetParseResultResponse,
     DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
+    type DocumentGetParseResultParams as DocumentGetParseResultParams,
     type DocumentIngestParams as DocumentIngestParams,
     type DocumentSetMetadataParams as DocumentSetMetadataParams,
   };

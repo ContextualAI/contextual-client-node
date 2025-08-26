@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as DocumentsAPI from '../datastores/documents';
 
 export class Query extends APIResource {
   /**
@@ -510,7 +511,7 @@ export interface QueryCreateParams {
    * }
    * ```
    */
-  documents_filters?: QueryCreateParams.BaseMetadataFilter | QueryCreateParams.CompositeMetadataFilterInput;
+  documents_filters?: DocumentsAPI.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
 
   /**
    * Body param: Model ID of the specific fine-tuned or aligned LLM model to use.
@@ -549,100 +550,6 @@ export namespace QueryCreateParams {
      * Role of the sender
      */
     role: 'user' | 'system' | 'assistant' | 'knowledge';
-  }
-
-  /**
-   * Defines a custom metadata filter. The expected input is a dict which can have
-   * different operators, fields and values. For example:
-   *
-   *     {"field": "title", "operator": "startswith", "value": "hr-"}
-   *
-   * For document_id and date_created the query is built using direct query without
-   * nesting.
-   */
-  export interface BaseMetadataFilter {
-    /**
-     * Field name to search for in the metadata
-     */
-    field: string;
-
-    /**
-     * Operator to be used for the filter.
-     */
-    operator:
-      | 'equals'
-      | 'containsany'
-      | 'exists'
-      | 'startswith'
-      | 'gt'
-      | 'gte'
-      | 'lt'
-      | 'lte'
-      | 'notequals'
-      | 'between'
-      | 'wildcard';
-
-    /**
-     * The value to be searched for in the field. In case of exists operator, it is not
-     * needed.
-     */
-    value?: string | number | boolean | Array<string | number | boolean> | null;
-  }
-
-  /**
-   * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
-   * a list of filters or nested filters.
-   */
-  export interface CompositeMetadataFilterInput {
-    /**
-     * Filters added to the query for filtering docs
-     */
-    filters: Array<CompositeMetadataFilterInput.BaseMetadataFilter | unknown>;
-
-    /**
-     * Composite operator to be used to combine filters
-     */
-    operator?: 'AND' | 'OR' | 'AND_NOT' | null;
-  }
-
-  export namespace CompositeMetadataFilterInput {
-    /**
-     * Defines a custom metadata filter. The expected input is a dict which can have
-     * different operators, fields and values. For example:
-     *
-     *     {"field": "title", "operator": "startswith", "value": "hr-"}
-     *
-     * For document_id and date_created the query is built using direct query without
-     * nesting.
-     */
-    export interface BaseMetadataFilter {
-      /**
-       * Field name to search for in the metadata
-       */
-      field: string;
-
-      /**
-       * Operator to be used for the filter.
-       */
-      operator:
-        | 'equals'
-        | 'containsany'
-        | 'exists'
-        | 'startswith'
-        | 'gt'
-        | 'gte'
-        | 'lt'
-        | 'lte'
-        | 'notequals'
-        | 'between'
-        | 'wildcard';
-
-      /**
-       * The value to be searched for in the field. In case of exists operator, it is not
-       * needed.
-       */
-      value?: string | number | boolean | Array<string | number | boolean> | null;
-    }
   }
 
   /**

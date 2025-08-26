@@ -4,8 +4,10 @@ export {
   AgentsPage,
   Agents,
   type Agent,
+  type AgentConfigs,
   type AgentMetadata,
   type CreateAgentOutput,
+  type FilterAndRerankConfig,
   type GenerateResponseConfig,
   type GlobalConfig,
   type ListAgentsResponse,
@@ -25,9 +27,11 @@ export {
   type Datastore,
   type DatastoreMetadata,
   type ListDatastoresResponse,
+  type DatastoreUpdateResponse,
   type DatastoreDeleteResponse,
   type DatastoreResetResponse,
   type DatastoreCreateParams,
+  type DatastoreUpdateParams,
   type DatastoreListParams,
 } from './datastores/datastores';
 export { Generate, type GenerateCreateResponse, type GenerateCreateParams } from './generate';

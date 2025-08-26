@@ -45,6 +45,7 @@ import {
 } from './resources/users';
 import {
   Agent as AgentsAPIAgent,
+  AgentConfigs,
   AgentCreateParams,
   AgentDeleteResponse,
   AgentListParams,
@@ -56,6 +57,7 @@ import {
   Agents,
   AgentsPage,
   CreateAgentOutput,
+  FilterAndRerankConfig,
   GenerateResponseConfig,
   GlobalConfig,
   ListAgentsResponse,
@@ -69,6 +71,8 @@ import {
   DatastoreListParams,
   DatastoreMetadata,
   DatastoreResetResponse,
+  DatastoreUpdateParams,
+  DatastoreUpdateResponse,
   Datastores,
   DatastoresDatastoresPage,
   ListDatastoresResponse,
@@ -283,18 +287,22 @@ export declare namespace ContextualAI {
     type Datastore as Datastore,
     type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
+    type DatastoreUpdateResponse as DatastoreUpdateResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     type DatastoreResetResponse as DatastoreResetResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
+    type DatastoreUpdateParams as DatastoreUpdateParams,
     type DatastoreListParams as DatastoreListParams,
   };
 
   export {
     Agents as Agents,
     type AgentsAPIAgent as Agent,
+    type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
     type CreateAgentOutput as CreateAgentOutput,
+    type FilterAndRerankConfig as FilterAndRerankConfig,
     type GenerateResponseConfig as GenerateResponseConfig,
     type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
