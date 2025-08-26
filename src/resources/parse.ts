@@ -358,6 +358,12 @@ export interface ParseJobsResponse {
    * Total number of parse jobs
    */
   total_jobs: number;
+
+  /**
+   * Next cursor to continue pagination. Omitted if there are no more parse jobs
+   * after these ones.
+   */
+  next_cursor?: string;
 }
 
 export namespace ParseJobsResponse {
@@ -409,7 +415,7 @@ export interface ParseCreateParams {
 
   /**
    * Threshold number of table cells beyond which large tables are split if
-   * `enable_split_tables` is True. Not permitted in `basic` parsing_mode.
+   * `enable_split_tables` is True. Must be null if `enable_split_tables` is False.
    */
   max_split_table_cells?: number;
 
@@ -441,6 +447,23 @@ export interface ParseJobResultsParams {
 }
 
 export interface ParseJobsParams {
+  /**
+   * Cursor from the previous call to list parse jobs, used to retrieve the next set
+   * of results
+   */
+  cursor?: string;
+
+  /**
+   * Maximum number of parse jobs to return
+   */
+  limit?: number;
+
+  /**
+   * Filters to only documents uploaded to `/parse` at or after specified UTC
+   * timestamp. If not provided, or if the provided timestamp is before the maximum
+   * parse job retention period (30 days), the maximum retention period will be used
+   * instead.
+   */
   uploaded_after?: string;
 }
 

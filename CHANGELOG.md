@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.8.0 (2025-08-26)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** update via SDK Studio ([1cd61de](https://github.com/ContextualAI/contextual-client-node/commit/1cd61de5fa3d11098d3ca5f4afef6caa67cac129))
+* **api:** update via SDK Studio ([461f964](https://github.com/ContextualAI/contextual-client-node/commit/461f964fd0e3209c1dd3094e347455d492afbe7c))
+* **client:** add support for endpoint-specific base URLs ([4375198](https://github.com/ContextualAI/contextual-client-node/commit/4375198ddd324eadac0053fbf0e9284f0686f6a5))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([2339044](https://github.com/ContextualAI/contextual-client-node/commit/2339044a28b8491311eb984fbe0f5b2497e57b32))
+* **client:** don't send `Content-Type` for bodyless methods ([70fe78d](https://github.com/ContextualAI/contextual-client-node/commit/70fe78dada5b43beb40a5efb9d371cdcb2ac8ea0))
+* publish script — handle NPM errors correctly ([9855ea4](https://github.com/ContextualAI/contextual-client-node/commit/9855ea41c55355a17d1a6282bc8d158b72da2f63))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([23d5fa7](https://github.com/ContextualAI/contextual-client-node/commit/23d5fa79636f991e3d4ff7a454ee973bb1fc2691))
+* **ci:** only run for pushes and fork pull requests ([da8f41a](https://github.com/ContextualAI/contextual-client-node/commit/da8f41a626313a61f8eec1ccb52834021ec5c134))
+* **deps:** update dependency node-fetch to v2.6.13 ([a78c708](https://github.com/ContextualAI/contextual-client-node/commit/a78c708d54ad4a15626784c2cd28f9f5badd32bf))
+* **docs:** grammar improvements ([92210b2](https://github.com/ContextualAI/contextual-client-node/commit/92210b2f9cbfd930dfb7fcc8c6464a8d0c89bda7))
+* **docs:** use top-level-await in example snippets ([39783f4](https://github.com/ContextualAI/contextual-client-node/commit/39783f455c8d9d669d42a0671b239b51a196f743))
+* improve publish-npm script --latest tag logic ([bf8c320](https://github.com/ContextualAI/contextual-client-node/commit/bf8c320845e3781558b5c89c2d0dfda127138d13))
+* **internal:** formatting change ([377f894](https://github.com/ContextualAI/contextual-client-node/commit/377f8945d985646d593b5b7ab5d4b4f8b49e3f8c))
+* **internal:** make base APIResource abstract ([122895d](https://github.com/ContextualAI/contextual-client-node/commit/122895d96bcc6de97dc918dca7b62d8ababb0af5))
+* **internal:** move publish config ([119c90e](https://github.com/ContextualAI/contextual-client-node/commit/119c90eb630dd8f659ceaa54b0b8e2b9b066c5f4))
+* **internal:** remove redundant imports config ([81939bc](https://github.com/ContextualAI/contextual-client-node/commit/81939bc05046667a6abe50b9a004b876b69a2cbc))
+* **internal:** update comment in script ([4c94556](https://github.com/ContextualAI/contextual-client-node/commit/4c94556258643943f9b0bb20ec704031cd5aaea2))
+* **internal:** update examples ([8b244f3](https://github.com/ContextualAI/contextual-client-node/commit/8b244f3de7b94001daf4e2de4761d57454d34fb9))
+* make some internal functions async ([cfbf5bc](https://github.com/ContextualAI/contextual-client-node/commit/cfbf5bc81cb65347306a63f6901c0682f2a827cf))
+* mention unit type in timeout docs ([4271686](https://github.com/ContextualAI/contextual-client-node/commit/427168601652284f4f664680cd66302d4ac5485a))
+* update @stainless-api/prism-cli to v5.15.0 ([5357389](https://github.com/ContextualAI/contextual-client-node/commit/5357389ae828af04cb9595175c2603554d43902a))
+* update CI script ([b12ee6f](https://github.com/ContextualAI/contextual-client-node/commit/b12ee6ff77acc76f4e15a75e6b980fb01a09b1e0))
+
+
+### Refactors
+
+* **types:** replace Record with mapped types ([b50e9f1](https://github.com/ContextualAI/contextual-client-node/commit/b50e9f1b6306889aff9ee34fb2d29dcad6d8c3f7))
+
 ## 0.7.0 (2025-05-13)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.6.0...v0.7.0)

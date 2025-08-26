@@ -21,7 +21,35 @@ describe('resource datastores', () => {
   });
 
   test('create: required and optional params', async () => {
-    const response = await client.datastores.create({ name: 'name' });
+    const response = await client.datastores.create({
+      name: 'name',
+      configuration: {
+        chunking: {
+          chunking_mode: 'hierarchy_depth',
+          enable_hierarchy_based_contextualization: true,
+          max_chunk_length_tokens: 512,
+          min_chunk_length_tokens: 128,
+        },
+        html_config: { max_chunk_length_tokens: 512 },
+        parsing: {
+          enable_split_tables: true,
+          figure_caption_mode: 'default',
+          figure_captioning_prompt: 'figure_captioning_prompt',
+          max_split_table_cells: 0,
+        },
+      },
+    });
+  });
+
+  test('update', async () => {
+    const responsePromise = client.datastores.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {});
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
   });
 
   test('list', async () => {

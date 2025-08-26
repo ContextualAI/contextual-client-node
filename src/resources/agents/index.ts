@@ -21,13 +21,6 @@ export {
   type AgentListParams,
 } from './agents';
 export {
-  Datasets,
-  type CreateDatasetResponse,
-  type DatasetMetadata,
-  type ListDatasetsResponse,
-} from './datasets/index';
-export { Evaluate, type CreateEvaluationResponse, type EvaluateCreateParams } from './evaluate/index';
-export {
   Query,
   type QueryResponse,
   type RetrievalInfoResponse,
@@ -38,4 +31,3 @@ export {
   type QueryMetricsParams,
   type QueryRetrievalInfoParams,
 } from './query';
-export { Tune, type CreateTuneResponse, type TuneCreateParams } from './tune/index';

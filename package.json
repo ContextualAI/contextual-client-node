@@ -1,6 +1,6 @@
 {
   "name": "contextual-client",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "The official TypeScript library for the Contextual AI API",
   "author": "Contextual AI <support@contextual.ai>",
   "types": "dist/index.d.ts",
@@ -13,6 +13,9 @@
     "**/*"
   ],
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "./scripts/test",
     "build": "./scripts/build",
@@ -58,10 +61,6 @@
     "./shims/web.js",
     "./shims/web.mjs"
   ],
-  "imports": {
-    "contextual-client": ".",
-    "contextual-client/*": "./src/*"
-  },
   "exports": {
     "./_shims/auto/*": {
       "deno": {

@@ -15,19 +15,11 @@ import {
   QueryRetrievalInfoParams,
   RetrievalInfoResponse,
 } from './query';
-import * as DatasetsAPI from './datasets/datasets';
-import { CreateDatasetResponse, DatasetMetadata, Datasets, ListDatasetsResponse } from './datasets/datasets';
-import * as EvaluateAPI from './evaluate/evaluate';
-import { CreateEvaluationResponse, Evaluate, EvaluateCreateParams } from './evaluate/evaluate';
-import * as TuneAPI from './tune/tune';
-import { CreateTuneResponse, Tune, TuneCreateParams } from './tune/tune';
+import * as DocumentsAPI from '../datastores/documents';
 import { Page, type PageParams } from '../../pagination';
 
 export class Agents extends APIResource {
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
-  evaluate: EvaluateAPI.Evaluate = new EvaluateAPI.Evaluate(this._client);
-  datasets: DatasetsAPI.Datasets = new DatasetsAPI.Datasets(this._client);
-  tune: TuneAPI.Tune = new TuneAPI.Tune(this._client);
 
   /**
    * Create a new `Agent` with a specific configuration.
@@ -87,6 +79,14 @@ export class Agents extends APIResource {
   }
 
   /**
+   * Copy an existing agent with all its configurations and datastore associations.
+   * The copied agent will have "[COPY]" appended to its name.
+   */
+  copy(agentId: string, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
+    return this._client.post(`/agents/${agentId}/copy`, options);
+  }
+
+  /**
    * Get metadata and configuration of a given `Agent`.
    */
   metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadataResponse> {
@@ -140,9 +140,41 @@ export interface AgentConfigs {
   global_config?: GlobalConfig;
 
   /**
+   * Parameters that affect the agent's query reformulation
+   */
+  reformulation_config?: AgentConfigs.ReformulationConfig;
+
+  /**
    * Parameters that affect how the agent retrieves from datastore(s)
    */
   retrieval_config?: RetrievalConfig;
+}
+
+export namespace AgentConfigs {
+  /**
+   * Parameters that affect the agent's query reformulation
+   */
+  export interface ReformulationConfig {
+    /**
+     * Whether to enable query decomposition.
+     */
+    enable_query_decomposition?: boolean;
+
+    /**
+     * Whether to enable query expansion.
+     */
+    enable_query_expansion?: boolean;
+
+    /**
+     * The prompt to use for query decomposition.
+     */
+    query_decomposition_prompt?: string;
+
+    /**
+     * The prompt to use for query expansion.
+     */
+    query_expansion_prompt?: string;
+  }
 }
 
 /**
@@ -158,6 +190,11 @@ export interface AgentMetadata {
    * Name of the agent
    */
   name: string;
+
+  /**
+   * The template used to create this agent.
+   */
+  template_name: string;
 
   /**
    * The following advanced parameters are experimental and subject to change.
@@ -186,6 +223,11 @@ export interface AgentMetadata {
    * Set to `default` to switch from a tuned model to the default model.
    */
   llm_model_id?: string;
+
+  /**
+   * Instructions on how the agent should handle multi-turn conversations.
+   */
+  multiturn_system_prompt?: string;
 
   /**
    * Instructions on how the agent should respond when there are no relevant
@@ -251,6 +293,21 @@ export interface CreateAgentOutput {
  * Captures Filter and Rerank configurations for an Agent
  */
 export interface FilterAndRerankConfig {
+  /**
+   * Optional metadata filter which is applied while retrieving from every datastore
+   * linked to this agent.
+   */
+  default_metadata_filters?: DocumentsAPI.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
+
+  /**
+   * Defines an optional custom metadata filter per datastore ID. Each entry in the
+   * dictionary should have a datastore UUID as the key, and the value should be a
+   * metadata filter definition. The filter will be applied in addition to filter(s)
+   * specified in `default_metadata_filters` and in the `documents_filters` field in
+   * the `/query` request during retrieval.
+   */
+  per_datastore_metadata_filters?: { [key: string]: DocumentsAPI.CompositeMetadataFilter };
+
   /**
    * Instructions that the reranker references when ranking retrievals. Note that we
    * do not guarantee that the reranker will follow these instructions exactly.
@@ -414,6 +471,8 @@ export namespace AgentMetadataResponse {
      */
     name: string;
 
+    template_name: string;
+
     /**
      * The following advanced parameters are experimental and subject to change.
      */
@@ -483,6 +542,11 @@ export interface AgentCreateParams {
   filter_prompt?: string;
 
   /**
+   * Instructions on how the agent should handle multi-turn conversations.
+   */
+  multiturn_system_prompt?: string;
+
+  /**
    * Instructions on how the agent should respond when there are no relevant
    * retrievals that can be used to answer a query.
    */
@@ -528,6 +592,11 @@ export interface AgentUpdateParams {
   llm_model_id?: string;
 
   /**
+   * Instructions on how the agent should handle multi-turn conversations.
+   */
+  multiturn_system_prompt?: string;
+
+  /**
    * Instructions on how the agent should respond when there are no relevant
    * retrievals that can be used to answer a query.
    */
@@ -552,9 +621,6 @@ export interface AgentListParams extends PageParams {}
 
 Agents.AgentsPage = AgentsPage;
 Agents.Query = Query;
-Agents.Evaluate = Evaluate;
-Agents.Datasets = Datasets;
-Agents.Tune = Tune;
 
 export declare namespace Agents {
   export {
@@ -587,24 +653,5 @@ export declare namespace Agents {
     type QueryFeedbackParams as QueryFeedbackParams,
     type QueryMetricsParams as QueryMetricsParams,
     type QueryRetrievalInfoParams as QueryRetrievalInfoParams,
-  };
-
-  export {
-    Evaluate as Evaluate,
-    type CreateEvaluationResponse as CreateEvaluationResponse,
-    type EvaluateCreateParams as EvaluateCreateParams,
-  };
-
-  export {
-    Datasets as Datasets,
-    type CreateDatasetResponse as CreateDatasetResponse,
-    type DatasetMetadata as DatasetMetadata,
-    type ListDatasetsResponse as ListDatasetsResponse,
-  };
-
-  export {
-    Tune as Tune,
-    type CreateTuneResponse as CreateTuneResponse,
-    type TuneCreateParams as TuneCreateParams,
   };
 }

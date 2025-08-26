@@ -46,7 +46,7 @@ export interface GenerateCreateParams {
   messages: Array<GenerateCreateParams.Message>;
 
   /**
-   * The version of the Contextual's GLM to use. Currently, we just have "v1".
+   * The version of the Contextual's GLM to use. Currently, we have `v1` and `v2`.
    */
   model: string;
 

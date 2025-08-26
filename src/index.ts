@@ -71,6 +71,8 @@ import {
   DatastoreListParams,
   DatastoreMetadata,
   DatastoreResetResponse,
+  DatastoreUpdateParams,
+  DatastoreUpdateResponse,
   Datastores,
   DatastoresDatastoresPage,
   ListDatastoresResponse,
@@ -95,6 +97,8 @@ export interface ClientOptions {
    *
    * Note that request timeouts are retried by default, so in a worst-case scenario you may wait
    * much longer than this timeout before the promise succeeds or fails.
+   *
+   * @unit milliseconds
    */
   timeout?: number | undefined;
 
@@ -178,6 +182,7 @@ export class ContextualAI extends Core.APIClient {
 
     super({
       baseURL: options.baseURL!,
+      baseURLOverridden: baseURL ? baseURL !== 'https://api.contextual.ai/v1' : false,
       timeout: options.timeout ?? 60000 /* 1 minute */,
       httpAgent: options.httpAgent,
       maxRetries: options.maxRetries,
@@ -196,6 +201,13 @@ export class ContextualAI extends Core.APIClient {
   rerank: API.Rerank = new API.Rerank(this);
   generate: API.Generate = new API.Generate(this);
   parse: API.Parse = new API.Parse(this);
+
+  /**
+   * Check whether the base URL is set to its default.
+   */
+  #baseURLOverridden(): boolean {
+    return this.baseURL !== 'https://api.contextual.ai/v1';
+  }
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -247,6 +259,7 @@ ContextualAI.LMUnit = LMUnit;
 ContextualAI.Rerank = Rerank;
 ContextualAI.Generate = Generate;
 ContextualAI.Parse = Parse;
+
 export declare namespace ContextualAI {
   export type RequestOptions = Core.RequestOptions;
 
@@ -274,10 +287,12 @@ export declare namespace ContextualAI {
     type Datastore as Datastore,
     type DatastoreMetadata as DatastoreMetadata,
     type ListDatastoresResponse as ListDatastoresResponse,
+    type DatastoreUpdateResponse as DatastoreUpdateResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     type DatastoreResetResponse as DatastoreResetResponse,
     DatastoresDatastoresPage as DatastoresDatastoresPage,
     type DatastoreCreateParams as DatastoreCreateParams,
+    type DatastoreUpdateParams as DatastoreUpdateParams,
     type DatastoreListParams as DatastoreListParams,
   };
 

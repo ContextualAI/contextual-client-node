@@ -151,6 +151,40 @@ export namespace QueryResponse {
     content_text?: string;
 
     /**
+     * Default metadata from the retrieval
+     */
+    ctxl_metadata?: RetrievalContent.CtxlMetadata;
+
+    /**
+     * Custom metadata for the document, provided by the user at ingestion time.Must be
+     * a JSON-serializable dictionary with string keys and simple primitive values
+     * (str, int, float, bool). The total size must not exceed 2 KB.The strings with
+     * date format must stay in date format or be avodied if not in date format.The
+     * 'custom_metadata.url' field is automatically included in returned attributions
+     * during query time, if provided.The default maximum metadata fields that can be
+     * used is 15, contact support if more is needed.
+     */
+    custom_metadata?: { [key: string]: boolean | number | string };
+
+    /**
+     * A dictionary mapping metadata field names to the configuration to use for each
+     * field.
+     *
+     *         - If a metadata field is not present in the dictionary, the default configuration will be used.
+     *
+     *         - If the dictionary is not provided, metadata will be added in chunks but will not be retrievable.
+     *
+     *
+     *         Limits: - Maximum characters per metadata field (for prompt or rerank): 400
+     *
+     *         - Maximum number of metadata fields (for prompt or retrieval): 10
+     *
+     *
+     *         Contact support@contextual.ai to request quota increases.
+     */
+    custom_metadata_config?: { [key: string]: RetrievalContent.CustomMetadataConfig };
+
+    /**
      * Index of the retrieved item in the retrieval_contents list (starting from 1)
      */
     number?: number;
@@ -169,6 +203,85 @@ export namespace QueryResponse {
      * URL of the source content, if applicable
      */
     url?: string;
+  }
+
+  export namespace RetrievalContent {
+    /**
+     * Default metadata from the retrieval
+     */
+    export interface CtxlMetadata {
+      /**
+       * Unique identifier for the chunk.
+       */
+      chunk_id?: string;
+
+      /**
+       * Size of the chunk in tokens or characters.
+       */
+      chunk_size?: number;
+
+      /**
+       * Date when the document or chunk was created.
+       */
+      date_created?: string;
+
+      /**
+       * Title of the document.
+       */
+      document_title?: string;
+
+      /**
+       * Format of the file (e.g., PDF, DOCX).
+       */
+      file_format?: string;
+
+      /**
+       * Name of the source file.
+       */
+      file_name?: string;
+
+      /**
+       * Whether this chunk represents a figure.
+       */
+      is_figure?: boolean;
+
+      /**
+       * Page number in the source document.
+       */
+      page?: number;
+
+      /**
+       * The HTML id of the nearest element of the chunk
+       */
+      section_id?: string;
+
+      /**
+       * Title of the section.
+       */
+      section_title?: string;
+
+      [k: string]: unknown;
+    }
+
+    export interface CustomMetadataConfig {
+      /**
+       * Whether to use in filtering. Defaults to True
+       */
+      filterable?: boolean;
+
+      /**
+       * Whether to add in chunks. Defaults to True. The maximum amount of characters per
+       * metadata field that can be added to the prompt or rerank is 400. The maximum
+       * amount of metadata fields that can be added for prompt or retrieval is 10.
+       * Contact support@contextual.ai to request quota increases.
+       */
+      in_chunks?: boolean;
+
+      /**
+       * Whether to add in response. Defaults to False
+       */
+      returned_in_response?: boolean;
+    }
   }
 
   /**
@@ -247,6 +360,11 @@ export namespace RetrievalInfoResponse {
      * Text of the content.
      */
     content_text: string;
+
+    /**
+     * Id of the document which the content belongs to.
+     */
+    document_id: string;
 
     /**
      * Height of the image.
@@ -393,13 +511,19 @@ export interface QueryCreateParams {
    * }
    * ```
    */
-  documents_filters?: QueryCreateParams.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
+  documents_filters?: DocumentsAPI.BaseMetadataFilter | DocumentsAPI.CompositeMetadataFilter;
 
   /**
    * Body param: Model ID of the specific fine-tuned or aligned LLM model to use.
    * Defaults to base model if not specified.
    */
   llm_model_id?: string;
+
+  /**
+   * Body param: This will modify select configuration parameters for the agent
+   * during the response generation.
+   */
+  override_configuration?: QueryCreateParams.OverrideConfiguration;
 
   /**
    * Body param: Set to `true` to receive a streamed response
@@ -429,40 +553,95 @@ export namespace QueryCreateParams {
   }
 
   /**
-   * Defines a custom metadata filter. The expected input is a dict which can have
-   * different operators, fields and values. For example:
-   *
-   *     {"field": "title", "operator": "startswith", "value": "hr-"}
-   *
-   * For document_id and date_created the query is built using direct query without
-   * nesting.
+   * This will modify select configuration parameters for the agent during the
+   * response generation.
    */
-  export interface BaseMetadataFilter {
+  export interface OverrideConfiguration {
     /**
-     * Field name to search for in the metadata
+     * Override the filter_retrievals for the query. This will override the
+     * filter_retrievals for the agent during evaluation.
      */
-    field: string;
+    enable_filter?: boolean;
 
     /**
-     * Operator to be used for the filter.
+     * Override the rerank_retrievals for the agent during evaluation.
      */
-    operator:
-      | 'equals'
-      | 'containsany'
-      | 'exists'
-      | 'startswith'
-      | 'gt'
-      | 'gte'
-      | 'lt'
-      | 'lte'
-      | 'notequals'
-      | 'between';
+    enable_rerank?: boolean;
 
     /**
-     * The value to be searched for in the field. In case of exists operator, it is not
-     * needed.
+     * Override the filter_model for the query. This will override the filter_model for
+     * the agent during evaluation.
      */
-    value?: string | number | boolean | Array<string | number | boolean> | null;
+    filter_model?: string;
+
+    /**
+     * Override the filter prompt for the agent during evaluation.
+     */
+    filter_prompt?: string;
+
+    /**
+     * Override the lexical_alpha for the agent during evaluation.
+     */
+    lexical_alpha?: number;
+
+    /**
+     * Override the max new tokens for the agent during evaluation.
+     */
+    max_new_tokens?: number;
+
+    /**
+     * Override the model for the agent during evaluation.
+     */
+    model?: string;
+
+    /**
+     * Override the rerank_instructions for the agent during evaluation.
+     */
+    rerank_instructions?: string;
+
+    /**
+     * Override the reranker for the agent during evaluation.
+     */
+    reranker?: string;
+
+    /**
+     * Override the reranker_score_filter_threshold for the agent during evaluation.
+     */
+    reranker_score_filter_threshold?: number;
+
+    /**
+     * Override the semantic_alpha for the agent during evaluation.
+     */
+    semantic_alpha?: number;
+
+    /**
+     * Override the system prompt for the agent during evaluation.
+     */
+    system_prompt?: string;
+
+    /**
+     * Override the temperature for the query. This will override the temperature for
+     * the agent during evaluation.
+     */
+    temperature?: number;
+
+    /**
+     * Override the rerank_top_k for the query. This will override the rerank_top_k for
+     * the agent during evaluation.
+     */
+    top_k_reranked_chunks?: number;
+
+    /**
+     * Override the top_k for the query. This will override the top_k for the agent
+     * during evaluation.
+     */
+    top_k_retrieved_chunks?: number;
+
+    /**
+     * Override the top_p for the query. This will override the top_p for the agent
+     * during evaluation.
+     */
+    top_p?: number;
   }
 
   /**
