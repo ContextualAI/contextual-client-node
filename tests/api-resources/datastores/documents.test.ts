@@ -36,6 +36,7 @@ describe('resource documents', () => {
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           cursor: 'cursor',
+          document_name_prefix: 'document_name_prefix',
           ingestion_job_status: ['pending'],
           limit: 1,
           uploaded_after: '2019-12-27T18:11:19.117Z',
@@ -87,7 +88,7 @@ describe('resource documents', () => {
   test('ingest: required and optional params', async () => {
     const response = await client.datastores.documents.ingest('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),
-      metadata: '{"field1": "value1", "field2": "value2"}}',
+      metadata: 'metadata',
     });
   });
 

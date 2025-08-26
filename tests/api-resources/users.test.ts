@@ -21,7 +21,15 @@ describe('resource users', () => {
   });
 
   test('update: required and optional params', async () => {
-    const response = await client.users.update({ email: 'email', is_tenant_admin: true, roles: ['VISITOR'] });
+    const response = await client.users.update({
+      email: 'email',
+      agent_level_roles: ['AGENT_LEVEL_USER'],
+      is_tenant_admin: true,
+      per_agent_roles: [
+        { agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', grant: true, roles: ['AGENT_LEVEL_USER'] },
+      ],
+      roles: ['VISITOR'],
+    });
   });
 
   test('list', async () => {
@@ -83,7 +91,17 @@ describe('resource users', () => {
 
   test('invite: required and optional params', async () => {
     const response = await client.users.invite({
-      new_users: [{ email: 'email', is_tenant_admin: true, roles: ['VISITOR'] }],
+      new_users: [
+        {
+          email: 'email',
+          agent_level_roles: ['AGENT_LEVEL_USER'],
+          is_tenant_admin: true,
+          per_agent_roles: [
+            { agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', grant: true, roles: ['AGENT_LEVEL_USER'] },
+          ],
+          roles: ['VISITOR'],
+        },
+      ],
       tenant_short_name: 'tenant_short_name',
     });
   });

@@ -5,7 +5,6 @@ import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
 import * as DocumentsAPI from './documents';
 import {
-  CompositeMetadataFilter,
   DocumentDeleteResponse,
   DocumentIngestParams,
   DocumentListParams,
@@ -114,14 +113,126 @@ export interface Datastore {
   id: string;
 
   /**
-   * Timestamp of when the datastore was created
+   * Timestamp of when the datastore was created, in ISO format
    */
   created_at: string;
+
+  /**
+   * Type of the datastore
+   */
+  datastore_type: 'UNSTRUCTURED';
 
   /**
    * Name of the datastore
    */
   name: string;
+
+  /**
+   * Configuration of the datastore
+   */
+  configuration?: Datastore.Configuration;
+}
+
+export namespace Datastore {
+  /**
+   * Configuration of the datastore
+   */
+  export interface Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    chunking?: Configuration.Chunking;
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    html_config?: Configuration.HTMLConfig;
+
+    /**
+     * Configuration for document parsing
+     */
+    parsing?: Configuration.Parsing;
+  }
+
+  export namespace Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    export interface Chunking {
+      /**
+       * Chunking mode to use. Options are: `hierarchy_depth`, `hierarchy_heading`,
+       * `static_length`, `page_level`. `hierarchy_depth` groups chunks of the same
+       * hierarchy level or below, additionally merging or splitting based on length
+       * constraints. `hierarchy_heading` splits chunks at every heading in the document
+       * hierarchy, additionally merging or splitting based on length constraints.
+       * `static_length` creates chunks of a fixed length. `page_level` creates chunks
+       * that cannot run over page boundaries.
+       */
+      chunking_mode?: 'hierarchy_depth' | 'hierarchy_heading' | 'static_length' | 'page_level';
+
+      /**
+       * Whether to enable section-based contextualization for chunking
+       */
+      enable_hierarchy_based_contextualization?: boolean;
+
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+
+      /**
+       * Target minimum length of chunks in tokens. Must be at least 384 tokens less than
+       * `max_chunk_length_tokens`. Chunk length may be shorter than this value in some
+       * edge cases. Ignored if `chunking_mode` is `page_level`.
+       */
+      min_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    export interface HTMLConfig {
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for document parsing
+     */
+    export interface Parsing {
+      /**
+       * Whether to enable table splitting, which splits large tables into smaller tables
+       * with at most `max_split_table_cells` cells each. In each split table, the table
+       * headers are reproduced as the first row(s). This is useful for preserving
+       * context when tables are too large to fit into one chunk.
+       */
+      enable_split_tables?: boolean;
+
+      /**
+       * Mode for figure captioning. Options are `default`, `custom`, or `ignore`. Set to
+       * `ignore` to disable figure captioning. Set to `default` to use the default
+       * figure prompt, which generates a detailed caption for each figure. Set to
+       * `custom` to use a custom prompt.
+       */
+      figure_caption_mode?: 'default' | 'custom' | 'ignore';
+
+      /**
+       * Prompt to use for generating image captions. Must be non-empty if
+       * `figure_caption_mode` is `custom`. Otherwise, must be null.
+       */
+      figure_captioning_prompt?: string;
+
+      /**
+       * Maximum number of cells for split tables. Ignored if `enable_split_tables` is
+       * False.
+       */
+      max_split_table_cells?: number;
+    }
+  }
 }
 
 export interface DatastoreMetadata {
@@ -141,12 +252,122 @@ export interface DatastoreMetadata {
   name: string;
 
   /**
+   * Configuration of the datastore. Not set if default configuration is in use.
+   */
+  configuration?: DatastoreMetadata.Configuration;
+
+  /**
+   * Type of the datastore
+   */
+  datastore_type?: 'UNSTRUCTURED';
+
+  /**
    * Datastore usage
    */
   datastore_usages?: DatastoreMetadata.DatastoreUsages;
 }
 
 export namespace DatastoreMetadata {
+  /**
+   * Configuration of the datastore. Not set if default configuration is in use.
+   */
+  export interface Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    chunking?: Configuration.Chunking;
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    html_config?: Configuration.HTMLConfig;
+
+    /**
+     * Configuration for document parsing
+     */
+    parsing?: Configuration.Parsing;
+  }
+
+  export namespace Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    export interface Chunking {
+      /**
+       * Chunking mode to use. Options are: `hierarchy_depth`, `hierarchy_heading`,
+       * `static_length`, `page_level`. `hierarchy_depth` groups chunks of the same
+       * hierarchy level or below, additionally merging or splitting based on length
+       * constraints. `hierarchy_heading` splits chunks at every heading in the document
+       * hierarchy, additionally merging or splitting based on length constraints.
+       * `static_length` creates chunks of a fixed length. `page_level` creates chunks
+       * that cannot run over page boundaries.
+       */
+      chunking_mode?: 'hierarchy_depth' | 'hierarchy_heading' | 'static_length' | 'page_level';
+
+      /**
+       * Whether to enable section-based contextualization for chunking
+       */
+      enable_hierarchy_based_contextualization?: boolean;
+
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+
+      /**
+       * Target minimum length of chunks in tokens. Must be at least 384 tokens less than
+       * `max_chunk_length_tokens`. Chunk length may be shorter than this value in some
+       * edge cases. Ignored if `chunking_mode` is `page_level`.
+       */
+      min_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    export interface HTMLConfig {
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for document parsing
+     */
+    export interface Parsing {
+      /**
+       * Whether to enable table splitting, which splits large tables into smaller tables
+       * with at most `max_split_table_cells` cells each. In each split table, the table
+       * headers are reproduced as the first row(s). This is useful for preserving
+       * context when tables are too large to fit into one chunk.
+       */
+      enable_split_tables?: boolean;
+
+      /**
+       * Mode for figure captioning. Options are `default`, `custom`, or `ignore`. Set to
+       * `ignore` to disable figure captioning. Set to `default` to use the default
+       * figure prompt, which generates a detailed caption for each figure. Set to
+       * `custom` to use a custom prompt.
+       */
+      figure_caption_mode?: 'default' | 'custom' | 'ignore';
+
+      /**
+       * Prompt to use for generating image captions. Must be non-empty if
+       * `figure_caption_mode` is `custom`. Otherwise, must be null.
+       */
+      figure_captioning_prompt?: string;
+
+      /**
+       * Maximum number of cells for split tables. Ignored if `enable_split_tables` is
+       * False.
+       */
+      max_split_table_cells?: number;
+    }
+  }
+
   /**
    * Datastore usage
    */
@@ -185,6 +406,113 @@ export interface DatastoreCreateParams {
    * Name of the datastore
    */
   name: string;
+
+  /**
+   * Configuration of the datastore. If not provided, default configuration is used.
+   */
+  configuration?: DatastoreCreateParams.Configuration;
+}
+
+export namespace DatastoreCreateParams {
+  /**
+   * Configuration of the datastore. If not provided, default configuration is used.
+   */
+  export interface Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    chunking?: Configuration.Chunking;
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    html_config?: Configuration.HTMLConfig;
+
+    /**
+     * Configuration for document parsing
+     */
+    parsing?: Configuration.Parsing;
+  }
+
+  export namespace Configuration {
+    /**
+     * Configuration for document chunking
+     */
+    export interface Chunking {
+      /**
+       * Chunking mode to use. Options are: `hierarchy_depth`, `hierarchy_heading`,
+       * `static_length`, `page_level`. `hierarchy_depth` groups chunks of the same
+       * hierarchy level or below, additionally merging or splitting based on length
+       * constraints. `hierarchy_heading` splits chunks at every heading in the document
+       * hierarchy, additionally merging or splitting based on length constraints.
+       * `static_length` creates chunks of a fixed length. `page_level` creates chunks
+       * that cannot run over page boundaries.
+       */
+      chunking_mode?: 'hierarchy_depth' | 'hierarchy_heading' | 'static_length' | 'page_level';
+
+      /**
+       * Whether to enable section-based contextualization for chunking
+       */
+      enable_hierarchy_based_contextualization?: boolean;
+
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+
+      /**
+       * Target minimum length of chunks in tokens. Must be at least 384 tokens less than
+       * `max_chunk_length_tokens`. Chunk length may be shorter than this value in some
+       * edge cases. Ignored if `chunking_mode` is `page_level`.
+       */
+      min_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for HTML Extraction
+     */
+    export interface HTMLConfig {
+      /**
+       * Target maximum length of text tokens chunks for chunking. Chunk length may
+       * exceed this value in some edge cases.
+       */
+      max_chunk_length_tokens?: number;
+    }
+
+    /**
+     * Configuration for document parsing
+     */
+    export interface Parsing {
+      /**
+       * Whether to enable table splitting, which splits large tables into smaller tables
+       * with at most `max_split_table_cells` cells each. In each split table, the table
+       * headers are reproduced as the first row(s). This is useful for preserving
+       * context when tables are too large to fit into one chunk.
+       */
+      enable_split_tables?: boolean;
+
+      /**
+       * Mode for figure captioning. Options are `default`, `custom`, or `ignore`. Set to
+       * `ignore` to disable figure captioning. Set to `default` to use the default
+       * figure prompt, which generates a detailed caption for each figure. Set to
+       * `custom` to use a custom prompt.
+       */
+      figure_caption_mode?: 'default' | 'custom' | 'ignore';
+
+      /**
+       * Prompt to use for generating image captions. Must be non-empty if
+       * `figure_caption_mode` is `custom`. Otherwise, must be null.
+       */
+      figure_captioning_prompt?: string;
+
+      /**
+       * Maximum number of cells for split tables. Ignored if `enable_split_tables` is
+       * False.
+       */
+      max_split_table_cells?: number;
+    }
+  }
 }
 
 export interface DatastoreListParams extends DatastoresPageParams {
@@ -214,7 +542,6 @@ export declare namespace Datastores {
 
   export {
     Documents as Documents,
-    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,
