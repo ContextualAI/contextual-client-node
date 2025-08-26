@@ -25,15 +25,9 @@ describe('resource agents', () => {
       name: 'xxx',
       agent_configs: {
         filter_and_rerank_config: {
-          default_metadata_filters: {
-            filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
-            operator: 'AND',
-          },
+          default_metadata_filters: { filters: [], operator: 'AND' },
           per_datastore_metadata_filters: {
-            'd49609d9-61c3-4a67-b3bd-5196b10da560': {
-              filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
-              operator: 'AND',
-            },
+            'd49609d9-61c3-4a67-b3bd-5196b10da560': { filters: [], operator: 'AND' },
           },
           rerank_instructions: 'rerank_instructions',
           reranker_score_filter_threshold: 0,
@@ -123,6 +117,24 @@ describe('resource agents', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.agents.delete('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
+    ).rejects.toThrow(ContextualAI.NotFoundError);
+  });
+
+  test('copy', async () => {
+    const responsePromise = client.agents.copy('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('copy: request options instead of params are passed correctly', async () => {
+    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
+    await expect(
+      client.agents.copy('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(ContextualAI.NotFoundError);
   });
 

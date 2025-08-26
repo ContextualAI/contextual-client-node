@@ -46,6 +46,37 @@ export class Documents extends APIResource {
   }
 
   /**
+   * Get the parse results that are generated during ingestion for a given document.
+   * Retrieving parse results for existing documents ingested before the release of
+   * this endpoint is not supported and will return a 404 error.
+   */
+  getParseResult(
+    datastoreId: string,
+    documentId: string,
+    query?: DocumentGetParseResultParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentGetParseResultResponse>;
+  getParseResult(
+    datastoreId: string,
+    documentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentGetParseResultResponse>;
+  getParseResult(
+    datastoreId: string,
+    documentId: string,
+    query: DocumentGetParseResultParams | Core.RequestOptions = {},
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentGetParseResultResponse> {
+    if (isRequestOptions(query)) {
+      return this.getParseResult(datastoreId, documentId, {}, query);
+    }
+    return this._client.get(`/datastores/${datastoreId}/documents/${documentId}/parse`, {
+      query,
+      ...options,
+    });
+  }
+
+  /**
    * Ingest a document into a given `Datastore`.
    *
    * Ingestion is an asynchronous task. Returns a document `id` which can be used to
@@ -101,6 +132,60 @@ export class Documents extends APIResource {
 }
 
 export class DocumentMetadataDocumentsPage extends DocumentsPage<DocumentMetadata> {}
+
+/**
+ * Defines a custom metadata filter. The expected input is a dict which can have
+ * different operators, fields and values. For example:
+ *
+ *     {"field": "title", "operator": "startswith", "value": "hr-"}
+ *
+ * For document_id and date_created the query is built using direct query without
+ * nesting.
+ */
+export interface BaseMetadataFilter {
+  /**
+   * Field name to search for in the metadata
+   */
+  field: string;
+
+  /**
+   * Operator to be used for the filter.
+   */
+  operator:
+    | 'equals'
+    | 'containsany'
+    | 'exists'
+    | 'startswith'
+    | 'gt'
+    | 'gte'
+    | 'lt'
+    | 'lte'
+    | 'notequals'
+    | 'between'
+    | 'wildcard';
+
+  /**
+   * The value to be searched for in the field. In case of exists operator, it is not
+   * needed.
+   */
+  value?: string | number | boolean | Array<string | number | boolean> | null;
+}
+
+/**
+ * "Defines a custom metadata filter as a Composite MetadataFilter. Which can be be
+ * a list of filters or nested filters.
+ */
+export interface CompositeMetadataFilter {
+  /**
+   * Filters added to the query for filtering docs
+   */
+  filters: Array<BaseMetadataFilter | CompositeMetadataFilter>;
+
+  /**
+   * Composite operator to be used to combine filters
+   */
+  operator?: 'AND' | 'OR' | 'AND_NOT' | null;
+}
 
 /**
  * Document description
@@ -228,6 +313,255 @@ export interface ListDocumentsResponse {
 
 export type DocumentDeleteResponse = unknown;
 
+/**
+ * /parse results reponse object.
+ */
+export interface DocumentGetParseResultResponse {
+  /**
+   * The name of the file that was uploaded for parsing
+   */
+  file_name: string;
+
+  /**
+   * The current status of the parse job
+   */
+  status: 'pending' | 'processing' | 'retrying' | 'completed' | 'failed' | 'cancelled';
+
+  /**
+   * Document-level metadata parsed from the document
+   */
+  document_metadata?: DocumentGetParseResultResponse.DocumentMetadata;
+
+  /**
+   * The parsed, structured Markdown of the input file. Only present if
+   * `markdown-document` was among the requested output types.
+   */
+  markdown_document?: string;
+
+  /**
+   * Per-page parse results, containing per-page Markdown (if `markdown-per-page` was
+   * requested) and/or per-page `ParsedBlock`s (if `blocks-per-page` was requested).
+   */
+  pages?: Array<DocumentGetParseResultResponse.Page>;
+}
+
+export namespace DocumentGetParseResultResponse {
+  /**
+   * Document-level metadata parsed from the document
+   */
+  export interface DocumentMetadata {
+    /**
+     * Hierarchy of the document, as both heading blocks and a markdown table of
+     * contents
+     */
+    hierarchy?: DocumentMetadata.Hierarchy;
+  }
+
+  export namespace DocumentMetadata {
+    /**
+     * Hierarchy of the document, as both heading blocks and a markdown table of
+     * contents
+     */
+    export interface Hierarchy {
+      /**
+       * Heading blocks which define the hierarchy of the document
+       */
+      blocks?: Array<Hierarchy.Block>;
+
+      /**
+       * Markdown representation of the table of contents for this document
+       */
+      table_of_contents?: string;
+    }
+
+    export namespace Hierarchy {
+      /**
+       * One logical block of content from a parsed page.
+       */
+      export interface Block {
+        /**
+         * Unique ID of the block
+         */
+        id: string;
+
+        /**
+         * The normalized bounding box of the block, as relative percentages of the page
+         * width and height
+         */
+        bounding_box: Block.BoundingBox;
+
+        /**
+         * The Markdown representation of the block
+         */
+        markdown: string;
+
+        /**
+         * The type of the block
+         */
+        type: 'heading' | 'text' | 'table' | 'figure';
+
+        /**
+         * The confidence level of this block categorized as 'low', 'medium', or 'high'.
+         * Only available for blocks of type 'table' currently.
+         */
+        confidence_level?: 'low' | 'medium' | 'high';
+
+        /**
+         * The level of the block in the document hierarchy, starting at 0 for the
+         * root-level title block. Only present if `enable_document_hierarchy` was set to
+         * true in the request.
+         */
+        hierarchy_level?: number;
+
+        /**
+         * The page (0-indexed) that this block belongs to. Only set for heading blocks
+         * that are returned in the table of contents.
+         */
+        page_index?: number;
+
+        /**
+         * The IDs of the parent in the document hierarchy, sorted from root-level to
+         * bottom. For root-level heading blocks, this will be an empty list. Only present
+         * if `enable_document_hierarchy` was set to true in the request.
+         */
+        parent_ids?: Array<string>;
+      }
+
+      export namespace Block {
+        /**
+         * The normalized bounding box of the block, as relative percentages of the page
+         * width and height
+         */
+        export interface BoundingBox {
+          /**
+           * The x-coordinate of the top-left corner of the bounding box
+           */
+          x0: number;
+
+          /**
+           * The x-coordinate of the bottom-right corner of the bounding box
+           */
+          x1: number;
+
+          /**
+           * The y-coordinate of the top-left corner of the bounding box
+           */
+          y0: number;
+
+          /**
+           * The y-coordinate of the bottom-right corner of the bounding box
+           */
+          y1: number;
+        }
+      }
+    }
+  }
+
+  /**
+   * Per-page parse results.
+   */
+  export interface Page {
+    /**
+     * The index of the parsed page (zero-indexed)
+     */
+    index: number;
+
+    /**
+     * The parsed, structured blocks of this page. Present if `blocks-per-page` was
+     * among the requested output types.
+     */
+    blocks?: Array<Page.Block>;
+
+    /**
+     * The parsed, structured Markdown of this page. Present if `markdown-per-page` was
+     * among the requested output types.
+     */
+    markdown?: string;
+  }
+
+  export namespace Page {
+    /**
+     * One logical block of content from a parsed page.
+     */
+    export interface Block {
+      /**
+       * Unique ID of the block
+       */
+      id: string;
+
+      /**
+       * The normalized bounding box of the block, as relative percentages of the page
+       * width and height
+       */
+      bounding_box: Block.BoundingBox;
+
+      /**
+       * The Markdown representation of the block
+       */
+      markdown: string;
+
+      /**
+       * The type of the block
+       */
+      type: 'heading' | 'text' | 'table' | 'figure';
+
+      /**
+       * The confidence level of this block categorized as 'low', 'medium', or 'high'.
+       * Only available for blocks of type 'table' currently.
+       */
+      confidence_level?: 'low' | 'medium' | 'high';
+
+      /**
+       * The level of the block in the document hierarchy, starting at 0 for the
+       * root-level title block. Only present if `enable_document_hierarchy` was set to
+       * true in the request.
+       */
+      hierarchy_level?: number;
+
+      /**
+       * The page (0-indexed) that this block belongs to. Only set for heading blocks
+       * that are returned in the table of contents.
+       */
+      page_index?: number;
+
+      /**
+       * The IDs of the parent in the document hierarchy, sorted from root-level to
+       * bottom. For root-level heading blocks, this will be an empty list. Only present
+       * if `enable_document_hierarchy` was set to true in the request.
+       */
+      parent_ids?: Array<string>;
+    }
+
+    export namespace Block {
+      /**
+       * The normalized bounding box of the block, as relative percentages of the page
+       * width and height
+       */
+      export interface BoundingBox {
+        /**
+         * The x-coordinate of the top-left corner of the bounding box
+         */
+        x0: number;
+
+        /**
+         * The x-coordinate of the bottom-right corner of the bounding box
+         */
+        x1: number;
+
+        /**
+         * The y-coordinate of the top-left corner of the bounding box
+         */
+        y0: number;
+
+        /**
+         * The y-coordinate of the bottom-right corner of the bounding box
+         */
+        y1: number;
+      }
+    }
+  }
+}
+
 export interface DocumentListParams extends DocumentsPageParams {
   /**
    * Filters documents with the given prefix.
@@ -249,6 +583,18 @@ export interface DocumentListParams extends DocumentsPageParams {
    * Filters documents uploaded at or before specified timestamp.
    */
   uploaded_before?: string;
+}
+
+export interface DocumentGetParseResultParams {
+  /**
+   * The desired output format(s) of the parsed file. Must be `markdown-document`,
+   * `markdown-per-page`, and/or `blocks-per-page`. Specify multiple values to get
+   * multiple formats in the response. `markdown-document` parses the whole document
+   * into a single concatenated markdown output. `markdown-per-page` provides
+   * markdown output per page. `blocks-per-page` provides a structured JSON
+   * representation of the content blocks on each page, sorted by reading order.
+   */
+  output_types?: Array<'markdown-document' | 'markdown-per-page' | 'blocks-per-page'>;
 }
 
 export interface DocumentIngestParams {
@@ -338,12 +684,16 @@ Documents.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
 
 export declare namespace Documents {
   export {
+    type BaseMetadataFilter as BaseMetadataFilter,
+    type CompositeMetadataFilter as CompositeMetadataFilter,
     type DocumentMetadata as DocumentMetadata,
     type IngestionResponse as IngestionResponse,
     type ListDocumentsResponse as ListDocumentsResponse,
     type DocumentDeleteResponse as DocumentDeleteResponse,
+    type DocumentGetParseResultResponse as DocumentGetParseResultResponse,
     DocumentMetadataDocumentsPage as DocumentMetadataDocumentsPage,
     type DocumentListParams as DocumentListParams,
+    type DocumentGetParseResultParams as DocumentGetParseResultParams,
     type DocumentIngestParams as DocumentIngestParams,
     type DocumentSetMetadataParams as DocumentSetMetadataParams,
   };
