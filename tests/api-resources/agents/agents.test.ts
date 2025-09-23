@@ -25,9 +25,15 @@ describe('resource agents', () => {
       name: 'xxx',
       agent_configs: {
         filter_and_rerank_config: {
-          default_metadata_filters: { filters: [], operator: 'AND' },
+          default_metadata_filters: {
+            filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+            operator: 'AND',
+          },
           per_datastore_metadata_filters: {
-            'd49609d9-61c3-4a67-b3bd-5196b10da560': { filters: [], operator: 'AND' },
+            'd49609d9-61c3-4a67-b3bd-5196b10da560': {
+              filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+              operator: 'AND',
+            },
           },
           rerank_instructions: 'rerank_instructions',
           reranker_score_filter_threshold: 0,
