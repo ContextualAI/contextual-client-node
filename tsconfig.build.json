@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "contextual-client/*": ["dist/src/*"],
-      "contextual-client": ["dist/src/index.ts"],
+      "contextual-client/*": ["./dist/src/*"],
+      "contextual-client": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

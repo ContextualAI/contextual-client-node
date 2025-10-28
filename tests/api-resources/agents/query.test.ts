@@ -24,11 +24,14 @@ describe('resource query', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.agents.query.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      messages: [{ content: 'content', role: 'user' }],
+      messages: [{ content: 'content', role: 'user', custom_tags: ['string'] }],
       include_retrieval_content_text: true,
       retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      documents_filters: { filters: [], operator: 'AND' },
+      documents_filters: {
+        filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+        operator: 'AND',
+      },
       llm_model_id: 'llm_model_id',
       override_configuration: {
         enable_filter: true,
@@ -49,7 +52,7 @@ describe('resource query', () => {
         top_p: 0,
       },
       stream: true,
-      structured_output: { json_schema: {}, type: 'JSON' },
+      structured_output: { json_schema: { foo: 'bar' }, type: 'JSON' },
     });
   });
 

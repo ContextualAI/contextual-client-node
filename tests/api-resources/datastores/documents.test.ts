@@ -125,6 +125,7 @@ describe('resource documents', () => {
   test('ingest: required and optional params', async () => {
     const response = await client.datastores.documents.ingest('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
       file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      configuration: 'configuration',
       metadata: 'metadata',
     });
   });

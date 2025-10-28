@@ -24,10 +24,17 @@ describe('resource agents', () => {
     const response = await client.agents.create({
       name: 'xxx',
       agent_configs: {
+        acl_config: { acl_active: true, acl_yaml: 'acl_yaml' },
         filter_and_rerank_config: {
-          default_metadata_filters: { filters: [], operator: 'AND' },
+          default_metadata_filters: {
+            filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+            operator: 'AND',
+          },
           per_datastore_metadata_filters: {
-            'd49609d9-61c3-4a67-b3bd-5196b10da560': { filters: [], operator: 'AND' },
+            'd49609d9-61c3-4a67-b3bd-5196b10da560': {
+              filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+              operator: 'AND',
+            },
           },
           rerank_instructions: 'rerank_instructions',
           reranker_score_filter_threshold: 0,
@@ -55,6 +62,7 @@ describe('resource agents', () => {
           query_expansion_prompt: 'query_expansion_prompt',
         },
         retrieval_config: { lexical_alpha: 0, semantic_alpha: 0, top_k_retrieved_chunks: 0 },
+        translation_config: { translate_confidence: 0, translate_needed: true },
       },
       datastore_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
       description: 'description',
@@ -63,6 +71,7 @@ describe('resource agents', () => {
       no_retrieval_system_prompt: 'no_retrieval_system_prompt',
       suggested_queries: ['string'],
       system_prompt: 'system_prompt',
+      template_name: 'template_name',
     });
   });
 
