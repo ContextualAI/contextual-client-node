@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.9.0 (2025-10-28)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* **api:** update via SDK Studio ([1763386](https://github.com/ContextualAI/contextual-client-node/commit/1763386e73b63686841d8ffec13cd2bc16889259))
+
+
+### Bug Fixes
+
+* coerce nullable values to undefined ([0e6f279](https://github.com/ContextualAI/contextual-client-node/commit/0e6f279eac597fca69a580ab8af0a12c015ab644))
+
+
+### Performance Improvements
+
+* faster formatting ([20716e5](https://github.com/ContextualAI/contextual-client-node/commit/20716e5908af1f9cc6e3eb60e306ededc8f3d720))
+
+
+### Chores
+
+* do not install brew dependencies in ./scripts/bootstrap by default ([2ecd296](https://github.com/ContextualAI/contextual-client-node/commit/2ecd29636b8f21c6138729ef7338f50084410b0e))
+* **internal:** codegen related update ([d6debdf](https://github.com/ContextualAI/contextual-client-node/commit/d6debdfcc774fb8092bd2cabdc036359872d8643))
+* **internal:** codegen related update ([3bc0d6f](https://github.com/ContextualAI/contextual-client-node/commit/3bc0d6fec90af69104f10af5def4be3deeb69507))
+* **internal:** fix incremental formatting in some cases ([2d2c927](https://github.com/ContextualAI/contextual-client-node/commit/2d2c9279de2f4cbfd1edba630aeb30b7395c3481))
+* **internal:** ignore .eslintcache ([1b5df0d](https://github.com/ContextualAI/contextual-client-node/commit/1b5df0db14ec9b5bd5429e4025480d8ba430eda0))
+* **internal:** improve examples ([c251c21](https://github.com/ContextualAI/contextual-client-node/commit/c251c212ee8bff087c7b98f3f5750bf3036ce0cf))
+* **internal:** remove .eslintcache ([352a8df](https://github.com/ContextualAI/contextual-client-node/commit/352a8dfca95b76937b6eeb4e800226afcd7d3337))
+* **internal:** remove deprecated `compilerOptions.baseUrl` from tsconfig.json ([80dc3e8](https://github.com/ContextualAI/contextual-client-node/commit/80dc3e82bb18210f781ebf38500a2310ce10e0e5))
+* **internal:** use npm pack for build uploads ([a1e64cd](https://github.com/ContextualAI/contextual-client-node/commit/a1e64cdb60b8c92692b52914609745edd85a6c43))
+
 ## 0.8.0 (2025-08-26)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.7.0...v0.8.0)
