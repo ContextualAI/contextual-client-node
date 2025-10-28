@@ -24,7 +24,7 @@ describe('resource query', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.agents.query.create('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-      messages: [{ content: 'content', role: 'user' }],
+      messages: [{ content: 'content', role: 'user', custom_tags: ['string'] }],
       include_retrieval_content_text: true,
       retrievals_only: true,
       conversation_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
@@ -52,7 +52,7 @@ describe('resource query', () => {
         top_p: 0,
       },
       stream: true,
-      structured_output: { json_schema: {}, type: 'JSON' },
+      structured_output: { json_schema: { foo: 'bar' }, type: 'JSON' },
     });
   });
 
