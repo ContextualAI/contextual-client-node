@@ -38,7 +38,7 @@ Methods:
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/parse">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">getParseResult</a>(datastoreId, documentId, { ...params }) -> DocumentGetParseResultResponse</code>
 - <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">ingest</a>(datastoreId, { ...params }) -> IngestionResponse</code>
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">metadata</a>(datastoreId, documentId) -> DocumentMetadata</code>
-- <code title="post /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">setMetadata</a>(datastoreId, documentId, { ...params }) -> DocumentMetadata</code>
+- <code title="put /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">setMetadata</a>(datastoreId, documentId, { ...params }) -> DocumentMetadata</code>
 
 # Agents
 
@@ -80,7 +80,7 @@ Types:
 Methods:
 
 - <code title="post /agents/{agent_id}/query">client.agents.query.<a href="./src/resources/agents/query.ts">create</a>(agentId, { ...params }) -> QueryResponse</code>
-- <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query.ts">feedback</a>(agentId, { ...params }) -> unknown</code>
+- <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query.ts">feedback</a>(agentId, { ...params }) -> QueryFeedbackResponse</code>
 - <code title="get /agents/{agent_id}/metrics">client.agents.query.<a href="./src/resources/agents/query.ts">metrics</a>(agentId, { ...params }) -> QueryMetricsResponse</code>
 - <code title="get /agents/{agent_id}/query/{message_id}/retrieval/info">client.agents.query.<a href="./src/resources/agents/query.ts">retrievalInfo</a>(agentId, messageId, { ...params }) -> RetrievalInfoResponse</code>
 

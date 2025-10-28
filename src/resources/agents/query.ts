@@ -27,18 +27,12 @@ export class Query extends APIResource {
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
    * overall `Agent` performance through the `Feedback` page in the Contextual UI,
    * and as a basis for model fine-tuning.
-   *
-   * If providing feedback on a retrieval, include the `message_id` from the `/query`
-   * response, and a `content_id` returned in the query's `retrieval_contents` list.
-   *
-   * For feedback on generations, include `message_id` and do not include a
-   * `content_id`.
    */
   feedback(
     agentId: string,
     body: QueryFeedbackParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<unknown> {
+  ): Core.APIPromise<QueryFeedbackResponse> {
     return this._client.post(`/agents/${agentId}/feedback`, { body, ...options });
   }
 
@@ -164,25 +158,23 @@ export namespace QueryResponse {
      * during query time, if provided.The default maximum metadata fields that can be
      * used is 15, contact support if more is needed.
      */
-    custom_metadata?: { [key: string]: boolean | number | string };
+    custom_metadata?: { [key: string]: boolean | number | string | Array<number> };
 
     /**
      * A dictionary mapping metadata field names to the configuration to use for each
-     * field.
-     *
-     *         - If a metadata field is not present in the dictionary, the default configuration will be used.
-     *
-     *         - If the dictionary is not provided, metadata will be added in chunks but will not be retrievable.
-     *
-     *
-     *         Limits: - Maximum characters per metadata field (for prompt or rerank): 400
-     *
-     *         - Maximum number of metadata fields (for prompt or retrieval): 10
-     *
-     *
-     *         Contact support@contextual.ai to request quota increases.
+     * field. If a metadata field is not present in the dictionary, the default
+     * configuration will be used. If the dictionary is not provided, metadata will be
+     * added in context for rerank and generation but will not be returned back to the
+     * user in retrievals in query API. Limits: - Maximum characters per metadata field
+     * (for prompt or rerank): **400** - Maximum number of metadata fields (for prompt
+     * or retrieval): **10** Contact support@contextual.ai to request quota increases.
      */
     custom_metadata_config?: { [key: string]: RetrievalContent.CustomMetadataConfig };
+
+    /**
+     * Unique identifier of the datastore
+     */
+    datastore_id?: string;
 
     /**
      * Index of the retrieved item in the retrieval_contents list (starting from 1)
@@ -337,6 +329,11 @@ export namespace QueryResponse {
      * Role of the sender
      */
     role: 'user' | 'system' | 'assistant' | 'knowledge';
+
+    /**
+     * Custom tags for the message
+     */
+    custom_tags?: Array<string>;
   }
 }
 
@@ -345,7 +342,9 @@ export interface RetrievalInfoResponse {
    * List of content metadatas.
    */
   content_metadatas?: Array<
-    RetrievalInfoResponse.UnstructuredContentMetadata | RetrievalInfoResponse.StructuredContentMetadata
+    | RetrievalInfoResponse.UnstructuredContentMetadata
+    | RetrievalInfoResponse.StructuredContentMetadata
+    | RetrievalInfoResponse.FileAnalysisContentMetadata
   >;
 }
 
@@ -422,9 +421,36 @@ export namespace RetrievalInfoResponse {
 
     content_type?: 'structured';
   }
+
+  export interface FileAnalysisContentMetadata {
+    /**
+     * Id of the content.
+     */
+    content_id: string;
+
+    /**
+     * Format of the file.
+     */
+    file_format: string;
+
+    /**
+     * GCP location of the file.
+     */
+    gcp_location: string;
+
+    content_type?: 'file_analysis';
+  }
 }
 
-export type QueryFeedbackResponse = unknown;
+/**
+ * Response schema for feedback submission endpoint.
+ */
+export interface QueryFeedbackResponse {
+  /**
+   * ID of the submitted or updated feedback.
+   */
+  feedback_id: string;
+}
 
 export interface QueryMetricsResponse {
   /**
@@ -477,8 +503,10 @@ export interface QueryCreateParams {
 
   /**
    * Body param: Defines an Optional custom metadata filter, which can be a list of
-   * filters or nested filters. The expected input is a nested JSON object that can
-   * represent a single filter or a composite (logical) combination of filters.
+   * filters or nested filters. Use **lowercase** for `value` and/or
+   * **field.keyword** for `field` when not using `equals` operator.The expected
+   * input is a nested JSON object that can represent a single filter or a composite
+   * (logical) combination of filters.
    *
    * Unnested Example:
    *
@@ -550,6 +578,11 @@ export namespace QueryCreateParams {
      * Role of the sender
      */
     role: 'user' | 'system' | 'assistant' | 'knowledge';
+
+    /**
+     * Custom tags for the message
+     */
+    custom_tags?: Array<string>;
   }
 
   /**
@@ -651,7 +684,7 @@ export namespace QueryCreateParams {
     /**
      * The output json structure.
      */
-    json_schema: unknown;
+    json_schema: { [key: string]: unknown };
 
     /**
      * Type of the structured output. The default is JSON
@@ -696,7 +729,15 @@ export interface QueryMetricsParams {
   created_after?: string;
 
   /**
-   * Filters messages that are created before specified timestamp.
+   * Filters messages that are created before specified timestamp. If both
+   * `created_after` and `created_before` are not provided, then `created_before`
+   * will be set to the current time and `created_after` will be set to the
+   * `created_before` - 2 days. If only `created_after` is provided, then
+   * `created_before` will be set to the `created_after` + 2 days. If only
+   * `created_before` is provided, then `created_after` will be set to the
+   * `created_before` - 2 days. If both `created_after` and `created_before` are
+   * provided, and the difference between them is more than 2 days, then
+   * `created_after` will be set to the `created_before` - 2 days.
    */
   created_before?: string;
 

@@ -125,6 +125,11 @@ export interface Agent {
  */
 export interface AgentConfigs {
   /**
+   * Parameters that affect the agent's ACL workflow
+   */
+  acl_config?: AgentConfigs.ACLConfig;
+
+  /**
    * Parameters that affect filtering and reranking of retrieved knowledge
    */
   filter_and_rerank_config?: FilterAndRerankConfig;
@@ -148,9 +153,29 @@ export interface AgentConfigs {
    * Parameters that affect how the agent retrieves from datastore(s)
    */
   retrieval_config?: RetrievalConfig;
+
+  /**
+   * Parameters that affect the agent's translation workflow
+   */
+  translation_config?: AgentConfigs.TranslationConfig;
 }
 
 export namespace AgentConfigs {
+  /**
+   * Parameters that affect the agent's ACL workflow
+   */
+  export interface ACLConfig {
+    /**
+     * Whether to enable ACL.
+     */
+    acl_active?: boolean;
+
+    /**
+     * The YAML file to use for ACL.
+     */
+    acl_yaml?: string;
+  }
+
   /**
    * Parameters that affect the agent's query reformulation
    */
@@ -174,6 +199,21 @@ export namespace AgentConfigs {
      * The prompt to use for query expansion.
      */
     query_expansion_prompt?: string;
+  }
+
+  /**
+   * Parameters that affect the agent's translation workflow
+   */
+  export interface TranslationConfig {
+    /**
+     * The confidence threshold for translation.
+     */
+    translate_confidence?: number;
+
+    /**
+     * Whether to enable translation for the agent's responses.
+     */
+    translate_needed?: boolean;
   }
 }
 
@@ -216,13 +256,6 @@ export interface AgentMetadata {
    * given query and filters out irrelevant chunks. This prompt is applied per chunk.
    */
   filter_prompt?: string;
-
-  /**
-   * The model ID to use for generation. Tuned models can only be used for the agents
-   * on which they were tuned. If no model is specified, the default model is used.
-   * Set to `default` to switch from a tuned model to the default model.
-   */
-  llm_model_id?: string;
 
   /**
    * Instructions on how the agent should handle multi-turn conversations.
@@ -476,7 +509,7 @@ export namespace AgentMetadataResponse {
     /**
      * The following advanced parameters are experimental and subject to change.
      */
-    agent_configs?: unknown;
+    agent_configs?: { [key: string]: unknown };
 
     /**
      * Total API request counts for the agent.
@@ -565,6 +598,11 @@ export interface AgentCreateParams {
    * do not guarantee that the system will follow these instructions exactly.
    */
   system_prompt?: string;
+
+  /**
+   * The template defining the base configuration for the agent.
+   */
+  template_name?: string;
 }
 
 export interface AgentUpdateParams {
@@ -579,22 +617,25 @@ export interface AgentUpdateParams {
   datastore_ids?: Array<string>;
 
   /**
+   * Description of the agent
+   */
+  description?: string;
+
+  /**
    * The prompt to an LLM which determines whether retrieved chunks are relevant to a
    * given query and filters out irrelevant chunks.
    */
   filter_prompt?: string;
 
   /**
-   * The model ID to use for generation. Tuned models can only be used for the agents
-   * on which they were tuned. If no model is specified, the default model is used.
-   * Set to `default` to switch from a tuned model to the default model.
-   */
-  llm_model_id?: string;
-
-  /**
    * Instructions on how the agent should handle multi-turn conversations.
    */
   multiturn_system_prompt?: string;
+
+  /**
+   * Name of the agent
+   */
+  name?: string;
 
   /**
    * Instructions on how the agent should respond when there are no relevant

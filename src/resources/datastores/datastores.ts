@@ -267,9 +267,9 @@ export interface DatastoreMetadata {
   name: string;
 
   /**
-   * Configuration of the datastore. Not set if default configuration is in use.
+   * Configuration for unstructured datastores.
    */
-  configuration?: DatastoreMetadata.Configuration;
+  configuration?: DatastoreMetadata.Configuration | null;
 
   /**
    * Type of the datastore
@@ -284,7 +284,7 @@ export interface DatastoreMetadata {
 
 export namespace DatastoreMetadata {
   /**
-   * Configuration of the datastore. Not set if default configuration is in use.
+   * Configuration for unstructured datastores.
    */
   export interface Configuration {
     /**
