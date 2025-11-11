@@ -6,6 +6,8 @@ import * as Core from './core';
 import * as Errors from './error';
 import * as Pagination from './pagination';
 import {
+  type ContentsPageParams,
+  ContentsPageResponse,
   type DatastoresPageParams,
   DatastoresPageResponse,
   type DocumentsPageParams,
@@ -280,6 +282,9 @@ export declare namespace ContextualAI {
 
   export import Page = Pagination.Page;
   export { type PageParams as PageParams, type PageResponse as PageResponse };
+
+  export import ContentsPage = Pagination.ContentsPage;
+  export { type ContentsPageParams as ContentsPageParams, type ContentsPageResponse as ContentsPageResponse };
 
   export {
     Datastores as Datastores,
