@@ -3,6 +3,15 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as ContentsAPI from './contents';
+import {
+  ContentListParams,
+  ContentListResponse,
+  ContentListResponsesContentsPage,
+  ContentMetadataParams,
+  ContentMetadataResponse,
+  Contents,
+} from './contents';
 import * as DocumentsAPI from './documents';
 import {
   BaseMetadataFilter,
@@ -23,6 +32,7 @@ import { DatastoresPage, type DatastoresPageParams } from '../../pagination';
 
 export class Datastores extends APIResource {
   documents: DocumentsAPI.Documents = new DocumentsAPI.Documents(this._client);
+  contents: ContentsAPI.Contents = new ContentsAPI.Contents(this._client);
 
   /**
    * Create a new `Datastore`.
@@ -664,6 +674,8 @@ export interface DatastoreListParams extends DatastoresPageParams {
 Datastores.DatastoresDatastoresPage = DatastoresDatastoresPage;
 Datastores.Documents = Documents;
 Datastores.DocumentMetadataDocumentsPage = DocumentMetadataDocumentsPage;
+Datastores.Contents = Contents;
+Datastores.ContentListResponsesContentsPage = ContentListResponsesContentsPage;
 
 export declare namespace Datastores {
   export {
@@ -694,5 +706,14 @@ export declare namespace Datastores {
     type DocumentGetParseResultParams as DocumentGetParseResultParams,
     type DocumentIngestParams as DocumentIngestParams,
     type DocumentSetMetadataParams as DocumentSetMetadataParams,
+  };
+
+  export {
+    Contents as Contents,
+    type ContentListResponse as ContentListResponse,
+    type ContentMetadataResponse as ContentMetadataResponse,
+    ContentListResponsesContentsPage as ContentListResponsesContentsPage,
+    type ContentListParams as ContentListParams,
+    type ContentMetadataParams as ContentMetadataParams,
   };
 }

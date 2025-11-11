@@ -40,6 +40,18 @@ Methods:
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">metadata</a>(datastoreId, documentId) -> DocumentMetadata</code>
 - <code title="put /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">setMetadata</a>(datastoreId, documentId, { ...params }) -> DocumentMetadata</code>
 
+## Contents
+
+Types:
+
+- <code><a href="./src/resources/datastores/contents.ts">ContentListResponse</a></code>
+- <code><a href="./src/resources/datastores/contents.ts">ContentMetadataResponse</a></code>
+
+Methods:
+
+- <code title="get /datastores/{datastore_id}/contents">client.datastores.contents.<a href="./src/resources/datastores/contents.ts">list</a>(datastoreId, { ...params }) -> ContentListResponsesContentsPage</code>
+- <code title="get /datastores/{datastore_id}/contents/{content_id}/metadata">client.datastores.contents.<a href="./src/resources/datastores/contents.ts">metadata</a>(datastoreId, contentId, { ...params }) -> ContentMetadataResponse</code>
+
 # Agents
 
 Types:
