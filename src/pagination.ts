@@ -224,3 +224,50 @@ export class Page<Item> extends AbstractPage<Item> implements PageResponse<Item>
     };
   }
 }
+
+export interface ContentsPageResponse<Item> {
+  data: Array<Item>;
+}
+
+export interface ContentsPageParams {
+  limit?: number;
+
+  offset?: number;
+}
+
+export class ContentsPage<Item> extends AbstractPage<Item> implements ContentsPageResponse<Item> {
+  data: Array<Item>;
+
+  constructor(
+    client: APIClient,
+    response: Response,
+    body: ContentsPageResponse<Item>,
+    options: FinalRequestOptions,
+  ) {
+    super(client, response, body, options);
+
+    this.data = body.data || [];
+  }
+
+  getPaginatedItems(): Item[] {
+    return this.data ?? [];
+  }
+
+  // @deprecated Please use `nextPageInfo()` instead
+  nextPageParams(): Partial<ContentsPageParams> | null {
+    const info = this.nextPageInfo();
+    if (!info) return null;
+    if ('params' in info) return info.params;
+    const params = Object.fromEntries(info.url.searchParams);
+    if (!Object.keys(params).length) return null;
+    return params;
+  }
+
+  nextPageInfo(): PageInfo | null {
+    const offset = (this.options.query as ContentsPageParams).offset ?? 0;
+    const length = this.getPaginatedItems().length;
+    const currentCount = offset + length;
+
+    return { params: { offset: currentCount } };
+  }
+}

@@ -1,6 +1,14 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 export {
+  ContentListResponsesContentsPage,
+  Contents,
+  type ContentListResponse,
+  type ContentMetadataResponse,
+  type ContentListParams,
+  type ContentMetadataParams,
+} from './contents';
+export {
   DatastoresDatastoresPage,
   Datastores,
   type CreateDatastoreResponse,
