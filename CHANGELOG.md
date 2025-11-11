@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0 (2025-11-11)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** update via SDK Studio ([314253f](https://github.com/ContextualAI/contextual-client-node/commit/314253f03cbf07ecc2f6a0f4e856d4d0000f544e))
+
 ## 0.9.0 (2025-10-28)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.8.0...v0.9.0)
