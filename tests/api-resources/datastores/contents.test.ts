@@ -34,7 +34,12 @@ describe('resource contents', () => {
     await expect(
       client.datastores.contents.list(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-        { document_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', limit: 0, offset: 0, search: 'search' },
+        {
+          document_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          limit: 0,
+          offset: 0,
+          search: 'search',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(ContextualAI.NotFoundError);

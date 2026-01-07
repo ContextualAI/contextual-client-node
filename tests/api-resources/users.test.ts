@@ -26,7 +26,11 @@ describe('resource users', () => {
       agent_level_roles: ['AGENT_LEVEL_USER'],
       is_tenant_admin: true,
       per_agent_roles: [
-        { agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', grant: true, roles: ['AGENT_LEVEL_USER'] },
+        {
+          agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+          grant: true,
+          roles: ['AGENT_LEVEL_USER'],
+        },
       ],
       roles: ['VISITOR'],
     });
@@ -54,7 +58,12 @@ describe('resource users', () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
       client.users.list(
-        { cursor: 'cursor', deactivated: true, limit: 0, search: 'search' },
+        {
+          cursor: 'cursor',
+          deactivated: true,
+          limit: 0,
+          search: 'search',
+        },
         { path: '/_stainless_unknown_path' },
       ),
     ).rejects.toThrow(ContextualAI.NotFoundError);
@@ -97,7 +106,11 @@ describe('resource users', () => {
           agent_level_roles: ['AGENT_LEVEL_USER'],
           is_tenant_admin: true,
           per_agent_roles: [
-            { agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', grant: true, roles: ['AGENT_LEVEL_USER'] },
+            {
+              agent_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+              grant: true,
+              roles: ['AGENT_LEVEL_USER'],
+            },
           ],
           roles: ['VISITOR'],
         },
