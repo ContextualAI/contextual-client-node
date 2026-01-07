@@ -10,7 +10,11 @@ const client = new ContextualAI({
 
 describe('resource rerank', () => {
   test('create: only required params', async () => {
-    const responsePromise = client.rerank.create({ documents: ['string'], model: 'model', query: 'query' });
+    const responsePromise = client.rerank.create({
+      documents: ['string'],
+      model: 'model',
+      query: 'query',
+    });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
