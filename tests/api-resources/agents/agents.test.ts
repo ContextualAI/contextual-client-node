@@ -27,12 +27,24 @@ describe('resource agents', () => {
         acl_config: { acl_active: true, acl_yaml: 'acl_yaml' },
         filter_and_rerank_config: {
           default_metadata_filters: {
-            filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+            filters: [
+              {
+                field: 'field1',
+                operator: 'equals',
+                value: 'value1',
+              },
+            ],
             operator: 'AND',
           },
           per_datastore_metadata_filters: {
             'd49609d9-61c3-4a67-b3bd-5196b10da560': {
-              filters: [{ field: 'field1', operator: 'equals', value: 'value1' }],
+              filters: [
+                {
+                  field: 'field1',
+                  operator: 'equals',
+                  value: 'value1',
+                },
+              ],
               operator: 'AND',
             },
           },
@@ -61,7 +73,11 @@ describe('resource agents', () => {
           query_decomposition_prompt: 'query_decomposition_prompt',
           query_expansion_prompt: 'query_expansion_prompt',
         },
-        retrieval_config: { lexical_alpha: 0, semantic_alpha: 0, top_k_retrieved_chunks: 0 },
+        retrieval_config: {
+          lexical_alpha: 0,
+          semantic_alpha: 0,
+          top_k_retrieved_chunks: 0,
+        },
         translation_config: { translate_confidence: 0, translate_needed: true },
       },
       datastore_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
@@ -181,5 +197,24 @@ describe('resource agents', () => {
     await expect(
       client.agents.reset('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { path: '/_stainless_unknown_path' }),
     ).rejects.toThrow(ContextualAI.NotFoundError);
+  });
+
+  test('saveTemplate: only required params', async () => {
+    const responsePromise = client.agents.saveTemplate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      name: 'name',
+    });
+    const rawResponse = await responsePromise.asResponse();
+    expect(rawResponse).toBeInstanceOf(Response);
+    const response = await responsePromise;
+    expect(response).not.toBeInstanceOf(Response);
+    const dataAndResponse = await responsePromise.withResponse();
+    expect(dataAndResponse.data).toBe(response);
+    expect(dataAndResponse.response).toBe(rawResponse);
+  });
+
+  test('saveTemplate: required and optional params', async () => {
+    const response = await client.agents.saveTemplate('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      name: 'name',
+    });
   });
 });

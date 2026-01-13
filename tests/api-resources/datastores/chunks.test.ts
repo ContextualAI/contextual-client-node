@@ -8,13 +8,13 @@ const client = new ContextualAI({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource rerank', () => {
-  test('create: only required params', async () => {
-    const responsePromise = client.rerank.create({
-      documents: ['string'],
-      model: 'model',
-      query: 'query',
-    });
+describe('resource chunks', () => {
+  test('updateContent: only required params', async () => {
+    const responsePromise = client.datastores.chunks.updateContent(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { content: 'content' },
+    );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -24,14 +24,11 @@ describe('resource rerank', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('create: required and optional params', async () => {
-    const response = await client.rerank.create({
-      documents: ['string'],
-      model: 'model',
-      query: 'query',
-      instruction: 'instruction',
-      metadata: ['string'],
-      top_n: 0,
-    });
+  test('updateContent: required and optional params', async () => {
+    const response = await client.datastores.chunks.updateContent(
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+      { content: 'content' },
+    );
   });
 });

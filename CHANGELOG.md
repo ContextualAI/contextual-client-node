@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.11.0 (2026-01-13)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** manual updates ([bdaa60d](https://github.com/ContextualAI/contextual-client-node/commit/bdaa60d96310fc66cb8cb43b91b763490237a389))
+
+
+### Bug Fixes
+
+* **mcp:** correct code tool API endpoint ([8c8bc54](https://github.com/ContextualAI/contextual-client-node/commit/8c8bc545d5f3d1b7ea90d2512ba3343fd0edc591))
+* **mcp:** return correct lines on typescript errors ([88e0486](https://github.com/ContextualAI/contextual-client-node/commit/88e0486bdf24efec60fb85b184c8ee2136489c19))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([38b2e46](https://github.com/ContextualAI/contextual-client-node/commit/38b2e466e843ff15f6d7fb6ad34773aea6356eef))
+* **internal:** codegen related update ([d95b949](https://github.com/ContextualAI/contextual-client-node/commit/d95b9493430dac5f336186814f1d9bb49d9c605b))
+* **internal:** codegen related update ([35acc42](https://github.com/ContextualAI/contextual-client-node/commit/35acc4287fe07f405bbee43b2b9831f4ced9c492))
+* **internal:** codegen related update ([599b5e8](https://github.com/ContextualAI/contextual-client-node/commit/599b5e86fd8cdf3cc56a4300e2b5cdd4b4b34715))
+
 ## 0.10.0 (2025-11-11)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.9.0...v0.10.0)
