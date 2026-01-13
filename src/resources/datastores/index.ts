@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+export { Chunks, type ChunkUpdateContentResponse, type ChunkUpdateContentParams } from './chunks';
 export {
   ContentListResponsesContentsPage,
   Contents,
@@ -11,10 +12,14 @@ export {
 export {
   DatastoresDatastoresPage,
   Datastores,
+  type ChunkingConfiguration,
   type CreateDatastoreResponse,
   type Datastore,
   type DatastoreMetadata,
+  type DatastoreParseConfiguration,
+  type HTMLConfiguration,
   type ListDatastoresResponse,
+  type UnstructuredDatastoreConfigModel,
   type DatastoreUpdateResponse,
   type DatastoreDeleteResponse,
   type DatastoreResetResponse,

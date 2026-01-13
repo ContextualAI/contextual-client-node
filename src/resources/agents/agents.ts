@@ -15,11 +15,14 @@ import {
   QueryRetrievalInfoParams,
   RetrievalInfoResponse,
 } from './query';
+import * as TemplatesAPI from './templates';
+import { TemplateListResponse, Templates } from './templates';
 import * as DocumentsAPI from '../datastores/documents';
 import { Page, type PageParams } from '../../pagination';
 
 export class Agents extends APIResource {
   query: QueryAPI.Query = new QueryAPI.Query(this._client);
+  templates: TemplatesAPI.Templates = new TemplatesAPI.Templates(this._client);
 
   /**
    * Create a new `Agent` with a specific configuration.
@@ -48,7 +51,11 @@ export class Agents extends APIResource {
    *
    * Fields not included in the request body will not be modified.
    */
-  update(agentId: string, body: AgentUpdateParams, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  update(
+    agentId: string,
+    body: AgentUpdateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<AgentUpdateResponse> {
     return this._client.put(`/agents/${agentId}`, { body, ...options });
   }
 
@@ -74,7 +81,7 @@ export class Agents extends APIResource {
    * even if no other `Agent` is using them. To delete a `Datastore`, use the
    * `DELETE /datastores/{datastore_id}` API.
    */
-  delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentDeleteResponse> {
     return this._client.delete(`/agents/${agentId}`, options);
   }
 
@@ -99,9 +106,35 @@ export class Agents extends APIResource {
   reset(agentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.put(`/agents/${agentId}/reset`, options);
   }
+
+  /**
+   * Save Template
+   */
+  saveTemplate(
+    agentId: string,
+    body: AgentSaveTemplateParams,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<unknown> {
+    return this._client.post(`/agents/${agentId}/template`, { body, ...options });
+  }
 }
 
 export class AgentsPage extends Page<Agent> {}
+
+/**
+ * Captures ACL configurations for an Agent
+ */
+export interface ACLConfig {
+  /**
+   * Whether to enable ACL.
+   */
+  acl_active?: boolean;
+
+  /**
+   * The YAML file to use for ACL.
+   */
+  acl_yaml?: string;
+}
 
 export interface Agent {
   /**
@@ -127,7 +160,7 @@ export interface AgentConfigs {
   /**
    * Parameters that affect the agent's ACL workflow
    */
-  acl_config?: AgentConfigs.ACLConfig;
+  acl_config?: ACLConfig;
 
   /**
    * Parameters that affect filtering and reranking of retrieved knowledge
@@ -147,7 +180,7 @@ export interface AgentConfigs {
   /**
    * Parameters that affect the agent's query reformulation
    */
-  reformulation_config?: AgentConfigs.ReformulationConfig;
+  reformulation_config?: ReformulationConfig;
 
   /**
    * Parameters that affect how the agent retrieves from datastore(s)
@@ -157,64 +190,7 @@ export interface AgentConfigs {
   /**
    * Parameters that affect the agent's translation workflow
    */
-  translation_config?: AgentConfigs.TranslationConfig;
-}
-
-export namespace AgentConfigs {
-  /**
-   * Parameters that affect the agent's ACL workflow
-   */
-  export interface ACLConfig {
-    /**
-     * Whether to enable ACL.
-     */
-    acl_active?: boolean;
-
-    /**
-     * The YAML file to use for ACL.
-     */
-    acl_yaml?: string;
-  }
-
-  /**
-   * Parameters that affect the agent's query reformulation
-   */
-  export interface ReformulationConfig {
-    /**
-     * Whether to enable query decomposition.
-     */
-    enable_query_decomposition?: boolean;
-
-    /**
-     * Whether to enable query expansion.
-     */
-    enable_query_expansion?: boolean;
-
-    /**
-     * The prompt to use for query decomposition.
-     */
-    query_decomposition_prompt?: string;
-
-    /**
-     * The prompt to use for query expansion.
-     */
-    query_expansion_prompt?: string;
-  }
-
-  /**
-   * Parameters that affect the agent's translation workflow
-   */
-  export interface TranslationConfig {
-    /**
-     * The confidence threshold for translation.
-     */
-    translate_confidence?: number;
-
-    /**
-     * Whether to enable translation for the agent's responses.
-     */
-    translate_needed?: boolean;
-  }
+  translation_config?: TranslationConfig;
 }
 
 /**
@@ -459,6 +435,31 @@ export interface ListAgentsResponse {
 }
 
 /**
+ * Captures Query Reformulation configurations for an Agent
+ */
+export interface ReformulationConfig {
+  /**
+   * Whether to enable query decomposition.
+   */
+  enable_query_decomposition?: boolean;
+
+  /**
+   * Whether to enable query expansion.
+   */
+  enable_query_expansion?: boolean;
+
+  /**
+   * The prompt to use for query decomposition.
+   */
+  query_decomposition_prompt?: string;
+
+  /**
+   * The prompt to use for query expansion.
+   */
+  query_expansion_prompt?: string;
+}
+
+/**
  * Captures Retrieval configurations for an Agent
  */
 export interface RetrievalConfig {
@@ -480,9 +481,24 @@ export interface RetrievalConfig {
   top_k_retrieved_chunks?: number;
 }
 
-export type AgentUpdateResponse = unknown;
+/**
+ * Captures Translation configurations for an Agent
+ */
+export interface TranslationConfig {
+  /**
+   * The confidence threshold for translation.
+   */
+  translate_confidence?: number;
 
-export type AgentDeleteResponse = unknown;
+  /**
+   * Whether to enable translation for the agent's responses.
+   */
+  translate_needed?: boolean;
+}
+
+export interface AgentUpdateResponse {}
+
+export interface AgentDeleteResponse {}
 
 /**
  * Response to GET Agent request
@@ -546,6 +562,8 @@ export namespace AgentMetadataResponse {
 }
 
 export type AgentResetResponse = unknown;
+
+export type AgentSaveTemplateResponse = unknown;
 
 export interface AgentCreateParams {
   /**
@@ -660,11 +678,20 @@ export interface AgentUpdateParams {
 
 export interface AgentListParams extends PageParams {}
 
+export interface AgentSaveTemplateParams {
+  /**
+   * The name of the template
+   */
+  name: string;
+}
+
 Agents.AgentsPage = AgentsPage;
 Agents.Query = Query;
+Agents.Templates = Templates;
 
 export declare namespace Agents {
   export {
+    type ACLConfig as ACLConfig,
     type Agent as Agent,
     type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
@@ -673,15 +700,19 @@ export declare namespace Agents {
     type GenerateResponseConfig as GenerateResponseConfig,
     type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
+    type ReformulationConfig as ReformulationConfig,
     type RetrievalConfig as RetrievalConfig,
+    type TranslationConfig as TranslationConfig,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
     type AgentMetadataResponse as AgentMetadataResponse,
     type AgentResetResponse as AgentResetResponse,
+    type AgentSaveTemplateResponse as AgentSaveTemplateResponse,
     AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+    type AgentSaveTemplateParams as AgentSaveTemplateParams,
   };
 
   export {
@@ -695,4 +726,6 @@ export declare namespace Agents {
     type QueryMetricsParams as QueryMetricsParams,
     type QueryRetrievalInfoParams as QueryRetrievalInfoParams,
   };
+
+  export { Templates as Templates, type TemplateListResponse as TemplateListResponse };
 }
