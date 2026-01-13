@@ -1,11 +1,21 @@
+# Shared
+
+Types:
+
+- <code><a href="./src/resources/shared.ts">ParsedBlock</a></code>
+
 # Datastores
 
 Types:
 
+- <code><a href="./src/resources/datastores/datastores.ts">ChunkingConfiguration</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">CreateDatastoreResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">Datastore</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreMetadata</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">DatastoreParseConfiguration</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">HTMLConfiguration</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">ListDatastoresResponse</a></code>
+- <code><a href="./src/resources/datastores/datastores.ts">UnstructuredDatastoreConfigModel</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreUpdateResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreDeleteResponse</a></code>
 - <code><a href="./src/resources/datastores/datastores.ts">DatastoreResetResponse</a></code>
@@ -15,9 +25,9 @@ Methods:
 - <code title="post /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">create</a>({ ...params }) -> CreateDatastoreResponse</code>
 - <code title="put /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">update</a>(datastoreId, { ...params }) -> DatastoreUpdateResponse</code>
 - <code title="get /datastores">client.datastores.<a href="./src/resources/datastores/datastores.ts">list</a>({ ...params }) -> DatastoresDatastoresPage</code>
-- <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> unknown</code>
+- <code title="delete /datastores/{datastore_id}">client.datastores.<a href="./src/resources/datastores/datastores.ts">delete</a>(datastoreId) -> DatastoreDeleteResponse</code>
 - <code title="get /datastores/{datastore_id}/metadata">client.datastores.<a href="./src/resources/datastores/datastores.ts">metadata</a>(datastoreId) -> DatastoreMetadata</code>
-- <code title="put /datastores/{datastore_id}/reset">client.datastores.<a href="./src/resources/datastores/datastores.ts">reset</a>(datastoreId) -> unknown</code>
+- <code title="put /datastores/{datastore_id}/reset">client.datastores.<a href="./src/resources/datastores/datastores.ts">reset</a>(datastoreId) -> DatastoreResetResponse</code>
 
 ## Documents
 
@@ -34,7 +44,7 @@ Types:
 Methods:
 
 - <code title="get /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">list</a>(datastoreId, { ...params }) -> DocumentMetadataDocumentsPage</code>
-- <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> unknown</code>
+- <code title="delete /datastores/{datastore_id}/documents/{document_id}">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">delete</a>(datastoreId, documentId) -> DocumentDeleteResponse</code>
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/parse">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">getParseResult</a>(datastoreId, documentId, { ...params }) -> DocumentGetParseResultResponse</code>
 - <code title="post /datastores/{datastore_id}/documents">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">ingest</a>(datastoreId, { ...params }) -> IngestionResponse</code>
 - <code title="get /datastores/{datastore_id}/documents/{document_id}/metadata">client.datastores.documents.<a href="./src/resources/datastores/documents.ts">metadata</a>(datastoreId, documentId) -> DocumentMetadata</code>
@@ -52,10 +62,21 @@ Methods:
 - <code title="get /datastores/{datastore_id}/contents">client.datastores.contents.<a href="./src/resources/datastores/contents.ts">list</a>(datastoreId, { ...params }) -> ContentListResponsesContentsPage</code>
 - <code title="get /datastores/{datastore_id}/contents/{content_id}/metadata">client.datastores.contents.<a href="./src/resources/datastores/contents.ts">metadata</a>(datastoreId, contentId, { ...params }) -> ContentMetadataResponse</code>
 
+## Chunks
+
+Types:
+
+- <code><a href="./src/resources/datastores/chunks.ts">ChunkUpdateContentResponse</a></code>
+
+Methods:
+
+- <code title="put /datastores/{datastore_id}/chunks/{content_id}/content">client.datastores.chunks.<a href="./src/resources/datastores/chunks.ts">updateContent</a>(datastoreId, contentId, { ...params }) -> ChunkUpdateContentResponse</code>
+
 # Agents
 
 Types:
 
+- <code><a href="./src/resources/agents/agents.ts">ACLConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">Agent</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentConfigs</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentMetadata</a></code>
@@ -64,21 +85,25 @@ Types:
 - <code><a href="./src/resources/agents/agents.ts">GenerateResponseConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">GlobalConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">ListAgentsResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">ReformulationConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">RetrievalConfig</a></code>
+- <code><a href="./src/resources/agents/agents.ts">TranslationConfig</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentUpdateResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentDeleteResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentMetadataResponse</a></code>
 - <code><a href="./src/resources/agents/agents.ts">AgentResetResponse</a></code>
+- <code><a href="./src/resources/agents/agents.ts">AgentSaveTemplateResponse</a></code>
 
 Methods:
 
 - <code title="post /agents">client.agents.<a href="./src/resources/agents/agents.ts">create</a>({ ...params }) -> CreateAgentOutput</code>
-- <code title="put /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">update</a>(agentId, { ...params }) -> unknown</code>
+- <code title="put /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">update</a>(agentId, { ...params }) -> AgentUpdateResponse</code>
 - <code title="get /agents">client.agents.<a href="./src/resources/agents/agents.ts">list</a>({ ...params }) -> AgentsPage</code>
-- <code title="delete /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">delete</a>(agentId) -> unknown</code>
+- <code title="delete /agents/{agent_id}">client.agents.<a href="./src/resources/agents/agents.ts">delete</a>(agentId) -> AgentDeleteResponse</code>
 - <code title="post /agents/{agent_id}/copy">client.agents.<a href="./src/resources/agents/agents.ts">copy</a>(agentId) -> CreateAgentOutput</code>
 - <code title="get /agents/{agent_id}/metadata">client.agents.<a href="./src/resources/agents/agents.ts">metadata</a>(agentId) -> AgentMetadataResponse</code>
 - <code title="put /agents/{agent_id}/reset">client.agents.<a href="./src/resources/agents/agents.ts">reset</a>(agentId) -> unknown</code>
+- <code title="post /agents/{agent_id}/template">client.agents.<a href="./src/resources/agents/agents.ts">saveTemplate</a>(agentId, { ...params }) -> unknown</code>
 
 ## Query
 
@@ -95,6 +120,17 @@ Methods:
 - <code title="post /agents/{agent_id}/feedback">client.agents.query.<a href="./src/resources/agents/query.ts">feedback</a>(agentId, { ...params }) -> QueryFeedbackResponse</code>
 - <code title="get /agents/{agent_id}/metrics">client.agents.query.<a href="./src/resources/agents/query.ts">metrics</a>(agentId, { ...params }) -> QueryMetricsResponse</code>
 - <code title="get /agents/{agent_id}/query/{message_id}/retrieval/info">client.agents.query.<a href="./src/resources/agents/query.ts">retrievalInfo</a>(agentId, messageId, { ...params }) -> RetrievalInfoResponse</code>
+
+## Templates
+
+Types:
+
+- <code><a href="./src/resources/agents/templates.ts">TemplateListResponse</a></code>
+
+Methods:
+
+- <code title="get /agents/templates/{template}">client.agents.templates.<a href="./src/resources/agents/templates.ts">retrieve</a>(template) -> AgentMetadata</code>
+- <code title="get /agents/templates">client.agents.templates.<a href="./src/resources/agents/templates.ts">list</a>() -> TemplateListResponse</code>
 
 # Users
 

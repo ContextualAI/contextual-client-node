@@ -46,6 +46,7 @@ import {
   Users,
 } from './resources/users';
 import {
+  ACLConfig,
   Agent as AgentsAPIAgent,
   AgentConfigs,
   AgentCreateParams,
@@ -54,6 +55,8 @@ import {
   AgentMetadata,
   AgentMetadataResponse,
   AgentResetResponse,
+  AgentSaveTemplateParams,
+  AgentSaveTemplateResponse,
   AgentUpdateParams,
   AgentUpdateResponse,
   Agents,
@@ -63,21 +66,27 @@ import {
   GenerateResponseConfig,
   GlobalConfig,
   ListAgentsResponse,
+  ReformulationConfig,
   RetrievalConfig,
+  TranslationConfig,
 } from './resources/agents/agents';
 import {
+  ChunkingConfiguration,
   CreateDatastoreResponse,
   Datastore,
   DatastoreCreateParams,
   DatastoreDeleteResponse,
   DatastoreListParams,
   DatastoreMetadata,
+  DatastoreParseConfiguration,
   DatastoreResetResponse,
   DatastoreUpdateParams,
   DatastoreUpdateResponse,
   Datastores,
   DatastoresDatastoresPage,
+  HTMLConfiguration,
   ListDatastoresResponse,
+  UnstructuredDatastoreConfigModel,
 } from './resources/datastores/datastores';
 
 export interface ClientOptions {
@@ -288,10 +297,14 @@ export declare namespace ContextualAI {
 
   export {
     Datastores as Datastores,
+    type ChunkingConfiguration as ChunkingConfiguration,
     type CreateDatastoreResponse as CreateDatastoreResponse,
     type Datastore as Datastore,
     type DatastoreMetadata as DatastoreMetadata,
+    type DatastoreParseConfiguration as DatastoreParseConfiguration,
+    type HTMLConfiguration as HTMLConfiguration,
     type ListDatastoresResponse as ListDatastoresResponse,
+    type UnstructuredDatastoreConfigModel as UnstructuredDatastoreConfigModel,
     type DatastoreUpdateResponse as DatastoreUpdateResponse,
     type DatastoreDeleteResponse as DatastoreDeleteResponse,
     type DatastoreResetResponse as DatastoreResetResponse,
@@ -303,6 +316,7 @@ export declare namespace ContextualAI {
 
   export {
     Agents as Agents,
+    type ACLConfig as ACLConfig,
     type AgentsAPIAgent as Agent,
     type AgentConfigs as AgentConfigs,
     type AgentMetadata as AgentMetadata,
@@ -311,15 +325,19 @@ export declare namespace ContextualAI {
     type GenerateResponseConfig as GenerateResponseConfig,
     type GlobalConfig as GlobalConfig,
     type ListAgentsResponse as ListAgentsResponse,
+    type ReformulationConfig as ReformulationConfig,
     type RetrievalConfig as RetrievalConfig,
+    type TranslationConfig as TranslationConfig,
     type AgentUpdateResponse as AgentUpdateResponse,
     type AgentDeleteResponse as AgentDeleteResponse,
     type AgentMetadataResponse as AgentMetadataResponse,
     type AgentResetResponse as AgentResetResponse,
+    type AgentSaveTemplateResponse as AgentSaveTemplateResponse,
     AgentsPage as AgentsPage,
     type AgentCreateParams as AgentCreateParams,
     type AgentUpdateParams as AgentUpdateParams,
     type AgentListParams as AgentListParams,
+    type AgentSaveTemplateParams as AgentSaveTemplateParams,
   };
 
   export {
@@ -364,6 +382,8 @@ export declare namespace ContextualAI {
     type ParseJobResultsParams as ParseJobResultsParams,
     type ParseJobsParams as ParseJobsParams,
   };
+
+  export type ParsedBlock = API.ParsedBlock;
 }
 
 export { toFile, fileFromPath } from './uploads';

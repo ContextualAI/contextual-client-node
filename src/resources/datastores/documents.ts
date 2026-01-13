@@ -3,6 +3,7 @@
 import { APIResource } from '../../resource';
 import { isRequestOptions } from '../../core';
 import * as Core from '../../core';
+import * as Shared from '../shared';
 import { DocumentsPage, type DocumentsPageParams } from '../../pagination';
 
 export class Documents extends APIResource {
@@ -41,7 +42,11 @@ export class Documents extends APIResource {
   /**
    * Delete a given document from its `Datastore`. This operation is irreversible.
    */
-  delete(datastoreId: string, documentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
+  delete(
+    datastoreId: string,
+    documentId: string,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<DocumentDeleteResponse> {
     return this._client.delete(`/datastores/${datastoreId}/documents/${documentId}`, options);
   }
 
@@ -304,7 +309,7 @@ export interface ListDocumentsResponse {
   total_count?: number;
 }
 
-export type DocumentDeleteResponse = unknown;
+export interface DocumentDeleteResponse {}
 
 /**
  * /parse results reponse object.
@@ -359,94 +364,12 @@ export namespace DocumentGetParseResultResponse {
       /**
        * Heading blocks which define the hierarchy of the document
        */
-      blocks?: Array<Hierarchy.Block>;
+      blocks?: Array<Shared.ParsedBlock>;
 
       /**
        * Markdown representation of the table of contents for this document
        */
       table_of_contents?: string;
-    }
-
-    export namespace Hierarchy {
-      /**
-       * One logical block of content from a parsed page.
-       */
-      export interface Block {
-        /**
-         * Unique ID of the block
-         */
-        id: string;
-
-        /**
-         * The normalized bounding box of the block, as relative percentages of the page
-         * width and height
-         */
-        bounding_box: Block.BoundingBox;
-
-        /**
-         * The Markdown representation of the block
-         */
-        markdown: string;
-
-        /**
-         * The type of the block
-         */
-        type: 'heading' | 'text' | 'table' | 'figure';
-
-        /**
-         * The confidence level of this block categorized as 'low', 'medium', or 'high'.
-         * Only available for blocks of type 'table' currently.
-         */
-        confidence_level?: 'low' | 'medium' | 'high';
-
-        /**
-         * The level of the block in the document hierarchy, starting at 0 for the
-         * root-level title block. Only present if `enable_document_hierarchy` was set to
-         * true in the request.
-         */
-        hierarchy_level?: number;
-
-        /**
-         * The page (0-indexed) that this block belongs to. Only set for heading blocks
-         * that are returned in the table of contents.
-         */
-        page_index?: number;
-
-        /**
-         * The IDs of the parent in the document hierarchy, sorted from root-level to
-         * bottom. For root-level heading blocks, this will be an empty list. Only present
-         * if `enable_document_hierarchy` was set to true in the request.
-         */
-        parent_ids?: Array<string>;
-      }
-
-      export namespace Block {
-        /**
-         * The normalized bounding box of the block, as relative percentages of the page
-         * width and height
-         */
-        export interface BoundingBox {
-          /**
-           * The x-coordinate of the top-left corner of the bounding box
-           */
-          x0: number;
-
-          /**
-           * The x-coordinate of the bottom-right corner of the bounding box
-           */
-          x1: number;
-
-          /**
-           * The y-coordinate of the top-left corner of the bounding box
-           */
-          y0: number;
-
-          /**
-           * The y-coordinate of the bottom-right corner of the bounding box
-           */
-          y1: number;
-        }
-      }
     }
   }
 
@@ -463,95 +386,13 @@ export namespace DocumentGetParseResultResponse {
      * The parsed, structured blocks of this page. Present if `blocks-per-page` was
      * among the requested output types.
      */
-    blocks?: Array<Page.Block>;
+    blocks?: Array<Shared.ParsedBlock>;
 
     /**
      * The parsed, structured Markdown of this page. Present if `markdown-per-page` was
      * among the requested output types.
      */
     markdown?: string;
-  }
-
-  export namespace Page {
-    /**
-     * One logical block of content from a parsed page.
-     */
-    export interface Block {
-      /**
-       * Unique ID of the block
-       */
-      id: string;
-
-      /**
-       * The normalized bounding box of the block, as relative percentages of the page
-       * width and height
-       */
-      bounding_box: Block.BoundingBox;
-
-      /**
-       * The Markdown representation of the block
-       */
-      markdown: string;
-
-      /**
-       * The type of the block
-       */
-      type: 'heading' | 'text' | 'table' | 'figure';
-
-      /**
-       * The confidence level of this block categorized as 'low', 'medium', or 'high'.
-       * Only available for blocks of type 'table' currently.
-       */
-      confidence_level?: 'low' | 'medium' | 'high';
-
-      /**
-       * The level of the block in the document hierarchy, starting at 0 for the
-       * root-level title block. Only present if `enable_document_hierarchy` was set to
-       * true in the request.
-       */
-      hierarchy_level?: number;
-
-      /**
-       * The page (0-indexed) that this block belongs to. Only set for heading blocks
-       * that are returned in the table of contents.
-       */
-      page_index?: number;
-
-      /**
-       * The IDs of the parent in the document hierarchy, sorted from root-level to
-       * bottom. For root-level heading blocks, this will be an empty list. Only present
-       * if `enable_document_hierarchy` was set to true in the request.
-       */
-      parent_ids?: Array<string>;
-    }
-
-    export namespace Block {
-      /**
-       * The normalized bounding box of the block, as relative percentages of the page
-       * width and height
-       */
-      export interface BoundingBox {
-        /**
-         * The x-coordinate of the top-left corner of the bounding box
-         */
-        x0: number;
-
-        /**
-         * The x-coordinate of the bottom-right corner of the bounding box
-         */
-        x1: number;
-
-        /**
-         * The y-coordinate of the top-left corner of the bounding box
-         */
-        y0: number;
-
-        /**
-         * The y-coordinate of the bottom-right corner of the bounding box
-         */
-        y1: number;
-      }
-    }
   }
 }
 
