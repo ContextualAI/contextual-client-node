@@ -60,7 +60,7 @@ $ yarn link contextual-client
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global contextual-client
+$ pnpm link --global contextual-client
 ```
 
 ## Running tests
