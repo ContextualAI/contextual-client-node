@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.11.1 (2026-03-06)
+
+Full Changelog: [v0.11.0...v0.11.1](https://github.com/ContextualAI/contextual-client-node/compare/v0.11.0...v0.11.1)
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([193076b](https://github.com/ContextualAI/contextual-client-node/commit/193076b45501a9b428ea98c25a5e3265bd3f730e))
+
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([8b4191f](https://github.com/ContextualAI/contextual-client-node/commit/8b4191f69d28f415a6f904ae97f046466ce87b4f))
+* **client:** do not parse responses with empty content-length ([1e472ad](https://github.com/ContextualAI/contextual-client-node/commit/1e472ad963cb097b2641aa680fcee5eb8b31c9a8))
+* **internal:** codegen related update ([90ac5d3](https://github.com/ContextualAI/contextual-client-node/commit/90ac5d35d30b340528a3692a1b76a4ea4260ebe8))
+* **internal:** move stringifyQuery implementation to internal function ([6e1c564](https://github.com/ContextualAI/contextual-client-node/commit/6e1c564f4ecafba59bb016bec0315ff5efd7dd05))
+* **internal:** update `actions/checkout` version ([4956c34](https://github.com/ContextualAI/contextual-client-node/commit/4956c3404ec39514e420e40a5b2761d027d7add4))
+* **internal:** upgrade babel, qs, js-yaml ([105be1e](https://github.com/ContextualAI/contextual-client-node/commit/105be1e876017babe277122c898b4c0d9f89810f))
+* update mock server docs ([7f118be](https://github.com/ContextualAI/contextual-client-node/commit/7f118bebaedc0758ec29022ee051e2d9627212d9))
+
 ## 0.11.0 (2026-01-13)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/ContextualAI/contextual-client-node/compare/v0.10.0...v0.11.0)
