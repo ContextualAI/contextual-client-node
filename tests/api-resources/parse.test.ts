@@ -11,7 +11,7 @@ const client = new ContextualAI({
 describe('resource parse', () => {
   test('create: only required params', async () => {
     const responsePromise = client.parse.create({
-      raw_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      raw_file: await toFile(Buffer.from('Example data'), 'README.md'),
     });
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -24,7 +24,7 @@ describe('resource parse', () => {
 
   test('create: required and optional params', async () => {
     const response = await client.parse.create({
-      raw_file: await toFile(Buffer.from('# my file contents'), 'README.md'),
+      raw_file: await toFile(Buffer.from('Example data'), 'README.md'),
       enable_document_hierarchy: true,
       enable_split_tables: false,
       figure_caption_mode: 'concise',
