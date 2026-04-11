@@ -8,6 +8,16 @@ import { ContentsPage, type ContentsPageParams } from '../../pagination';
 export class Contents extends APIResource {
   /**
    * Get Document Contents
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const contentListResponse of client.datastores.contents.list(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     datastoreId: string,
@@ -34,6 +44,14 @@ export class Contents extends APIResource {
 
   /**
    * Get Content Metadata
+   *
+   * @example
+   * ```ts
+   * const response = await client.datastores.contents.metadata(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   metadata(
     datastoreId: string,

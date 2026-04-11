@@ -7,6 +7,12 @@ import * as AgentsAPI from './agents';
 export class Templates extends APIResource {
   /**
    * Get Template Configuration
+   *
+   * @example
+   * ```ts
+   * const agentMetadata =
+   *   await client.agents.templates.retrieve('template');
+   * ```
    */
   retrieve(template: string, options?: Core.RequestOptions): Core.APIPromise<AgentsAPI.AgentMetadata> {
     return this._client.get(`/agents/templates/${template}`, options);
@@ -14,6 +20,11 @@ export class Templates extends APIResource {
 
   /**
    * Retrieve a list of all available Templates.
+   *
+   * @example
+   * ```ts
+   * const templates = await client.agents.templates.list();
+   * ```
    */
   list(options?: Core.RequestOptions): Core.APIPromise<TemplateListResponse> {
     return this._client.get('/agents/templates', options);

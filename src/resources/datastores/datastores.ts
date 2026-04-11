@@ -53,6 +53,12 @@ export class Datastores extends APIResource {
    * > our UI. Otherwise, they will receive the following message: "This endpoint is
    * > disabled as you need to go through checkout. Please use the UI to make this
    * > request."
+   *
+   * @example
+   * ```ts
+   * const createDatastoreResponse =
+   *   await client.datastores.create({ name: 'name' });
+   * ```
    */
   create(
     body: DatastoreCreateParams,
@@ -63,6 +69,13 @@ export class Datastores extends APIResource {
 
   /**
    * Edit Datastore Configuration
+   *
+   * @example
+   * ```ts
+   * const datastore = await client.datastores.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   update(
     datastoreId: string,
@@ -78,6 +91,14 @@ export class Datastores extends APIResource {
    * Performs `cursor`-based pagination if the number of `Datastores` exceeds the
    * requested `limit`. The returned `cursor` can be passed to the next
    * `GET /datastores` call to retrieve the next set of `Datastores`.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const datastore of client.datastores.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     query?: DatastoreListParams,
@@ -100,6 +121,13 @@ export class Datastores extends APIResource {
    *
    * This operation will fail with status code 400 if there is an active `Agent`
    * associated with the `Datastore`.
+   *
+   * @example
+   * ```ts
+   * const datastore = await client.datastores.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreDeleteResponse> {
     return this._client.delete(`/datastores/${datastoreId}`, options);
@@ -108,6 +136,13 @@ export class Datastores extends APIResource {
   /**
    * Get the details of a given `Datastore`, including its name, create time, and the
    * list of `Agents` which are currently configured to use the `Datastore`.
+   *
+   * @example
+   * ```ts
+   * const datastoreMetadata = await client.datastores.metadata(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   metadata(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreMetadata> {
     return this._client.get(`/datastores/${datastoreId}/metadata`, options);
@@ -116,6 +151,13 @@ export class Datastores extends APIResource {
   /**
    * Reset the give `Datastore`. This operation is irreversible and it deletes all
    * the documents associated with the datastore.
+   *
+   * @example
+   * ```ts
+   * const response = await client.datastores.reset(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   reset(datastoreId: string, options?: Core.RequestOptions): Core.APIPromise<DatastoreResetResponse> {
     return this._client.put(`/datastores/${datastoreId}/reset`, options);

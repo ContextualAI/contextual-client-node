@@ -7,6 +7,16 @@ export class Chunks extends APIResource {
   /**
    * Edit the content of a specific chunk in a datastore. This operation updates the
    * chunk's text content and regenerates its embeddings.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.datastores.chunks.updateContent(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { content: 'content' },
+   *   );
+   * ```
    */
   updateContent(
     datastoreId: string,

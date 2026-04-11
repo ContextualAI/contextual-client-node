@@ -15,6 +15,13 @@ export class Parse extends APIResource {
    * [code examples](https://github.com/ContextualAI/examples/blob/main/03-standalone-api/04-parse/parse.ipynb).
    * Email [parse-feedback@contextual.ai](mailto:parse-feedback@contextual.ai) with
    * any feedback or questions.
+   *
+   * @example
+   * ```ts
+   * const parse = await client.parse.create({
+   *   raw_file: fs.createReadStream('path/to/file'),
+   * });
+   * ```
    */
   create(body: ParseCreateParams, options?: Core.RequestOptions): Core.APIPromise<ParseCreateResponse> {
     return this._client.post('/parse', Core.multipartFormRequestOptions({ body, ...options }));
@@ -25,6 +32,13 @@ export class Parse extends APIResource {
    *
    * Parse job results are retained for up to 30 days after job creation. Fetching
    * results for a parse job that is older than 30 days will return a 404 error.
+   *
+   * @example
+   * ```ts
+   * const response = await client.parse.jobResults(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   jobResults(
     jobId: string,
@@ -48,6 +62,13 @@ export class Parse extends APIResource {
    *
    * Parse job results are retained for up to 30 days after job creation. Fetching a
    * status for a parse job that is older than 30 days will return a 404 error.
+   *
+   * @example
+   * ```ts
+   * const response = await client.parse.jobStatus(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   jobStatus(jobId: string, options?: Core.RequestOptions): Core.APIPromise<ParseJobStatusResponse> {
     return this._client.get(`/parse/jobs/${jobId}/status`, options);
@@ -58,6 +79,11 @@ export class Parse extends APIResource {
    *
    * Returns all jobs from the last 30 days, or since the optional `uploaded_after`
    * timestamp.
+   *
+   * @example
+   * ```ts
+   * const response = await client.parse.jobs();
+   * ```
    */
   jobs(query?: ParseJobsParams, options?: Core.RequestOptions): Core.APIPromise<ParseJobsResponse>;
   jobs(options?: Core.RequestOptions): Core.APIPromise<ParseJobsResponse>;

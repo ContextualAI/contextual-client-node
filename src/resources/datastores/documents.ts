@@ -15,6 +15,16 @@ export class Documents extends APIResource {
    * requested `limit`. The returned `cursor` can be passed to the next
    * `GET /datastores/{datastore_id}/documents` call to retrieve the next set of
    * documents.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const documentMetadata of client.datastores.documents.list(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * )) {
+   *   // ...
+   * }
+   * ```
    */
   list(
     datastoreId: string,
@@ -41,6 +51,14 @@ export class Documents extends APIResource {
 
   /**
    * Delete a given document from its `Datastore`. This operation is irreversible.
+   *
+   * @example
+   * ```ts
+   * const document = await client.datastores.documents.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(
     datastoreId: string,
@@ -54,6 +72,15 @@ export class Documents extends APIResource {
    * Get the parse results that are generated during ingestion for a given document.
    * Retrieving parse results for existing documents ingested before the release of
    * this endpoint is not supported and will return a 404 error.
+   *
+   * @example
+   * ```ts
+   * const response =
+   *   await client.datastores.documents.getParseResult(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   getParseResult(
     datastoreId: string,
@@ -94,6 +121,15 @@ export class Documents extends APIResource {
    * `file` must be a PDF, HTML, DOC(X) or PPT(X) file. The filename must end with
    * one of the following extensions: `.pdf`, `.html`, `.htm`, `.mhtml`, `.doc`,
    * `.docx`, `.ppt`, `.pptx`.
+   *
+   * @example
+   * ```ts
+   * const ingestionResponse =
+   *   await client.datastores.documents.ingest(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     { file: fs.createReadStream('path/to/file') },
+   *   );
+   * ```
    */
   ingest(
     datastoreId: string,
@@ -109,6 +145,15 @@ export class Documents extends APIResource {
   /**
    * Get details of a given document, including its `name` and ingestion job
    * `status`.
+   *
+   * @example
+   * ```ts
+   * const documentMetadata =
+   *   await client.datastores.documents.metadata(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   metadata(
     datastoreId: string,
@@ -122,6 +167,15 @@ export class Documents extends APIResource {
    * Post details of a given document that will enrich the chunk and be added to the
    * context or just for filtering. If Just for filtering, start with "\_" in the
    * key.
+   *
+   * @example
+   * ```ts
+   * const documentMetadata =
+   *   await client.datastores.documents.setMetadata(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   );
+   * ```
    */
   setMetadata(
     datastoreId: string,

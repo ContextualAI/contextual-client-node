@@ -41,6 +41,13 @@ export class Agents extends APIResource {
    * > UI. Otherwise, they will receive the following message: "This endpoint is
    * > disabled as you need to go through checkout. Please use the UI to make this
    * > request."
+   *
+   * @example
+   * ```ts
+   * const createAgentOutput = await client.agents.create({
+   *   name: 'xxx',
+   * });
+   * ```
    */
   create(body: AgentCreateParams, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
     return this._client.post('/agents', { body, ...options });
@@ -50,6 +57,13 @@ export class Agents extends APIResource {
    * Modify a given `Agent` to utilize the provided configuration.
    *
    * Fields not included in the request body will not be modified.
+   *
+   * @example
+   * ```ts
+   * const agent = await client.agents.update(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   update(
     agentId: string,
@@ -61,6 +75,14 @@ export class Agents extends APIResource {
 
   /**
    * Retrieve a list of all `Agents`.
+   *
+   * @example
+   * ```ts
+   * // Automatically fetches more pages as needed.
+   * for await (const agent of client.agents.list()) {
+   *   // ...
+   * }
+   * ```
    */
   list(query?: AgentListParams, options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
   list(options?: Core.RequestOptions): Core.PagePromise<AgentsPage, Agent>;
@@ -80,6 +102,13 @@ export class Agents extends APIResource {
    * Note: `Datastores` which are associated with the `Agent` will not be deleted,
    * even if no other `Agent` is using them. To delete a `Datastore`, use the
    * `DELETE /datastores/{datastore_id}` API.
+   *
+   * @example
+   * ```ts
+   * const agent = await client.agents.delete(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   delete(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentDeleteResponse> {
     return this._client.delete(`/agents/${agentId}`, options);
@@ -88,6 +117,13 @@ export class Agents extends APIResource {
   /**
    * Copy an existing agent with all its configurations and datastore associations.
    * The copied agent will have "[COPY]" appended to its name.
+   *
+   * @example
+   * ```ts
+   * const createAgentOutput = await client.agents.copy(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   copy(agentId: string, options?: Core.RequestOptions): Core.APIPromise<CreateAgentOutput> {
     return this._client.post(`/agents/${agentId}/copy`, options);
@@ -95,6 +131,13 @@ export class Agents extends APIResource {
 
   /**
    * Get metadata and configuration of a given `Agent`.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agents.metadata(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   metadata(agentId: string, options?: Core.RequestOptions): Core.APIPromise<AgentMetadataResponse> {
     return this._client.get(`/agents/${agentId}/metadata`, options);
@@ -102,6 +145,13 @@ export class Agents extends APIResource {
 
   /**
    * Reset a given `Agent` to default configuration.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agents.reset(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   reset(agentId: string, options?: Core.RequestOptions): Core.APIPromise<unknown> {
     return this._client.put(`/agents/${agentId}/reset`, options);
@@ -109,6 +159,14 @@ export class Agents extends APIResource {
 
   /**
    * Save Template
+   *
+   * @example
+   * ```ts
+   * const response = await client.agents.saveTemplate(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { name: 'name' },
+   * );
+   * ```
    */
   saveTemplate(
     agentId: string,

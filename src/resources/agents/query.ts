@@ -9,6 +9,14 @@ export class Query extends APIResource {
   /**
    * Start a conversation with an `Agent` and receive its generated response, along
    * with relevant retrieved data and attributions.
+   *
+   * @example
+   * ```ts
+   * const queryResponse = await client.agents.query.create(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   { messages: [{ content: 'content', role: 'user' }] },
+   * );
+   * ```
    */
   create(
     agentId: string,
@@ -27,6 +35,17 @@ export class Query extends APIResource {
    * Provide feedback for a generation or a retrieval. Feedback can be used to track
    * overall `Agent` performance through the `Feedback` page in the Contextual UI,
    * and as a basis for model fine-tuning.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agents.query.feedback(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   {
+   *     feedback: 'thumbs_up',
+   *     message_id: '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *   },
+   * );
+   * ```
    */
   feedback(
     agentId: string,
@@ -39,6 +58,13 @@ export class Query extends APIResource {
   /**
    * Returns usage and user-provided feedback data. This information can be used for
    * data-driven improvements and optimization.
+   *
+   * @example
+   * ```ts
+   * const response = await client.agents.query.metrics(
+   *   '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   * );
+   * ```
    */
   metrics(
     agentId: string,
@@ -60,6 +86,18 @@ export class Query extends APIResource {
   /**
    * Return metadata of the contents used to generate the response for a given
    * message.
+   *
+   * @example
+   * ```ts
+   * const retrievalInfoResponse =
+   *   await client.agents.query.retrievalInfo(
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+   *     {
+   *       content_ids: ['182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'],
+   *     },
+   *   );
+   * ```
    */
   retrievalInfo(
     agentId: string,
